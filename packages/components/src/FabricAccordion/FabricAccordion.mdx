@@ -1,0 +1,104 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as AccordionStories from './FabricAccordion.stories';
+
+<Meta of={AccordionStories} name="Overview" />
+
+# FabricAccordion
+
+Show and hide sections of related content. Extends MUI `Accordion` and adds `title` / `titleIcon` / `action` slots, a `summaryContent` slot for custom summaries, and `variant` + `level` props for section headers, document rows and nested trees. Rows are flat, have no fixed width, and fill their container.
+
+**Do not use for:** navigation menus · tab switching (use MUI `Tabs`) · always-visible content.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricAccordion/index.tsx) · [WAI-ARIA accordion pattern](https://www.w3.org/WAI/ARIA/apg/patterns/accordion/)
+
+---
+
+## Which row do I need?
+
+| Row | How to get it |
+|---|---|
+| Section header (default) | `<FabricAccordion title="…" />`. Hover and open states are automatic. |
+| Section header with an icon | add `titleIcon={<Icon />}` |
+| Reorderable section | add `draggable`, and pass `dragHandleProps` from your drag-and-drop library |
+| Removable section | add `onClose={handler}` |
+| Document row | `variant="document"` with a `titleIcon`. The chevron moves to the end. |
+| Compact content row | `variant="content"`, optionally with `action={<Button />}` |
+| Nested tree branch | `variant="content" level={2}` with `titleIcon` and `action` |
+| Tree leaf (nothing to expand) | `<FabricAccordionLeaf level={3} icon action />` |
+| Highlighted row | add `mapIndicator` for a corner mark in the primary color |
+| Selected leaf | `selected` on `FabricAccordionLeaf` |
+
+---
+
+## Section
+
+<Canvas of={AccordionStories.Section} />
+<Canvas of={AccordionStories.SectionExpanded} />
+<Canvas of={AccordionStories.SectionDraggableAndClosable} />
+
+## Document
+
+<Canvas of={AccordionStories.Document} />
+
+## Content
+
+<Canvas of={AccordionStories.Content} />
+
+## Nested tree
+
+Nest `FabricAccordion` rows (`level` 2) and `FabricAccordionLeaf` rows (`level` 3). Details padding is removed automatically when children are rows.
+
+<Canvas of={AccordionStories.NestedTree} />
+<Canvas of={AccordionStories.Leaf} />
+
+## Disabled
+
+<Canvas of={AccordionStories.Disabled} />
+
+---
+
+## Customization
+
+### Width and spacing
+
+No width is fixed. Size the parent, or use `sx`. Row indent comes from `level` (8 / 56 / 80) and can be overridden with `summarySx`.
+
+### Custom expand icon
+
+A custom `expandIcon` is placed at the start (end for `document`) and rotates 180°. Use `expandIconRotationDegrees` to change it.
+
+<Canvas of={AccordionStories.CustomExpandIcon} />
+
+### Custom summary — `summaryContent`
+
+Replaces `titleIcon` / `title` / `action`.
+
+<Canvas of={AccordionStories.CustomSummarySwitch} />
+<Canvas of={AccordionStories.CustomSummaryCheckbox} />
+
+### `sx`, `summarySx`, `detailsSx`
+
+Consumer keys win over defaults. Icon sizes inside the summary are set by the row, so use `summarySx` rather than a per-icon `fontSize`.
+
+<Canvas of={AccordionStories.SummaryAndDetailsSx} />
+
+### One expanded at a time
+
+<Canvas of={AccordionStories.OneExpandedAtATime} />
+
+---
+
+## Limitations
+
+- Clicking anywhere in the summary toggles the panel. Call `event.stopPropagation()` in `action` and `onClose` handlers.
+- The summary renders as a `div`, so buttons in `action` are valid DOM.
+- String `title`s are wrapped in `FabricText`; other nodes render as-is.
+- `unmountOnExit` defaults to `true`; set `false` to keep children mounted.
+- `summaryContent` replaces the default summary composition.
+- `variant` is the Fabric row variant. Paper's `variant` is not available.
+
+---
+
+## API
+
+<Controls of={AccordionStories.Section} />

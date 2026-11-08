@@ -1,0 +1,100 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as GroupStories from './FabricCheckboxGroup.stories';
+
+<Meta of={GroupStories} name="Overview" />
+
+# FabricCheckboxGroup (CheckboxGroup)
+
+The `FormGroup` semantic tree for multi-checkbox scenarios. Wraps children in MUI's `<FormControl>` + `<FormLabel>` + `<FormGroup>` + `<FormHelperText>` so screen readers read the group label and helper text properly. Standalone `FabricCheckbox`es don't add a group wrapper, so use this whenever several checkboxes answer one question.
+
+**Use it for:**
+- Notification channels ✓ Email ✓ SMS ✓ Push
+- Preference rows (Dark mode / Reduced motion / Compact layout)
+- Required agreement pairs (Terms + Privacy) with a shared error state
+- Bulk-action headers with a "Select all" indeterminate parent
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricCheckboxGroup/index.tsx) · [WAI-ARIA group pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/) · [Material Design guidance](https://m2.material.io/components/selection-controls#checkboxes)
+
+---
+
+## Basic group
+
+Children are `<FabricCheckbox>` instances. The group owns nothing about their state — pass `checked` + `onCheckedChange` per child. This preserves controlled/uncontrolled patterns per checkbox.
+
+<Canvas of={GroupStories.Default} />
+
+---
+
+## Horizontal layout
+
+`row` prop lays checkboxes horizontally. Use for compact filter bars or short option lists.
+
+<Canvas of={GroupStories.Horizontal} />
+
+---
+
+## Helper text
+
+Group-level helper text renders below all checkboxes and is auto-wired to `aria-describedby`.
+
+<Canvas of={GroupStories.HelperText} />
+
+---
+
+## Error state
+
+`error` prop lights up the group label and helper text in `error.main`. Use for required-checkbox validation.
+
+<Canvas of={GroupStories.ErrorState} />
+
+---
+
+## Select-all pattern
+
+Compose a parent checkbox with `indeterminate` derived from child state — the group is just a container, so the pattern is idiomatic.
+
+<Canvas of={GroupStories.SelectAllPattern} />
+
+---
+
+## Disabled group
+
+Passing `disabled` propagates through MUI's `FormControl` context — every child checkbox becomes disabled without individual `disabled` props.
+
+<Canvas of={GroupStories.DisabledGroup} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={GroupStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Children own their state
+
+The group deliberately doesn't manage child state — it's a semantic + layout wrapper only. If you want a controlled "select-all + children" pattern, lift state to the parent (see the SelectAllPattern story).
+
+### `label` is required for screen readers to announce the group
+
+Omitting `label` produces a valid `<FormGroup>` but screen readers can't announce it as a labelled group. Provide `aria-labelledby` if the group's context comes from a visible heading elsewhere in the page.
+
+### Not for radio buttons
+
+Radios are mutually exclusive and belong inside [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview), which uses `<RadioGroup>` — a different MUI primitive with different keyboard semantics (arrow-key navigation).
+
+---
+
+## API
+
+<Controls of={GroupStories.Default} />
+
+---
+
+## See also
+
+- **[FabricCheckbox](?path=/docs/components-fabriccheckbox--overview)** — the individual checkbox.
+- **[FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)** — single-choice equivalent.
+- **[FabricSwitch](?path=/docs/components-fabricswitch--overview)** — for a single toggle with immediate effect (use a group of switches for multi-toggle only when checkboxes would be wrong).

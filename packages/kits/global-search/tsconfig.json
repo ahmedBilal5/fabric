@@ -1,0 +1,27 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "../../design-tokens"
+    },
+    {
+      "path": "../../theme"
+    },
+    {
+      "path": "../../primitives"
+    },
+    {
+      "path": "../../components"
+    },
+    {
+      "path": "../../advanced-components/datagrid"
+    }
+  ],
+  "include": ["src"],
+  "exclude": ["src/**/*.stories.tsx", "src/**/*.test.ts", "src/**/*.test.tsx"]
+}

@@ -1,0 +1,60 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as PrimitivesStories from './Primitives.stories';
+
+<Meta of={PrimitivesStories} name="Index" />
+
+# Primitives Index
+
+Fabric's layout primitives from `@fabric-kit/primitives`. Each entry below opens its own docs tab on this page — no navigation away.
+
+## Layout containers
+
+| Primitive | When to use |
+|---|---|
+| [`Surface`](?path=/docs/primitives-fabricsurface--variants) | Themed background container (elevated / secondary / outlined). Wraps MUI `Paper`. |
+| [`Container`](?path=/docs/primitives-utilities--container) | Responsive-max-width page/section wrapper. Wraps MUI `Container`. |
+
+## Flex layouts
+
+| Primitive | When to use |
+|---|---|
+| [`Stack`](?path=/docs/primitives-fabricstack--default) | Vertical column of items with token-scale gap. |
+| [`Inline`](?path=/docs/primitives-fabricinline--default) | Wrapped horizontal row + `alignItems: center` baked in. Icon+label pairs, chip strips. |
+| [`Center`](?path=/docs/primitives-utilities--center) | Full centering both axes. No knobs. |
+| [`Flex`](?path=/docs/primitives-fabricflex--row) | Arbitrary `direction` / `align` / `justify` / `wrap` / `gap`. When Stack / Inline / Center don't fit. |
+| [`Grid`](?path=/docs/primitives-fabricgrid--three-column) | CSS Grid container with responsive columns, rows, gap, align, justify. |
+
+## Content & spacing
+
+| Primitive | When to use |
+|---|---|
+| [`Text`](?path=/docs/primitives-fabrictext--size-scale) | Design-system typography. Wraps MUI `Typography` with token-scale `size` + layout props. |
+| [`Divider`](?path=/docs/primitives-fabricdivider--default) | Themed horizontal or vertical rule with token-scale `spacing`. |
+| [`Grow`](?path=/docs/primitives-utilities--grow) | Content wrapper that fills remaining flex space (`flex: 1`). |
+| [`Spacer`](?path=/docs/primitives-utilities--spacer-fixed) | Aria-hidden empty space between flex items (fixed size OR flex fill). |
+
+## Responsive visibility
+
+| Primitive | When to use |
+|---|---|
+| [`Show`](?path=/docs/primitives-fabricvisibility--show-above) | Render children only at/above or below a breakpoint. Pure CSS — no JS, no layout shift. |
+| [`Hide`](?path=/docs/primitives-fabricvisibility--hide-above) | Hide children at/above or below a breakpoint. Pure CSS — no JS, no layout shift. |
+
+## Choosing a primitive
+
+If your intent is …
+
+- **Center both axes** → [`Center`](?path=/docs/primitives-utilities--center)
+- **Column of items with gap** → [`Stack`](?path=/docs/primitives-fabricstack--default)
+- **Wrapped row with gap + centered** → [`Inline`](?path=/docs/primitives-fabricinline--default)
+- **Anything else with `display: flex`** → [`Flex`](?path=/docs/primitives-fabricflex--row)
+- **CSS grid layout** → [`Grid`](?path=/docs/primitives-fabricgrid--three-column)
+- **Elevated / bordered surface** → [`Surface`](?path=/docs/primitives-fabricsurface--variants)
+- **Responsive-max-width page** → [`Container`](?path=/docs/primitives-utilities--container)
+- **Typography** → [`Text`](?path=/docs/primitives-fabrictext--size-scale)
+- **Fill leftover space** → [`Grow`](?path=/docs/primitives-utilities--grow)
+- **Empty gap between two items** → [`Spacer`](?path=/docs/primitives-utilities--spacer-fixed)
+- **Themed rule/separator** → [`Divider`](?path=/docs/primitives-fabricdivider--default)
+- **Show/hide at breakpoint** → [`Show` / `Hide`](?path=/docs/primitives-fabricvisibility--show-above)
+
+For a live demo of every primitive on one page, see the [**All Primitives**](?path=/story/foundations-primitives--all-primitives) story.

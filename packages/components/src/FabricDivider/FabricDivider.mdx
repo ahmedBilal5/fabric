@@ -1,0 +1,74 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as DividerStories from './FabricDivider.stories';
+
+<Meta of={DividerStories} name="Overview" />
+
+# FabricDivider
+
+Section separator — the design-system pass-through for MUI `Divider`. Every prop, every variant, every orientation passes through unchanged.
+
+**Use it for:**
+- Separator between list rows (cart items, settings rows, permission list rows)
+- Vertical rules between inline actions
+- Labeled section breaks with inline text ("OR")
+- Spacing dividers with `sx={{ my: 1 }}`
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricDivider/index.tsx) · [Material Design guidance](https://m2.material.io/components/dividers)
+
+---
+
+## Default
+
+<Canvas of={DividerStories.Default} />
+
+Same as raw MUI Divider — a full-width 1 px separator line using the current theme's divider color.
+
+---
+
+## Variants
+
+`variant="fullWidth" | "inset" | "middle"` — controls how the divider aligns with parent list padding.
+
+<Canvas of={DividerStories.AllVariants} />
+
+`fullWidth` is the MUI default (and the FabricDivider default via prop passthrough). `inset` respects the parent list's 72 px inset for icons; `middle` adds equal horizontal margin.
+
+---
+
+## With inline text
+
+Children render inline with the line — useful for "OR" separators or labeled section breaks.
+
+<Canvas of={DividerStories.WithText} />
+
+`textAlign="left" | "center" | "right"` positions the text along the line.
+
+---
+
+## Vertical
+
+<Canvas of={DividerStories.Vertical} />
+
+`orientation="vertical"` requires `flexItem` on the divider so it stretches to the parent flex container's height.
+
+---
+
+## Consumer patterns
+
+### List item separator
+
+The Ecommerce cart pattern — insert a divider between items but not after the last one.
+
+<Canvas of={DividerStories.ListItemSeparator} />
+
+### Spacing pattern
+
+The Workflow settings pattern — vertical spacing controlled via `sx={{ my: 1 }}` / `my: 2`.
+
+<Canvas of={DividerStories.SpacingPattern} />
+
+---
+
+## Accessibility
+
+MUI's default `role="separator"` is applied automatically. For decorative dividers (purely visual, not semantic), pass `role="presentation"` — MUI honors it and screen readers skip the element.

@@ -1,0 +1,188 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Contribution Guidelines" />
+
+<style>{`
+  .cg-hero { text-align: center; padding: 40px 0 28px; }
+  .cg-hero h1 { font-family: Geist, sans-serif; font-size: 2rem; font-weight: 700; color: var(--mui-palette-text-primary); margin: 0; }
+  .cg-hero p { font-family: 'Geist', sans-serif; font-size: 1.125rem; color: var(--mui-palette-text-secondary); margin: 8px auto 0; max-width: 680px; }
+  .cg-section { margin: 36px 0; }
+  .cg-section h2 { font-family: Geist, sans-serif; font-size: 1.35rem; font-weight: 600; color: var(--mui-palette-text-primary); margin: 0 0 12px; border-bottom: 2px solid var(--mui-palette-divider); padding-bottom: 8px; }
+  .cg-section h3 { font-family: Geist, sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--mui-palette-text-primary); margin: 22px 0 8px; }
+  .cg-section p, .cg-section li { font-family: 'Geist', sans-serif; font-size: 0.9375rem; line-height: 1.65; color: var(--mui-palette-text-primary); }
+  .cg-section ul { padding-left: 20px; }
+  .cg-section code { background: var(--mui-palette-action-hover); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .cg-callout { background: var(--mui-palette-action-hover); border-left: 4px solid var(--mui-palette-primary-main); border-radius: 6px; padding: 14px 18px; margin: 18px 0; }
+  .cg-callout p { margin: 0; font-size: 0.875rem; }
+  .cg-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-family: 'Geist', sans-serif; font-size: 0.875rem; }
+  .cg-table th, .cg-table td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--mui-palette-divider); }
+  .cg-table th { font-family: Geist, sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--mui-palette-text-secondary); }
+`}</style>
+
+<div className="cg-hero">
+  <h1>Contribution Guidelines</h1>
+  <p>
+    How to add components, primitives, tokens and kits to Fabric, and how to open a pull request.
+  </p>
+</div>
+
+---
+
+<div className="cg-section">
+
+## Start With the Right Layer
+
+Choose the lowest layer that can own the work clearly. Do not place app-specific behavior in a foundation package.
+
+<table className="cg-table">
+  <thead>
+    <tr><th>Layer</th><th>Use it for</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>design-tokens</code></td><td>Shared values for color, type, spacing, radius, elevation, motion, size, and breakpoints.</td></tr>
+    <tr><td><code>theme</code></td><td>MUI theme setup, CSS variables, providers, and theme-aware hooks.</td></tr>
+    <tr><td><code>primitives</code></td><td>Low-level layout and text building blocks such as <code>FabricFlex</code>, <code>FabricStack</code>, <code>FabricInline</code>, <code>FabricGrid</code>, and <code>FabricText</code>.</td></tr>
+    <tr><td><code>components</code></td><td>Reusable UI controls and Fabric wrappers such as buttons, dialogs, menus, drawers, badges, form fields, and surfaces.</td></tr>
+    <tr><td><code>advanced-components</code></td><td>Large specialized controls such as datagrid, tree view, and future complex data components.</td></tr>
+    <tr><td><code>kits</code></td><td>Composed, app-level features such as the app shell, global search, chat and version history. Kits take async functions instead of calling an API.</td></tr>
+  </tbody>
+</table>
+
+<div className="cg-callout">
+  <p><strong>Dependency rule:</strong> feature kits may use tokens, theme, primitives, and components. Feature kits should not depend on each other.</p>
+</div>
+
+</div>
+
+---
+
+<div className="cg-section">
+
+## Design the API
+
+- Prefix exported React components with <code>Fabric</code>.
+- Keep props small, typed, and specific to real use cases.
+- Prefer composition, slots, and clear callbacks over broad configuration objects.
+- Name states and variants by intent, not by implementation detail.
+- Plan keyboard behavior, focus behavior, labels, loading, empty, error, disabled, and selected states before coding.
+- Decide what changes below <code>md</code> and below <code>sm</code> before coding.
+
+</div>
+
+---
+
+<div className="cg-section">
+
+## Build With Fabric First
+
+Use existing Fabric layers before reaching for raw MUI or custom CSS.
+
+- Use primitives for layout: <code>FabricFlex</code>, <code>FabricStack</code>, <code>FabricInline</code>, <code>FabricGrid</code>, <code>FabricBox</code>, and <code>FabricText</code>.
+- Use component-layer building blocks where they fit: <code>FabricButton</code>, <code>FabricIconButton</code>, <code>FabricMenu</code>, <code>FabricDrawer</code>, <code>FabricDialog</code>, <code>FabricAvatar</code>, <code>FabricBadge</code>, form controls, and similar wrappers.
+- Import raw MUI only when Fabric does not already provide the needed primitive or component.
+- Use MUI CSS variables for theme colors, for example <code>var(--mui-palette-text-primary)</code>.
+- Use Fabric tokens or theme values for spacing, radii, font sizes, font weights, and font families.
+- Use <code>FabricText</code> with <code>textVariant</code> and <code>truncate</code> instead of manual typography and ellipsis styles when possible.
+- Avoid fixed widths by default. Prefer flex sizing, max-widths, min-width floors, wrapping, and intentional overflow.
+- Keep generic MUI system props such as <code>p</code>, <code>mb</code>, <code>width</code>, and <code>bgcolor</code> inside <code>sx</code> on <code>FabricBox</code>.
+- Hoist primitive-owned props such as <code>gap</code>, <code>align</code>, <code>justify</code>, <code>direction</code>, and <code>wrap</code> on layout primitives.
+
+### Responsive defaults
+
+- Use <code>md</code> as the main layout shift point.
+- Use <code>sm</code> as the main density shift point.
+- Prefer responsive primitive props and <code>sx</code> breakpoint objects over JavaScript media queries.
+- Use <code>useBreakpoint</code> only when the rendered structure must change.
+- For dense data, document whether narrow screens use column hiding, compact density, cards, or horizontal scroll.
+
+### Code quality
+
+- Keep TypeScript strict and avoid <code>any</code>.
+- Add JSDoc for exported components, sub-components, prop types, and helper types.
+- Add focused tests for rendering, state changes, callbacks, keyboard paths, and important responsive branches.
+- Never depend on paid packages (<code>@mui/x-*-pro</code>, <code>-premium</code>, <code>@mui/x-license</code>); Biome blocks these imports.
+- Add a changeset (<code>pnpm changeset</code>) for any user-facing change.
+
+</div>
+
+---
+
+<div className="cg-section">
+
+## Document in Storybook
+
+Every public component should have enough Storybook coverage for a consumer to understand it without reading source code.
+
+- Add an MDX overview with purpose, anatomy, usage guidance, accessibility notes, responsive behavior, and do/don't guidance where useful.
+- Add stories for default, common, disabled, loading, empty, error, selected, overflow, and dense states as applicable.
+- Add controlled and uncontrolled examples when both are supported.
+- Add interactive controls for important props.
+- Include long labels, missing optional data, and large item counts when they are realistic risks.
+- Let Storybook generate prop tables from TypeScript and JSDoc where possible.
+
+</div>
+
+---
+
+<div className="cg-section">
+
+## Validation Checklist
+
+Use this before opening a PR.
+
+### Local checks
+
+- [ ] Package tests pass.
+- [ ] Typecheck passes for the touched package or workspace.
+- [ ] Lint or formatter checks pass.
+- [ ] Public exports are intentional.
+- [ ] No new raw value patterns were introduced for color, spacing, radius, or typography.
+
+### Theme modes
+
+- [ ] Stories look correct in light mode.
+- [ ] Stories look correct in dark mode.
+- [ ] Text, borders, fills, hover states, selected states, disabled states, and focus rings use theme variables.
+- [ ] Loading, empty, error, and success states have enough contrast in both modes.
+
+### Viewports
+
+- [ ] Check <code>fabricMobile</code> 375 by 812.
+- [ ] Check <code>fabricTablet</code> 900 by 1024.
+- [ ] Check <code>fabricDesktop</code> 1440 by 900.
+- [ ] Check <code>fabricWide</code> 1920 by 1080.
+- [ ] Content does not overlap, clip unexpectedly, or depend on desktop-only widths.
+- [ ] Long text wraps or truncates intentionally.
+- [ ] Drawers, dialogs, menus, grids, and panels scroll intentionally.
+
+### Accessibility and interaction
+
+- [ ] Storybook accessibility addon has no unresolved violations.
+- [ ] Keyboard navigation works without a mouse.
+- [ ] Focus order is predictable and visible.
+- [ ] Accessible names, labels, and state announcements are present where needed.
+- [ ] Enter, space, escape, arrows, and tab match the component pattern.
+- [ ] Pointer and touch targets are usable on small viewports.
+
+</div>
+
+---
+
+<div className="cg-section">
+
+## Pull Request (PR) Guidelines
+
+Before Creating a PR, make sure the following pass locally:
+- <code>pnpm lint</code>. Fix the link issues with <code>pnpm lint:fix</code> or <code>pnpm lint:fix-unsafe</code>
+- <code>pnpm typecheck:stories</code>
+- <code>pnpm test-storybook</code>
+
+DO NOT update package versions in the code yourself. Changesets will handle that for you.
+Instead, If your contribution touches any package source code or adds a new package/component, you must:
+
+- Run <code>pnpm changeset</code> to generate a changeset file before creating your PR. This changeset file will contain the relevant version bumps.
+- Once your PR is merged to main, a new release PR will be automatically created. This PR will contain the version changes in code. (This is because the pipeline that creates the PR runs <code>pnpm changeset version</code> for us).
+- After you have reviewed the version changes in code, you can merge the release PR and the new versions will be published.
+
+</div>
+

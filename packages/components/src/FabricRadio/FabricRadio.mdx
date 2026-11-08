@@ -1,0 +1,123 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as RadioStories from './FabricRadio.stories';
+
+<Meta of={RadioStories} name="Overview" />
+
+# FabricRadio
+
+Single radio input for mutually exclusive selections. Use it for "pick one" choices such as payment method, priority or sort direction, inside a [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview). Extends MUI `Radio` and adds a first-class `label` slot.
+
+**Use it for:**
+- Mutually exclusive options where the user needs to see all choices at once
+- Prefer over [FabricSelect](?path=/docs/components-fabricselect--overview) when there are ≤5 options and screen space allows
+
+**Do not use for:** on/off toggles (use [FabricSwitch](?path=/docs/components-fabricswitch--overview)) · multi-select (use [FabricCheckbox](?path=/docs/components-fabriccheckbox--overview)) · long option lists (use [FabricSelect](?path=/docs/components-fabricselect--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricRadio/index.tsx) · [WAI-ARIA radio pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/) · [Material Design guidance](https://m2.material.io/components/selection-controls#radio-buttons)
+
+---
+
+## Basic radio
+
+`label` renders the radio inside a `<FormControlLabel>`. Omit `label` for a bare `<input type="radio">` (rare — usually inside a custom form row).
+
+<Canvas of={RadioStories.Default} />
+<Canvas of={RadioStories.BareNoLabel} />
+
+---
+
+## Sizes
+
+`size="medium"` (24px) is the default; `size="small"` is 20px.
+
+<Canvas of={RadioStories.Sizes} />
+
+---
+
+## Info icon
+
+`showInfo` adds the 16px info icon after the label. It is ignored when `label` is omitted.
+
+<Canvas of={RadioStories.ShowInfo} />
+
+---
+
+## Color
+
+<Canvas of={RadioStories.AllColors} />
+
+---
+
+## All states
+
+Checked, unchecked, disabled — visualized side by side.
+
+<Canvas of={RadioStories.AllStates} />
+
+---
+
+## Label placement
+
+<Canvas of={RadioStories.LabelPlacement} />
+
+---
+
+## Label size
+
+`labelSize="xs" | "sm" | "md" | "lg"` — semantic label-size token. Ignored when `disableTypography` is set.
+
+<Canvas of={RadioStories.LabelSize} />
+
+---
+
+## Rich label (ReactNode)
+
+`label` is `ReactNode` — compose icons + text, price + description, colored spans.
+
+<Canvas of={RadioStories.RichLabel} />
+
+---
+
+## Controlled — event vs. shorthand
+
+`onChange(event, value)` fires the MUI-standard event; `onCheckedChange(checked)` is the boolean shortcut when you only care about the selection state.
+
+<Canvas of={RadioStories.OnChangeWithEvent} />
+<Canvas of={RadioStories.OnCheckedChangeShorthand} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={RadioStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Standalone radios rarely make sense
+
+A radio without a group is semantically odd — it can't be deselected once checked. Use `FabricRadio` standalone only inside custom form rows where the parent handles grouping via `name`. Prefer [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview) for anything user-facing.
+
+### Same `name` requirement
+
+Multiple radios must share a `name` to behave as a group. [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview) auto-generates a unique `name` via `useId()`; if using standalone radios, you must pass matching `name` values yourself or radios from different groups will interfere.
+
+### Keyboard navigation belongs to the group
+
+Arrow-key navigation between radios (WAI-ARIA requirement) is provided by `<RadioGroup>`, not by individual radios. Standalone radios have no roving tab-index.
+
+---
+
+## API
+
+<Controls of={RadioStories.Default} />
+
+---
+
+## See also
+
+- **[FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)** — the multi-radio composite with group label, helper text, error state, and keyboard navigation.
+- **[FabricCheckbox](?path=/docs/components-fabriccheckbox--overview)** — multi-select equivalent.
+- **[FabricSwitch](?path=/docs/components-fabricswitch--overview)** — for boolean toggles.
+- **[FabricSelect](?path=/docs/components-fabricselect--overview)** — for long option lists that need to save vertical space.

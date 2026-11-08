@@ -1,0 +1,96 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricVersionHistoryDrawer.stories';
+
+<Meta title="Kits/Versioning/Overview" />
+
+# Version history
+
+`FabricVersionHistoryDrawer` shows a document's saved versions on a timeline, like the version history in a docs or design tool. Published versions show their names; runs of autosaved drafts collapse into a single group. Each version has a menu for **Preview**, **Rename**, **Restore**, **Duplicate** and **Delete**.
+
+```bash
+pnpm add @fabric-kit/versioning
+```
+
+<Canvas of={Stories.Default} />
+
+## Usage
+
+You own the data. Pass the versions (newest first) and a handler for each action you support. An action only appears when its handler is set.
+
+```tsx
+import { FabricVersionHistoryDrawer, type FabricVersion } from '@fabric-kit/versioning';
+
+<FabricVersionHistoryDrawer
+  open={open}
+  onClose={() => setOpen(false)}
+  versions={versions}
+  onRestore={(version) => api.restoreVersion(docId, version.id)}
+  onRename={(version, label) => api.renameVersion(version.id, label)}
+  onDuplicate={(version) => api.duplicateVersion(version.id)}
+  onDelete={(version) => api.deleteVersion(version.id)}
+  renderPreview={(version) => <DocumentPreview versionId={version.id} />}
+  onError={(error) => toast.error(String(error))}
+/>
+```
+
+Handlers can return a promise. While it runs, the confirm button shows a spinner. If it throws, `onError` is called and the dialog stays open so the user can try again.
+
+## The version object
+
+```ts
+interface FabricVersion {
+  id: string;
+  status: 'published' | 'draft';
+  label?: string;        // name of a published version
+  isCurrent?: boolean;   // the version the document shows now
+  author?: string;
+  updatedAt: Date | string;
+}
+```
+
+## Rules
+
+| Action | Offered for |
+| --- | --- |
+| Preview | every version, when `renderPreview` is set |
+| Rename | published versions (also by clicking the name) |
+| Restore | every version except the current one; asks to confirm |
+| Duplicate | every version |
+| Delete | every version except the current one; asks to confirm |
+
+Set `readOnly` to hide everything except Preview, for example for viewers without edit rights.
+
+<Canvas of={Stories.ReadOnly} />
+
+## Previews
+
+`renderPreview` returns any React node. A small component that fetches the version and shows a spinner works well, so the drawer doesn't need to know your document format:
+
+```tsx
+function DocumentPreview({ versionId }: { versionId: string }) {
+  const { data, isLoading } = useQuery(['version', versionId], () => api.getVersion(versionId));
+  if (isLoading) return <FabricCircularProgress />;
+  return <RichTextViewer value={data.content} />;
+}
+```
+
+## Translating
+
+Every string is in `labels`, including the autosave group heading:
+
+```tsx
+<FabricVersionHistoryDrawer
+  labels={{ title: 'Historique', autosaved: (n) => `${n} enregistrements automatiques` }}
+  {...props}
+/>
+```
+
+## Accessibility
+
+- The drawer is a modal; Escape and the Done button close it.
+- Action menus are labelled buttons (`aria-haspopup="menu"`), and draft groups are toggle buttons with `aria-expanded`.
+- Timestamps use `<time>` with an ISO `dateTime`.
+
+## API
+
+<Controls of={Stories.Default} />

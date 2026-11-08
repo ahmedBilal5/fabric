@@ -1,0 +1,136 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as TooltipStories from './FabricTooltip.stories';
+
+<Meta of={TooltipStories} name="Overview" />
+
+# FabricTooltip
+
+Informative hover / focus text for compact controls. Use it on icon buttons, truncated labels and abbreviations. Extends MUI `Tooltip`, accepts any `ReactNode` as `title`, and applies Fabric's tooltip look (typography, padding, radius, shadow) from `@fabric-kit/design-tokens`. The default `dark` variant is navy; `variant="light"` is white.
+
+**Use it for:**
+- Icon-button labels (Delete, Archive, Share)
+- Truncated text ("... expand")
+- Abbreviation / jargon explanations ("MDM", "PIM")
+- Keyboard shortcut hints on toolbar buttons
+
+**Do not use for:** critical information the user must see (make it visible) · long-form content (use a Popover) · touch-only devices (tooltips don't fire on touch by default).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricTooltip/index.tsx) · [WAI-ARIA tooltip pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/) · [Material Design guidance](https://m2.material.io/components/tooltips)
+
+---
+
+## Basic tooltip
+
+Wraps any anchor child. Defaults to `arrow={true}`.
+
+<Canvas of={TooltipStories.Default} />
+
+---
+
+## Placements
+
+12 placement choices via the `placement` prop.
+
+<Canvas of={TooltipStories.AllPlacements} />
+
+---
+
+## Variants
+
+`variant="dark"` (default, navy) and `variant="light"` (white).
+
+Both follow the theme mode:
+
+| Variant | Light mode | Dark mode |
+|---|---|---|
+| `dark` | `brand.navy` fill, `text.inverse` text | `dark.brand.navy` fill, `dark.text.inverse` text (lighter, so it stands out) |
+| `light` | `surface.primary` fill, `text.medium` text | `dark.surface.primary` fill, `dark.text.medium` text |
+
+<Canvas of={TooltipStories.Variants} />
+
+---
+
+## Without arrow
+
+Pass `arrow={false}` to drop the arrow — a lighter look for chip-adjacent tooltips.
+
+<Canvas of={TooltipStories.WithoutArrow} />
+
+---
+
+## Rich content
+
+`title` is a `ReactNode`: compose icons + labels, formatted spans, keyboard hints.
+
+<Canvas of={TooltipStories.RichContent} />
+
+---
+
+## Delayed show / hide
+
+`enterDelay` and `leaveDelay` control the appearance timing. Long enter delay + short leave prevents accidental tooltips during mouse-flyover.
+
+<Canvas of={TooltipStories.Delayed} />
+
+---
+
+## Follow cursor
+
+`followCursor={true}` — the tooltip tracks the cursor position. Useful for chart hover labels and image annotations.
+
+<Canvas of={TooltipStories.FollowCursor} />
+
+---
+
+## Consumer sx override
+
+`slotProps.tooltip.sx` and `slotProps.arrow.sx` merge into the DS defaults — consumer keys win on collisions.
+
+<Canvas of={TooltipStories.ConsumerSxOverride} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={TooltipStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Custom child elements must forward refs
+
+Tooltip attaches DOM event listeners to its child. Custom React components must forward refs to the underlying DOM node — otherwise the tooltip won't fire. Wrap non-forwardRef components in a `<span>`.
+
+### Disabled buttons need a `<span>` wrapper
+
+Native `<button disabled>` doesn't fire pointer events. Wrap it in a `<span>` (Fabric [FabricButton](?path=/docs/components-fabricbutton--overview) already does this internally when the `tooltip` prop is set).
+
+### `describeChild` matters for accessibility
+
+When the tooltip's content matches the anchor's visible label, the tooltip acts as description (not a duplicate label). Pass `describeChild` — screen readers announce the anchor's own label plus the tooltip as extra info. When the anchor has no visible text (icon-only buttons), leave `describeChild` off so the tooltip becomes the accessible name.
+
+### Touch triggers require long-press
+
+Tooltips fire on hover/focus; on touch devices they require a 700ms long-press (`enterTouchDelay`). For crucial info on touch-primary UIs, prefer inline labels or `Popover`.
+
+### `componentsProps` (v5) → `slotProps` (v9)
+
+MUI renamed the API. Use `slotProps={{ tooltip: { sx }, arrow: { sx } }}` instead of `componentsProps`.
+
+### `PopperProps` (v5) → `slotProps.popper` (v9)
+
+Pass popper options through `slotProps.popper`.
+
+---
+
+## API
+
+<Controls of={TooltipStories.Default} />
+
+---
+
+## See also
+
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — passes `tooltip` prop to wrap the button (works on disabled).
+- **[FabricMenuButton](?path=/docs/components-fabricmenubutton--overview)** — trigger tooltip.

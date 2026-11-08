@@ -1,0 +1,93 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as StepperStories from './FabricStepper.stories';
+
+<Meta of={StepperStories} name="Overview" />
+
+# FabricStepper
+
+Steppers convey progress through a sequence of steps. `FabricStepper` is a data-driven wrapper over MUI `Stepper`: pass a `steps` array instead of composing `<Step>` / `<StepLabel>` / `<StepContent>` by hand.
+
+**Use it in:**
+- Multi-step wizards (account setup, template creation, checkout, imports)
+- Approval chains and workflow rails
+- Onboarding flows
+
+**Do not use for:** progress bars (use [FabricCircularProgress](?path=/docs/components-fabriccircularprogress--overview) or `LinearProgress`) · breadcrumbs (use [FabricBreadcrumbs](?path=/docs/components-fabricbreadcrumbs--overview)) · tabs (use [FabricTabs](?path=/docs/components-fabrictabs--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricStepper/index.tsx) · [MUI Stepper](https://mui.com/material-ui/react-stepper/) · [WAI-ARIA step pattern](https://www.w3.org/WAI/ARIA/apg/patterns/stepper/) (informal)
+
+---
+
+## Basic usage
+
+Pass a `steps` array with a `label` per item and set `activeStep`. The current step shows a blue dot, completed steps a green check, and steps not reached yet a grey dot. Horizontal steppers put each label under its icon; pass `alternativeLabel={false}` to put labels beside the icons.
+
+<Canvas of={StepperStories.Default} />
+
+---
+
+## Vertical orientation
+
+Set `orientation="vertical"` for stacked layouts. Each step can carry a `content` node rendered below its label (via `StepContent`); horizontal orientation ignores this field.
+
+<Canvas of={StepperStories.Vertical} />
+
+---
+
+## Descriptions
+
+Add an optional `description` to any step — rendered as the MUI "optional" caption under the label.
+
+<Canvas of={StepperStories.WithDescriptions} />
+
+---
+
+## Interactive (non-linear + click)
+
+Set `nonLinear` and pass `onStepClick`. Each step becomes a `StepButton` so users can jump around.
+
+<Canvas of={StepperStories.Interactive} />
+
+---
+
+## Error state
+
+Mark any step `error: true` — the icon turns red with an exclamation mark and the label turns red.
+
+<Canvas of={StepperStories.ErrorState} />
+
+---
+
+## Disabled step
+
+Mark a step `disabled: true` — pointer events are suppressed and the step keeps the grey icon of a step not reached yet.
+
+<Canvas of={StepperStories.DisabledStep} />
+
+---
+
+## All complete
+
+<Canvas of={StepperStories.AllStepsComplete} />
+
+---
+
+## Accessibility
+
+- MUI Stepper does not implement the WAI-ARIA "process" pattern out of the box; the root is a `<div>`. If your stepper is the primary progress indicator of the page, wrap it in `<nav aria-label="Progress">` and consider `role="list"` on the root.
+- `StepButton` (used when `onStepClick` is set) is a real `<button>` — Enter/Space activate.
+- Error and disabled states are conveyed visually only. Pair `error` with an accessible label change (e.g. put "(error)" in the label ReactNode) if the audience relies on screen readers.
+
+---
+
+## API
+
+<Controls of={StepperStories.Default} />
+
+---
+
+## See also
+
+- **[FabricTabs](?path=/docs/components-fabrictabs--overview)** — for switching between sibling views.
+- **[FabricBreadcrumbs](?path=/docs/components-fabricbreadcrumbs--overview)** — for hierarchical navigation.
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — for Next/Back wizard controls.

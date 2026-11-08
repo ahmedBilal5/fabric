@@ -1,0 +1,93 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Kits/Canvas Builder/Node Palette/Overview" />
+
+# FabricCanvasNodePalette
+
+`FabricCanvasNodePalette` is a compact rail of draggable canvas nodes (icon above label). `FabricCanvasNodePalettePanel` places it in a floating surface pinned to the left of the canvas.
+
+## Package
+
+```ts
+import {
+  FabricCanvasNodePalette,
+  FabricCanvasNodePalettePanel,
+  type CanvasNodePaletteItem,
+} from '@fabric-kit/canvas-builder';
+```
+
+## Anatomy
+
+- **Panel** (`FabricCanvasNodePalettePanel`) – floating surface: background, shadow, left pin, vertical centering, max-height.
+- **Palette** (`FabricCanvasNodePalette`) – the list itself; usable standalone inside any container.
+- **Node item** – icon over label. Draggable in `edit` mode, selectable with click, Enter, or Space.
+- **Group item** – same look plus a chevron. Opens a drilled-down list of its child nodes.
+- **Back header** – shown inside a group; returns to the main list.
+
+## Usage guidance
+
+1. Build `nodes` in the consumer app. Names, descriptions, icons, and drop payloads stay local to the app.
+2. A node has a `dropItem`; a group has `children` (one level only, groups cannot nest).
+3. Keep `dragItemType` equal to the canvas `dropItemType` (both default to `"node"`).
+4. Render the panel inside a `position: relative` container, usually the canvas wrapper. Adjust offsets with `sx`.
+5. Wrap the tree in a react-dnd `DndProvider`.
+
+```tsx
+const nodes: CanvasNodePaletteItem<MyDropItem>[] = [
+  { id: 'source', label: 'Data Source', icon: <DatabaseIcon />, description: 'Read from a datasource.', dropItem: { type: 'source' } },
+  {
+    id: 'trigger',
+    label: 'Trigger',
+    icon: <PlayCircleOutlined />,
+    children: [
+      { id: 'webhook', label: 'Webhook', icon: <Language />, dropItem: { type: 'webhook' } },
+    ],
+  },
+];
+
+<FabricCanvasNodePalettePanel mode={mode} nodes={nodes} />
+```
+
+### Where things come from
+
+- **Icons**: supplied per node by the consumer. The palette only sizes them and colors them from the theme.
+- **Labels and descriptions**: supplied by the consumer. Labels use the `bodySm` text variant; descriptions show in a tooltip.
+- **Chevron and back arrow**: built in from `@fabric-kit/icons`.
+- **Colors, radius, shadow, spacing**: Fabric tokens and theme CSS variables, so light and dark mode work without extra code.
+
+## Sizing behavior
+
+- Width has a minimum (compact look) and a maximum; long labels truncate instead of widening the rail.
+- Height fits the content up to the container height minus a margin, then the list scrolls. A drilled-in group scrolls the same way, with the back header kept visible.
+- Moving between the main list and a group never changes the container size beyond the width limits.
+
+## Accessibility notes
+
+- The list is a labeled `group`; every item is a `button` with a visible focus ring.
+- Enter and Space activate an item. Esc or ArrowLeft returns from a group; ArrowRight opens one.
+- Arrow Up and Down, Home, and End move between items. Only one item is in the Tab order, so Tab enters and leaves the list in one step.
+- Focus moves to the back header when a group opens and returns to the group when you go back.
+- Item names come from the label; descriptions are exposed as tooltip descriptions rather than replacing the name.
+- Disabled items stay in the DOM with `aria-disabled` and are skipped by Tab and the arrow keys.
+- The default accessible names ("Available nodes", "Back to all nodes from …") can be replaced with `aria-label` and `backAriaLabel` for localization.
+
+## Responsive behavior
+
+- No structural change at `md`.
+- Below `sm`, the edge inset shrinks; item padding is unchanged so touch targets stay usable.
+- Verify at the Fabric viewports: `fabricMobile` (375×812), `fabricTablet` (900×1024), `fabricDesktop` (1440×900), `fabricWide` (1920×1080).
+
+## Do and don't
+
+- Do keep labels short; put detail in `description`.
+- Do use groups to keep the main rail short.
+- Don't nest groups.
+- Don't put app-specific logic in the palette; pass it through `nodes` and callbacks.
+- Don't hard-code colors in custom icons; use `currentColor` so theme and disabled states apply.
+
+## Story coverage map
+
+- `Flat`, `WithGroups`
+- `ManyItemsScrolls`, `LongLabels`
+- `DisabledItems`, `ViewModeShown`, `HiddenInViewMode`, `Empty`
+- `InteractiveControls` (`mode`, `showInViewMode`, `emptyMessage`)

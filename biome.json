@@ -1,0 +1,74 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.6/schema.json",
+  "files": {
+    "includes": [
+      "**",
+      "!.turbo",
+      "!storybook-static",
+      "!**/.turbo",
+      "!**/dist",
+      "!**/*.svg",
+      "!**/*.mdx",
+      "!**/*.stories.*",
+      "!**/*.story.*",
+      "!_site",
+      "!**/.hallmark",
+      "!apps/site/src/styles/tokens.css",
+      "!apps/site/src/styles/base.css"
+    ]
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "suspicious": {
+        "noArrayIndexKey": "off"
+      },
+      "style": {
+        "noRestrictedImports": {
+          "level": "error",
+          "options": {
+            "paths": {
+              "@fabric-kit/icons": "Import each icon from '@fabric-kit/icons/<Name>'."
+            },
+            "patterns": [
+              {
+                "group": ["@mui/icons-material", "@fabric-kit/icons", "@mui/icons-material/*"],
+                "message": "Import icons from '@fabric-kit/icons/<Name>' instead."
+              },
+              {
+                "group": [
+                  "@mui/x-*-pro",
+                  "@mui/x-*-pro/*",
+                  "@mui/x-*-premium",
+                  "@mui/x-*-premium/*",
+                  "@mui/x-license",
+                  "@mui/x-license/*"
+                ],
+                "message": "Fabric only uses the free MIT-licensed MUI X packages."
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "formatter": {
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "semicolons": "always"
+    }
+  }
+}

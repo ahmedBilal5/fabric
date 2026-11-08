@@ -1,0 +1,99 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as AvatarGroupStories from './FabricAvatarGroup.stories';
+
+<Meta of={AvatarGroupStories} name="Overview" />
+
+# FabricAvatarGroup
+
+Stacked avatars for "shared with N users" data-grid columns. Extends MUI `AvatarGroup` with a declarative `list` of `FabricAvatarItem` objects — each auto-derives initials + deterministic background color from `name` via the underlying `FabricAvatar`. The surplus `+N` chip shows the names of hidden users in a tooltip.
+
+**Use it for:**
+- "SHARED" grid columns
+- "ASSIGNED TO" workflow cells
+- Compact team-roster badges
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricAvatarGroup/index.tsx) · [Material Design guidance](https://m2.material.io/design/communication/avatar.html)
+
+---
+
+## Basic
+
+<Canvas of={AvatarGroupStories.Default} />
+
+Every item's `name` drives its initials, background color, and tooltip. No manual `.map(user → { icon, fallback, tooltip })` needed anymore.
+
+---
+
+## No surplus
+
+When `list.length <= max`, all avatars render and no `+N` chip is shown.
+
+<Canvas of={AvatarGroupStories.NoSurplus} />
+
+---
+
+## With surplus
+
+Once `list.length > max`, MUI collapses the extras into a `+N` chip. Hover it to see the hidden users' names.
+
+<Canvas of={AvatarGroupStories.WithSurplus} />
+
+The tooltip is auto-populated from each hidden item's `tooltip` (or `name` fallback). Empty items are filtered out.
+
+---
+
+## Long surplus lists
+
+Beyond `surplusTooltipLimit` hidden names (default `10`), the tooltip appends an overflow line.
+
+<Canvas of={AvatarGroupStories.LargeSurplus} />
+
+Tune the cap with `surplusTooltipLimit` — useful for dense tables where a very long tooltip would push out of the viewport.
+
+<Canvas of={AvatarGroupStories.SurplusLimit} />
+
+Customize the overflow copy with `surplusOverflowText`.
+
+<Canvas of={AvatarGroupStories.SurplusOverflowText} />
+
+---
+
+## Content modes
+
+Items with an `image` render the image; items without fall back to initials.
+
+<Canvas of={AvatarGroupStories.MixedImagesAndInitials} />
+
+---
+
+## Custom tooltips
+
+`tooltip` on an item overrides the auto-tooltip derived from `name`. Show role, permission, or any ReactNode.
+
+<Canvas of={AvatarGroupStories.CustomTooltip} />
+
+---
+
+## Example: "Shared with" column
+
+A common table cell: who has access to a record.
+
+<Canvas of={AvatarGroupStories.SharedWithColumn} />
+
+```tsx
+import { FabricAvatarGroup } from '@fabric-kit/components';
+
+<FabricAvatarGroup
+  list={sharedWith.map((user) => ({
+    name: `${user.firstName} ${user.lastName}`,
+    image: user.photoUrl ? <img src={user.photoUrl} alt="" /> : undefined,
+  }))}
+  max={5}
+/>
+```
+
+---
+
+## API
+
+<Controls of={AvatarGroupStories.Default} />

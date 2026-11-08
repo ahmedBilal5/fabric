@@ -1,0 +1,120 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as BadgeStories from './FabricBadge.stories';
+
+<Meta of={BadgeStories} name="Overview" />
+
+# FabricBadge
+
+Badge generates a small badge to the top-right of its child(ren). `FabricBadge` wraps MUI `Badge` with the full MUI surface. You get the entire MUI Badge API (variants, colors, anchors, max cap, dot mode) as-is.
+
+**Use it in:**
+- Notification counts on icon buttons (mail, alerts, chat)
+- Presence dots on avatars (`variant="dot"` + `overlap="circular"`)
+- "NEW" / "!" indicators on menu items and tiles
+- Status pills over profile pictures
+
+**Do not use for:** standalone tags or labels (use [FabricChip](?path=/docs/components-fabricchip--overview)) · progress indicators (use [FabricProgressChip](?path=/docs/components-fabricprogresschip--overview) or [FabricCircularProgress](?path=/docs/components-fabriccircularprogress--overview)) · alerts / banners (use [FabricAlert](?path=/docs/components-fabricalert--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricBadge/index.tsx) · [MUI Badge](https://mui.com/material-ui/react-badge/) · [WAI-ARIA status pattern](https://www.w3.org/WAI/ARIA/apg/patterns/status/)
+
+---
+
+## Basic usage
+
+Wrap any element with `<FabricBadge>` and pass `badgeContent`. The badge anchors to the top-right of the child by default.
+
+<Canvas of={BadgeStories.Default} />
+
+---
+
+## Colors
+
+Pick `color` to match the semantic weight of the notification.
+
+<Canvas of={BadgeStories.Colors} />
+
+---
+
+## Dot variant
+
+For presence / online-state indicators, `variant="dot"` renders a small colored dot instead of a numeric badge.
+
+<Canvas of={BadgeStories.DotVariant} />
+
+---
+
+## Max cap
+
+Use `max` to cap displayed values. Anything over shows as `<max>+`.
+
+<Canvas of={BadgeStories.MaxCount} />
+
+---
+
+## Show zero
+
+By default the badge hides when `badgeContent === 0`. Pass `showZero` to keep it visible.
+
+<Canvas of={BadgeStories.ShowZero} />
+
+---
+
+## Invisible
+
+Toggle visibility imperatively with `invisible`. The badge animates in / out via MUI's built-in transition.
+
+<Canvas of={BadgeStories.Invisible} />
+
+---
+
+## Anchor origin
+
+Position the badge on any corner via `anchorOrigin`.
+
+<Canvas of={BadgeStories.AnchorOrigin} />
+
+---
+
+## Circular overlap
+
+For circular anchors (avatars), pair `overlap="circular"` with a bottom-right anchor to get the classic presence-dot look.
+
+<Canvas of={BadgeStories.CircularOverlap} />
+
+---
+
+## On an IconButton
+
+The most common pattern — a notification count on a toolbar action.
+
+<Canvas of={BadgeStories.OnIconButton} />
+
+---
+
+## Rich badge content
+
+`badgeContent` accepts any `ReactNode` — strings, icons, formatted labels.
+
+<Canvas of={BadgeStories.RichContent} />
+
+---
+
+## Accessibility
+
+- `<Badge>` is decorative — the underlying anchor element must carry an accessible label that includes the badge context. Example: `<IconButton aria-label="4 new mails">`.
+- MUI does not render an `aria-live` region for badge updates. If dynamic badge changes must be announced to screen readers, wrap the badge in an element with `role="status"` and `aria-live="polite"`.
+- Dot variant carries no semantic value on its own — always pair with a label on the anchor.
+
+---
+
+## API
+
+<Controls of={BadgeStories.Default} />
+
+---
+
+## See also
+
+- **[FabricChip](?path=/docs/components-fabricchip--overview)** — for a standalone tag/pill that isn't anchored to another element.
+- **[FabricAvatar](?path=/docs/components-fabricavatar--overview)** — pairs with `overlap="circular"` for presence dots.
+- **[FabricProgressChip](?path=/docs/components-fabricprogresschip--overview)** — status pill with progress semantics.

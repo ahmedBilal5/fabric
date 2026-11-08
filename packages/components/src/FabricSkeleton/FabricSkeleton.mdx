@@ -1,0 +1,191 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as SkeletonStories from './FabricSkeleton.stories';
+
+<Meta of={SkeletonStories} name="Overview" />
+
+# FabricSkeleton
+
+A loading placeholder for the moment between "component mounted" and "data arrived". Extends MUI `Skeleton` with six ready-made layouts (`card`, `row`, `listItem`, `tableRow`, `field`, `editor`), so you name what is loading instead of stacking raw `<Skeleton>`s by hand.
+
+`variant` defaults to `"card"`, so `<FabricSkeleton count={6} />` is a complete card-grid placeholder. `animation` defaults to `"wave"`. `count` repeats the variant inside a `<FabricStack gap="md">`.
+
+**Use it for:**
+- Product / entity card grids while listings hydrate (`variant="card"` + `count`)
+- Cart / order tables while line items load (`variant="row"` + `count`)
+- Tree navigators and side panels while they load (`variant="listItem"` + `count`)
+- Datagrid infinite-scroll next-page sentinel rows (`variant="tableRow"` + `count`)
+- Form / checkout fields while remote config resolves (`variant="field"` + `count`)
+- Code or rich-text editors as a `Suspense` fallback (`variant="editor"`)
+- Anywhere the raw MUI shape is what you want (`variant="text" | "rectangular" | "rounded" | "circular"` pass through untouched)
+
+**Do not use for:** actual determinate progress (use [`FabricCircularProgress`](?path=/docs/components-fabriccircularprogress--overview)) · transient "saving…" spinners inside buttons (`loading` prop on [`FabricButton`](?path=/docs/components-fabricbutton--overview)) · error / empty states (render the real error / empty UI, not a placeholder — a skeleton that never resolves reads as "the app is hung").
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricSkeleton/index.tsx) · [MUI Skeleton](https://mui.com/material-ui/react-skeleton/) · [WAI-ARIA `role="status"`](https://www.w3.org/WAI/ARIA/apg/patterns/alert/)
+
+---
+
+## Basic usage
+
+With no props it renders a single `card` layout with `animation="wave"`.
+
+<Canvas of={SkeletonStories.Default} />
+
+Pass `count={n}` to repeat the variant inside a `<FabricStack gap="md">`:
+
+<Canvas of={SkeletonStories.WithCount} />
+
+---
+
+## Composed variants
+
+Six ready-made layouts. Pick the one that matches what will render once data arrives — never a generic MUI shape when a semantic variant fits.
+
+### `variant="card"` (default)
+
+Rectangular image top + title + subtitle + chip row + full-width action button. For product, project or template cards.
+
+<Canvas of={SkeletonStories.CardVariant} />
+
+### `variant="row"`
+
+Thumbnail + 2-line text stack + trailing text + trailing action. For cart lines, order items or file lists.
+
+<Canvas of={SkeletonStories.RowVariant} />
+
+### `variant="listItem"`
+
+Circle + single text line. For tree navigators, menus and option lists.
+
+<Canvas of={SkeletonStories.ListItemVariant} />
+
+### `variant="tableRow"`
+
+Four horizontal text cells. For tables and for rows appended during infinite scroll.
+
+<Canvas of={SkeletonStories.TableRowVariant} />
+
+### `variant="field"`
+
+Rounded rect at input height (40 px). For forms whose fields depend on remote configuration.
+
+<Canvas of={SkeletonStories.FieldVariant} />
+
+### `variant="editor"`
+
+Tall rounded rect (400 px). A `Suspense` fallback for lazily loaded code or rich-text editors.
+
+<Canvas of={SkeletonStories.EditorVariant} />
+
+---
+
+## MUI passthrough variants
+
+The four MUI variants pass through untouched — `FabricSkeleton` behaves identically to raw MUI Skeleton for these. Use them when you need a specific shape that doesn't fit a composed semantic variant.
+
+<Canvas of={SkeletonStories.TextVariant} />
+<Canvas of={SkeletonStories.RectangularVariant} />
+<Canvas of={SkeletonStories.RoundedVariant} />
+<Canvas of={SkeletonStories.CircularVariant} />
+
+---
+
+## Examples
+
+### Product grid
+
+Six `variant="card"` instances in a CSS grid.
+
+<Canvas of={SkeletonStories.ProductGrid} />
+
+### Cart table
+
+`<FabricSkeleton variant="row" count={4} />`.
+
+<Canvas of={SkeletonStories.CartTable} />
+
+### Checkout form
+
+`<FabricSkeleton variant="field" count={5} />`.
+
+<Canvas of={SkeletonStories.CheckoutForm} />
+
+### Tree list
+
+`<FabricSkeleton variant="listItem" count={8} />` for a side panel.
+
+<Canvas of={SkeletonStories.TreeLoading} />
+
+### Editor fallback
+
+A `Suspense` fallback while a code editor loads.
+
+<Canvas of={SkeletonStories.EditorLoading} />
+
+### Data table
+
+`<FabricSkeleton variant="tableRow" count={6} />`.
+
+<Canvas of={SkeletonStories.DataGrid} />
+
+---
+
+## The `count` prop
+
+Repeat a placeholder without writing a loop:
+
+```tsx
+<FabricSkeleton variant="card" count={6} />
+```
+
+`count > 1` wraps the output in a `<FabricStack gap="md">` (spacing.md = 12 px). For custom gaps between repeated placeholders, wrap in your own layout primitive and pass `count={1}` per instance.
+
+---
+
+## Animation
+
+Fabric defaults to `animation="wave"`. Pass `animation="pulse"` for MUI's default look, or `false` to turn animation off.
+
+<Canvas of={SkeletonStories.PulseAnimation} />
+<Canvas of={SkeletonStories.NoAnimation} />
+
+Animation is also disabled automatically for users with `prefers-reduced-motion: reduce` — inherited from MUI.
+
+---
+
+## Custom sizing
+
+Composed variants have opinionated inner dimensions. Your `sx` merges onto the **outer wrapper** — use it to constrain the placeholder's size, add spacing to surrounding content, or apply a border while previewing the layout.
+
+<Canvas of={SkeletonStories.CustomSx} />
+
+For MUI passthrough variants (`text` / `rectangular` / `rounded` / `circular`), `width` and `height` pass through to the underlying `<Skeleton>` root as-is.
+
+---
+
+## Kitchen sink
+
+Every variant in one view — useful for verifying visual output before shipping a change.
+
+<Canvas of={SkeletonStories.KitchenSink} />
+
+---
+
+## Accessibility
+
+- MUI Skeleton renders no ARIA role by default — it's a visual placeholder, not a semantic region. Screen readers ignore it during load.
+- Wrap the loading section in a region with `role="status"` and `aria-live="polite"` if the load state itself should be announced (e.g. "Loading products…"). Once real content arrives, the surrounding region announces the new content naturally.
+- For skeletons standing in for interactive controls (`variant="field"`, `variant="row"`), remove any keyboard focus interception on the skeleton — the placeholder should not appear in the `Tab` order.
+- `prefers-reduced-motion: reduce` respected automatically — the `wave` / `pulse` animation is disabled for vestibular-sensitive users.
+- Do NOT wrap a skeleton in a `role="progressbar"` — Skeleton is qualitative feedback ("something is happening here"), not quantitative progress. Use [`FabricCircularProgress variant="determinate"`](?path=/docs/components-fabriccircularprogress--overview) for measurable progress.
+
+---
+
+## Anti-patterns
+
+Do **not** use `FabricSkeleton` for:
+
+- **Determinate progress with a known percentage.** Use [`FabricCircularProgress variant="determinate" value={n}`](?path=/docs/components-fabriccircularprogress--overview) — a skeleton implies "unknown duration".
+- **Button loading states.** Use the `loading` prop on [`FabricButton`](?path=/docs/components-fabricbutton--overview) — the button owns the spinner slot and disables interaction correctly.
+- **Empty / error states.** Render the actual empty-state or error message. A skeleton that never resolves reads as "the app is hung" to the user.
+- **Instantaneous loads** (under ~200 ms). The skeleton flash creates unnecessary visual noise; skip the placeholder and render the real content directly.
+- **Very long loads** (over ~5 s). Users lose confidence in a placeholder that never resolves — surface a determinate progress indicator or a "still loading…" affordance instead.

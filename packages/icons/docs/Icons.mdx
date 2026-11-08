@@ -1,0 +1,55 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Icons/Overview" />
+
+# Icons
+
+`@fabric-kit/icons` gives you 3,300+ [Material Symbols](https://fonts.google.com/icons) as React components. Each icon is a React component with a PascalCase name (`bookmark` → `Bookmark`, `3d_rotation` → `ThreeDRotation`).
+
+Icons are Material Symbols **weight 300, 24px grid**. They work exactly like `@mui/icons-material` icons.
+
+## Use an icon
+
+```tsx
+import Bookmark from '@fabric-kit/icons/Bookmark';
+import Description from '@fabric-kit/icons/Description';
+
+<Bookmark />
+```
+
+Import each icon from its own path, as with `@mui/icons-material`. There is no root barrel to import from. Only the icons you import end up in your bundle (about 0.4 KB gzipped each).
+
+## Change size and color
+
+| Want | Prop |
+|---|---|
+| 20 / 24 / 35 px | `fontSize="small"` / default / `fontSize="large"` |
+| Any size | `sx={{ fontSize: 40 }}` |
+| Match the text around it | `fontSize="inherit"` |
+| Theme color | `color="primary"`, `"error"`, `"success"`, `"action"`, `"disabled"`, … |
+| Any color | `htmlColor="#7B1FA2"` or `sx={{ color: 'text.secondary' }}` |
+
+By default an icon uses the current text color.
+
+```tsx
+<Bookmark fontSize="small" color="primary" />
+<Description sx={{ fontSize: 40, color: 'success.main' }} />
+```
+
+## Relation to MUI icons
+
+Every `@mui/icons-material/<Name>` path also exists as `@fabric-kit/icons/<Name>`, generated from the installed MUI version. When a Fabric icon has the same name as an MUI icon (for example `Add`, `Search`, `Delete`), the Fabric icon wins, including its `Outlined`, `Rounded`, `Sharp` and `TwoTone` names. Other MUI names, such as `AddCircleOutline`, come from MUI. Other Fabric packages must import icons from here, not from `@mui/icons-material`.
+
+## Find an icon
+
+Use the [Gallery](?path=/story/foundations-icons--gallery). Search by name and click an icon to copy its import.
+
+## Add or update an icon
+
+1. Put a 24×24 SVG in `packages/icons/svg/<snake_name>.svg`, with no fill colors.
+2. Add the name to its category in `packages/icons/icons.manifest.json`.
+3. Run `pnpm --filter @fabric-kit/icons build`.
+
+## License
+
+The icon artwork is Google's Material Symbols, licensed under Apache 2.0. The components are MIT.

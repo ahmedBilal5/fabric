@@ -1,0 +1,102 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ListStories from './FabricListItemSimple.stories';
+
+<Meta of={ListStories} name="Overview" />
+
+# FabricListItemSimple
+
+Lists present information in a concise, easy-to-follow format through a continuous, vertical index of text or images. `FabricListItemSimple` is a single-select sidebar list built on MUI `ListItemButton` for settings pages and similar sub-navigation.
+
+**Use it in:**
+- Settings sidebars with click-to-select navigation
+- Vertical nav lists with icon + label items
+- Permission panels, data-model panels, rule settings, schema layouts
+
+**Do not use for:** drag-reorderable lists (use DnD primitives) · data grids · tab strips (use [FabricTabs](?path=/docs/components-fabrictabs--overview)) · multi-select lists.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricListItemSimple/index.tsx) · [MUI List](https://mui.com/material-ui/react-list/) · [WAI-ARIA listbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/listbox/)
+
+---
+
+## Basic usage
+
+A settings sidebar with icons, the most common use. Labels use the heading font at Medium weight.
+
+<Canvas of={ListStories.Default} />
+
+---
+
+## Settings list
+
+A lighter settings list has no lines between options and rounded (4px) hover / selected rows. Set both through `sx`:
+
+```tsx
+sx={{
+  "& .MuiDivider-root": { display: "none" },
+  "& .MuiListItemButton-root": { borderRadius: `${radii.md}px` },
+}}
+```
+
+<Canvas of={ListStories.SettingsList} />
+
+---
+
+## Without icons
+
+Text-only items — used in simpler sidebars like Workflow's PermissionsSidebar.
+
+<Canvas of={ListStories.NoIcons} />
+
+---
+
+## No selection (uncontrolled)
+
+Omit `value` and `onChange` to render a static list. Items are still focusable via keyboard but nothing highlights.
+
+<Canvas of={ListStories.NoSelection} />
+
+---
+
+## Disabled items
+
+Individual items can be disabled via `{ disabled: true }`.
+
+<Canvas of={ListStories.DisabledItem} />
+
+---
+
+## Rich labels (ReactNode)
+
+Labels are widened from `string` to `ReactNode` — supports badges, chips, status indicators, or any inline content.
+
+<Canvas of={ListStories.ReactNodeLabels} />
+
+---
+
+## Custom styling
+
+Override the container's visual appearance via `sx`. The component renders a MUI `List` root.
+
+<Canvas of={ListStories.CustomSx} />
+
+---
+
+## Accessibility
+
+- The root `<List>` receives `role="listbox"` with the `aria-label` you provide.
+- Each item uses MUI `ListItemButton` which handles `aria-selected`, focus management, and keyboard interaction.
+- **Keyboard:** Tab focuses the list, Arrow Up/Down moves between items, Enter/Space selects.
+
+---
+
+## API
+
+<Controls of={ListStories.Default} />
+
+---
+
+## See also
+
+- **[FabricTabs](?path=/docs/components-fabrictabs--overview)** — tab-strip navigation for content sections.
+- **[FabricDrawer](?path=/docs/components-fabricdrawer--overview)** — side panel that often contains this list.
+- **[FabricMenu](?path=/docs/components-fabricmenu--overview)** — popup menu for contextual actions.

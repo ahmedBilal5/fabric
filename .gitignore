@@ -1,0 +1,19 @@
+node_modules/
+dist/
+*.tgz
+.turbo/
+coverage/
+storybook-static/
+*.log
+.DS_Store
+Thumbs.db
+**/*.tsbuildinfo
+.env
+.env.*
+.env.local
+
+# Local tooling output
+.hallmark/
+**/.hallmark/shots/
+dist-ssr/
+_site/

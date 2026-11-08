@@ -1,0 +1,101 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Theming" />
+
+# Theming
+
+Fabric ships one theme: warm neutrals, a clay brand color, Geist type, and full light and dark color schemes. It is an ordinary MUI theme, so everything MUI's theming guide says applies. This page covers the common changes.
+
+## Make it your brand
+
+`createFabricTheme` deep-merges your options over Fabric's, so you only write what changes. Pass the result to the provider:
+
+```tsx
+import { createFabricTheme, DesignSystemProvider } from '@fabric-kit/theme';
+
+const theme = createFabricTheme({
+  colorSchemes: {
+    light: { palette: { primary: { main: '#2563EB', contrastText: '#FFFFFF' } } },
+    dark: { palette: { primary: { main: '#93C5FD', contrastText: '#0B1220' } } },
+  },
+  typography: { fontFamily: "'Inter', system-ui, sans-serif" },
+  shape: { borderRadius: 6 },
+});
+
+<DesignSystemProvider theme={theme}>
+  <App />
+</DesignSystemProvider>;
+```
+
+Set both color schemes when you change a palette color, so dark mode stays legible. Pick colors that reach 4.5:1 against their `contrastText` (Fabric's theme uses `contrastThreshold: 4.5`, so MUI picks accessible text automatically when you leave `contrastText` out).
+
+An overridden color replaces Fabric's whole color, so MUI derives matching `light` and `dark` shades. Fabric also re-derives the colors it builds from the brand: icon buttons and active icons, app-shell hovers, the data-grid header tint, and the dark-mode hover and selection tints.
+
+### Try it in this Storybook
+
+Use the **Theme** menu (paintbrush icon) in the toolbar to switch every story and docs page between three brands, each in light and dark mode:
+
+| Theme | Light primary | Dark primary |
+| --- | --- | --- |
+| Fabric (default) | Clay `#B23E2A` | `#EB8E74` |
+| Ocean | Blue `#1D5FBF` | `#8AB4F8` |
+| Forest | Green `#2F6B3A` | `#8FD19E` |
+
+Ocean and Forest are built with `createFabricTheme` exactly as above, and their source is in [`.storybook/themes.ts`](https://github.com/ahmedBilal5/fabric/blob/main/.storybook/themes.ts).
+
+## Override one component everywhere
+
+Use MUI's `components` key. Your overrides merge with Fabric's:
+
+```ts
+const theme = createFabricTheme({
+  components: {
+    MuiButton: {
+      defaultProps: { disableRipple: true },
+      styleOverrides: { root: { textTransform: 'none' } },
+    },
+  },
+});
+```
+
+## Style one instance
+
+Every Fabric component accepts `sx`. Use theme values and CSS variables rather than hex codes, so the style follows dark mode:
+
+```tsx
+<FabricButton sx={{ px: 3, bgcolor: 'secondary.main' }}>Export</FabricButton>
+<FabricSurface sx={{ borderColor: 'var(--mui-palette-divider)' }} />
+```
+
+## Use the tokens directly
+
+`@fabric-kit/design-tokens` exports the raw values (spacing, radii, font sizes, shadows, motion and colors) as plain TypeScript. They are handy outside React or for things MUI doesn't style, like a chart:
+
+```ts
+import { spacing, radii, duration, status } from '@fabric-kit/design-tokens';
+
+const chartColors = [status.running, status.success, status.warning];
+```
+
+Inside components, prefer theme paths (`'primary.main'`) or CSS variables (`var(--mui-palette-primary-main)`): they switch with the color mode, while raw token values don't.
+
+## Color modes
+
+The theme uses CSS variables with a `class` selector: the provider puts `light` or `dark` on `<html>`, and every color is a `var(--mui-palette-*)`. That means mode switches without re-rendering, and your own CSS can react to it:
+
+```css
+.dark .my-chart { --grid-line: rgba(255, 255, 255, 0.08); }
+```
+
+## Typography variants
+
+Besides MUI's variants, Fabric adds named text styles for product UI (`headingLg`, `bodyMd`, `uiMd` and more). `FabricText` takes them through `textVariant`:
+
+```tsx
+import { FabricText } from '@fabric-kit/primitives';
+
+<FabricText textVariant="headingSm">Billing</FabricText>
+<FabricText textVariant="bodyMd" color="text.secondary">Manage plans and invoices.</FabricText>
+```
+
+See **Foundations → Design Tokens → Typography** for the full list.

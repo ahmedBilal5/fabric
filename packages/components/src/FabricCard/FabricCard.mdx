@@ -1,0 +1,166 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as CardStories from './FabricCard.stories';
+
+<Meta of={CardStories} name="Overview" />
+
+# FabricCard
+
+Cards contain content and actions about a single subject. `FabricCard` is a thin wrapper over MUI `Card`. You compose the inside with Fabric card parts and MUI `CardHeader`, `CardMedia`, `CardContent` and `CardActions`, so one shell covers every layout.
+
+**Visual defaults:** `borderRadius: 8px` (`radii.lg`), no border, and a soft resting shadow (`shadows.sm`). Interactive cards lift to `shadows.md` on hover. Consumers who want more elevation opt in with `raised` or `elevation={n}`, and any `sx` override wins on the keys it spells out.
+
+**Parts:** `FabricCard` (the shell) · `FabricCardHeader` (icon, title, description, action) · `FabricCardRows` (label / value rows) · MUI `CardContent`, `CardActions` and `CardMedia` for everything else. Every card below (app, tag, metric, list item) is the same shell with different parts inside. The header styling lives in `FabricCardHeader`; raw MUI card parts are not restyled.
+
+**More layouts:** see **Components/FabricCard/Recipes** for a create card, an app launcher tile, a collection card and a record card.
+
+**Use it in:**
+- Grid views of projects, templates or datasets
+- App and integration tiles
+- Dashboard metrics
+- Any listing where each item needs its own visual container
+
+**Do not use for:** page-level containers (use plain `Box` / `Paper`) · dialog surfaces (use [FabricDialog](?path=/docs/components-fabricdialog--overview)) · form field grouping (use `Box` with a border).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricCard/index.tsx) · [MUI Card](https://mui.com/material-ui/react-card/) · [MUI Paper](https://mui.com/material-ui/react-paper/) (Card extends Paper)
+
+---
+
+## App card
+
+Icon, title and description in a `FabricCardHeader`.
+
+<Canvas of={CardStories.AppCard} />
+
+---
+
+## App card with footer
+
+The same header plus a `CardActions` footer.
+
+<Canvas of={CardStories.AppCardWithFooter} />
+
+---
+
+## Tag card
+
+The header `action` slot holds a count chip; the footer holds removable chips and an add button.
+
+<Canvas of={CardStories.TagCard} />
+
+---
+
+## Metric card
+
+`FabricCardHeader size="large"` plus `FabricCardRows`. Set `emphasized` on the row that is the total.
+
+<Canvas of={CardStories.MetricCard} />
+
+---
+
+## List item card
+
+A list item with a drag handle, an icon, a title and compact rows. Same shell as every other card; the differences are props. `tint` sets the background (`neutral`, `blue`, `teal` or `lime`, e.g. one per data source) and `FabricCardRows size="compact"` gives the 12px rows.
+
+The tints reuse the existing status surface tokens (`surface.queued`, `surface.running`, `surface.tertiary`, `surface.success`), so they share colours with the status chips. A tinted card keeps its tint on hover and press and only changes the shadow. The drag handle is visual only; connect your own drag and drop.
+
+<Canvas of={CardStories.ListItem} />
+
+---
+
+## Basic usage
+
+Wrap content in a `<FabricCard>` and compose the interior with `CardContent`.
+
+<Canvas of={CardStories.Default} />
+
+---
+
+## With header
+
+Use `FabricCardHeader` (or MUI `CardHeader`) for the standard avatar + title + subheader + action pattern.
+
+<Canvas of={CardStories.WithHeader} />
+
+---
+
+## With actions
+
+Use `CardActions` for a footer row of buttons.
+
+<Canvas of={CardStories.WithActions} />
+
+---
+
+## With media
+
+Use `CardMedia` (image or a styled `component='div'`) at the top for tiles.
+
+<Canvas of={CardStories.WithMedia} />
+
+---
+
+## Clickable
+
+Pass `onClick` and the card becomes interactive: hover fill with a lifted shadow, a pressed fill, a pointer cursor, a focus ring, and Enter / Space activation. Use `interactive` to opt in without an `onClick` (for example when the card is a link via `component="a"`).
+
+<Canvas of={CardStories.Clickable} />
+
+---
+
+## Selected, hover and pressed states
+
+`selected` paints the selected fill. On an interactive card it also sets `aria-pressed`, so screen readers announce the toggle.
+
+<Canvas of={CardStories.States} />
+
+---
+
+## Long content
+
+<Canvas of={CardStories.LongContent} />
+
+---
+
+## Raised / elevated
+
+`raised` bumps elevation to level 8. Use `elevation` (0–24) for finer control. When either is set, the resting `shadows.sm` is skipped.
+
+<Canvas of={CardStories.Raised} />
+
+---
+
+## Dark mode
+
+All fills, text colors and states have dark equivalents. Switch the Storybook theme toolbar to dark to check.
+
+<Canvas of={CardStories.DarkMode} />
+
+---
+
+## Accessibility
+
+- MUI Card is a plain `<div>` — it carries no ARIA role by itself. Add semantic wrappers (e.g. `<article>`) via `component='article'` when the card represents a discrete piece of content.
+- A card with `onClick` (or `interactive`) gets `role="button"`, `tabIndex={0}`, a visible focus ring, and Enter / Space activation. Keys pressed on controls inside the card do not trigger the card. If the card contains its own buttons or links, prefer making only the title a link and leave the card non-interactive.
+- `selected` on an interactive card is announced through `aria-pressed`.
+- `CardHeader.action` is the correct slot for a card-level menu button — always give it an accessible label.
+- `FabricCardRows` renders a `<dl>` so label / value pairs are exposed as a description list.
+
+## Responsive behavior
+
+Cards fill their container. For a fixed width such as 320px, use `sx={{ width: 320 }}` or the parent grid. Text wraps inside the 16px padding rather than overflowing.
+
+---
+
+## API
+
+<Controls of={CardStories.Default} />
+
+---
+
+## See also
+
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — for card actions.
+- **[FabricAvatar](?path=/docs/components-fabricavatar--overview)** — for the header avatar slot.
+- **[FabricChip](?path=/docs/components-fabricchip--overview)** — for status / version indicators in the header action slot.
+- **[FabricMenu](?path=/docs/components-fabricmenu--overview)** — for the `⋮` context menu.
+- **[FabricDialog](?path=/docs/components-fabricdialog--overview)** — for modal surfaces (do not use FabricCard).

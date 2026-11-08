@@ -1,0 +1,204 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Installation" />
+
+# Installation
+
+Fabric is a set of npm packages on top of [MUI](https://mui.com). You install the Fabric packages you need plus their peer dependencies (React, MUI and Emotion), wrap your app in one provider, and start using components.
+
+## Requirements
+
+| | Version |
+| --- | --- |
+| React | 18.2 or 19 |
+| MUI (`@mui/material`) | 9 |
+| Emotion | 11 |
+| TypeScript (optional) | 5.5 or newer |
+
+Fabric uses only free, MIT-licensed MUI packages. You never need an MUI X license key.
+
+## 1. Install the core
+
+The core is the theme, the components and the icons. Fabric packages declare React, MUI and Emotion as **peer dependencies**, so your app owns those versions and you install them alongside:
+
+```bash
+# pnpm
+pnpm add @fabric-kit/theme @fabric-kit/components @fabric-kit/icons \
+  @mui/material @mui/lab @mui/x-date-pickers @mui/icons-material \
+  @emotion/react @emotion/styled
+
+# npm
+npm install @fabric-kit/theme @fabric-kit/components @fabric-kit/icons \
+  @mui/material @mui/lab @mui/x-date-pickers @mui/icons-material \
+  @emotion/react @emotion/styled
+
+# yarn
+yarn add @fabric-kit/theme @fabric-kit/components @fabric-kit/icons \
+  @mui/material @mui/lab @mui/x-date-pickers @mui/icons-material \
+  @emotion/react @emotion/styled
+```
+
+`@fabric-kit/components` includes the date and time pickers and the timeline, which is why it needs `@mui/x-date-pickers` and `@mui/lab`. `@fabric-kit/primitives` and `@fabric-kit/design-tokens` come with it.
+
+## 2. Load the fonts
+
+Fabric's theme uses [Geist](https://vercel.com/font) and Geist Mono. Load them once at your app's entry point:
+
+```bash
+pnpm add @fontsource/geist @fontsource/geist-mono
+```
+
+```ts
+// main.tsx
+import '@fontsource/geist/400.css';
+import '@fontsource/geist/500.css';
+import '@fontsource/geist/600.css';
+import '@fontsource/geist-mono/400.css';
+```
+
+Prefer another font? Change it in the theme (see [Theming](?path=/docs/foundations-theming--docs)) and skip this step.
+
+## 3. Add the provider
+
+`DesignSystemProvider` applies the theme, MUI's `CssBaseline`, and light/dark mode (following the operating system by default, and remembering the user's choice).
+
+```tsx
+// main.tsx
+import { createRoot } from 'react-dom/client';
+import { DesignSystemProvider } from '@fabric-kit/theme';
+import { App } from './App';
+
+createRoot(document.getElementById('root')!).render(
+  <DesignSystemProvider>
+    <App />
+  </DesignSystemProvider>,
+);
+```
+
+## 4. Use a component
+
+```tsx
+import { FabricButton, FabricTextField } from '@fabric-kit/components';
+import { FabricStack } from '@fabric-kit/primitives';
+import SendIcon from '@fabric-kit/icons/Send';
+
+export function App() {
+  return (
+    <FabricStack gap="md" sx={{ p: 4, maxWidth: 360 }}>
+      <FabricTextField label="Email" type="email" />
+      <FabricButton variant="contained" endIcon={<SendIcon />}>
+        Invite
+      </FabricButton>
+    </FabricStack>
+  );
+}
+```
+
+Fabric components accept every prop of the MUI component they wrap, including `sx`. You can also use plain MUI components next to them; they pick up the same theme.
+
+## Add more packages
+
+Install only what you use. Each package lists the extra peer dependency it needs.
+
+| Package | What it adds | Extra peers |
+| --- | --- | --- |
+| `@fabric-kit/datagrid` | Styled MUI X Data Grid (free tier) | `@mui/x-data-grid` |
+| `@fabric-kit/date-picker` | Date, time, date-time and date-range pickers (also re-exported by components) | `@mui/x-date-pickers` |
+| `@fabric-kit/tree-view` | Styled MUI X Tree View | `@mui/x-tree-view` |
+| `@fabric-kit/layout` | App shell, top bar, sidebar, banner, footer, notifications | none |
+| `@fabric-kit/global-search` | Grouped search palette and a results page | `@mui/x-data-grid` |
+| `@fabric-kit/chatbot` | Floating AI assistant panel | none |
+| `@fabric-kit/versioning` | Version history drawer | none |
+| `@fabric-kit/canvas-builder` | Node-based workflow canvas | `@xyflow/react`, `react-dnd`, `react-dnd-html5-backend` |
+
+```bash
+pnpm add @fabric-kit/layout @fabric-kit/datagrid @mui/x-data-grid
+```
+
+## Icons
+
+Import each icon from its own path. Only the icons you import are bundled.
+
+```tsx
+import Bookmark from '@fabric-kit/icons/Bookmark';
+import DeleteOutlined from '@fabric-kit/icons/DeleteOutlined';
+```
+
+Every `@mui/icons-material` name works under `@fabric-kit/icons/` too, so you can switch an import path without renaming anything.
+
+## Framework notes
+
+### Vite
+
+Nothing extra. The steps above are a complete Vite setup.
+
+### Next.js (App Router)
+
+MUI needs Emotion's cache to be wired into the App Router so styles render on the server. Install MUI's Next.js integration and wrap the provider with it in your root layout:
+
+```bash
+pnpm add @mui/material-nextjs @emotion/cache
+```
+
+```tsx
+// app/providers.tsx
+'use client';
+import { DesignSystemProvider } from '@fabric-kit/theme';
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <DesignSystemProvider>{children}</DesignSystemProvider>;
+}
+```
+
+```tsx
+// app/layout.tsx
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
+import { Providers } from './providers';
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body>
+        <InitColorSchemeScript attribute="class" modeStorageKey="fabric-theme-mode" />
+        <AppRouterCacheProvider>
+          <Providers>{children}</Providers>
+        </AppRouterCacheProvider>
+      </body>
+    </html>
+  );
+}
+```
+
+`InitColorSchemeScript` sets the light or dark class before the page paints, so dark-mode users don't see a flash of the light theme. Use the `AppRouterCacheProvider` import that matches your Next.js version (see MUI's [Next.js guide](https://mui.com/material-ui/integrations/nextjs/)).
+
+Fabric's interactive components use hooks, so render them from Client Components (files with `'use client'`).
+
+### Create React App, Remix and others
+
+Follow MUI's setup for your framework, then add `DesignSystemProvider` as in step 3.
+
+## Dark mode
+
+Mode follows the operating system until the user picks one. Read or change it with the `useThemeMode` hook, or drop in the ready-made switcher:
+
+```tsx
+import { ThemeModeSwitcher, useThemeMode } from '@fabric-kit/theme';
+
+function Settings() {
+  const { mode, setMode } = useThemeMode(); // 'light' | 'dark' | 'system'
+  return <ThemeModeSwitcher />;
+}
+```
+
+To start in a fixed mode, pass `defaultMode="light"` or `"dark"` to the provider.
+
+## Troubleshooting
+
+| Symptom | Fix |
+| --- | --- |
+| Components look like plain MUI | Make sure they render inside `DesignSystemProvider`. |
+| Text falls back to a system font | Load the Geist fonts (step 2) or set your own font in the theme. |
+| "Invalid hook call" or two copies of React or MUI | Your bundler resolved two versions. Install the peers in your app (step 1) and dedupe (`pnpm dedupe`, `npm dedupe`). |
+| A flash of light theme on load (SSR) | Add `InitColorSchemeScript` as shown in the Next.js notes. |
+| `Module not found: @mui/x-date-pickers` | Install the peer listed for the package you added. |

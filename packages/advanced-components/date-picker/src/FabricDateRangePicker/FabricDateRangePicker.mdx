@@ -1,0 +1,39 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as RangeStories from './FabricDateRangePicker.stories';
+
+<Meta of={RangeStories} name="Overview" />
+
+# FabricDateRangePicker
+
+Design-system date range picker. Composed from two `FabricDatePicker`s inside a single `LocalizationProvider` — **no `@mui/x-date-pickers-pro` license required**. Each side auto-clamps the other so the calendar UI cannot produce an inverted range: the start picker's `maxDate` is bound to `end`, and the end picker's `minDate` is bound to `start`.
+
+**Use it for:** effective-from / valid-until pairs on rules and price lists · report filter ranges · scheduling windows.
+
+**Do not use for:** single dates (use [FabricDatePicker](?path=/docs/components-fabricdatepicker--overview)) · date + time ranges (compose two `FabricDatePicker` + two `FabricTimePicker`) · pre-set relative ranges ("last 7 days") — pair this with radio quick-picks in the consumer.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricDateRangePicker/index.tsx)
+
+---
+
+## Basic
+
+<Canvas of={RangeStories.Default} />
+
+## Controlled
+
+<Canvas of={RangeStories.Controlled} />
+
+## Absolute bounds
+
+<Canvas of={RangeStories.WithAbsoluteBounds} />
+
+## States
+
+<Canvas of={RangeStories.ErrorState} />
+<Canvas of={RangeStories.Disabled} />
+
+---
+
+## API
+
+<Controls />

@@ -1,0 +1,80 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as TagStories from './FabricTag.stories';
+
+<Meta of={TagStories} name="Overview" />
+
+# FabricTag
+
+Compact, square-cornered label for metadata, categories, statuses and versions. Built on MUI `Chip`, so `onClick`, `onDelete`, `disabled`, `ref` and `sx` work as on `FabricChip`.
+
+**Use it for:**
+- Category or keyword labels on rows and cards
+- Status labels in dense tables (`indicator`, `color`)
+- Version labels (`outlined` with `secondaryLabel`)
+
+**FabricTag vs FabricChip:** chips are pill-shaped and used for filters and status pills. Tags have 4px corners and are used for static labels. Both share the same color names.
+
+---
+
+## Standard
+
+18px high, 10px text. Use `active` for the selected look. Hover and pressed states show when the tag has `onClick`.
+
+<Canvas of={TagStories.StandardStates} />
+
+---
+
+## Color
+
+Solid status fill.
+
+<Canvas of={TagStories.Colors} />
+
+---
+
+## Indicator
+
+Tinted fill with a status dot.
+
+<Canvas of={TagStories.Indicators} />
+
+---
+
+## Version
+
+For versions: `variant="outlined"`, with an optional muted `secondaryLabel`.
+
+<Canvas of={TagStories.Version} />
+
+---
+
+## Dual
+
+Pass `secondaryLabel` to show a second segment.
+
+<Canvas of={TagStories.Dual} />
+
+---
+
+## Colors
+
+`color` applies to `color` and `indicator` tags: `queued`, `running`, `success`, `warning`, `cancelled`, `error`, `suspended`, `archived`, `unknown`. `primary` is for the dual fill tag.
+
+---
+
+## Limitations
+
+- No `size` prop. Standard tags are 18px high, the other variants 22px.
+- `disabled` on non-standard tags dims the whole tag.
+
+---
+
+## API
+
+<Controls of={TagStories.Default} />
+
+---
+
+## See also
+
+- **[FabricChip](?path=/docs/components-fabricchip--overview)**: pill-shaped chips for filters and statuses.

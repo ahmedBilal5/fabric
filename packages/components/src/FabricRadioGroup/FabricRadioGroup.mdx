@@ -1,0 +1,134 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as GroupStories from './FabricRadioGroup.stories';
+
+<Meta of={GroupStories} name="Overview" />
+
+# FabricRadioGroup
+
+Data-driven radio group with a first-class `options` API. Wraps MUI's `<FormControl>` + `<FormLabel>` + `<RadioGroup>` + `<FormHelperText>` and generates a unique `name` per instance so multiple groups on one page don't interfere. Semantic `variant="warning"` for high-attention selections.
+
+**Use it for:**
+- Payment method / Shipping option / Priority level pickers
+- Yes/No/Maybe forms (single mutually-exclusive choice)
+- Sort direction / Layout mode / Theme mode selectors
+- Any small enum picker where the user must see all options
+
+**Do not use for:** ≥7 options (use [FabricSelect](?path=/docs/components-fabricselect--overview)) · multi-select (use [FabricCheckboxGroup](?path=/docs/components-fabriccheckboxgroup--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricRadioGroup/index.tsx) · [WAI-ARIA radio pattern](https://www.w3.org/WAI/ARIA/apg/patterns/radio/)
+
+---
+
+## Basic group
+
+Pass `options` as an array — each item is `{ value, label, disabled? }`. Group label above, helper text below, both auto-wired to `aria-labelledby` / `aria-describedby`.
+
+<Canvas of={GroupStories.Default} />
+
+---
+
+## Row layout
+
+`row` lays options horizontally. Good for compact enum pickers (Layout: List / Grid / Kanban).
+
+<Canvas of={GroupStories.RowLayout} />
+
+---
+
+## No group label
+
+Omit `label` when the group's meaning comes from surrounding context (e.g. a column header). ARIA linkage falls back to the parent — pass `aria-labelledby` explicitly if a screen reader label is needed.
+
+<Canvas of={GroupStories.NoGroupLabel} />
+
+---
+
+## Sizes
+
+`size="small" | "medium"` propagates to every radio in the group.
+
+<Canvas of={GroupStories.SizeVariants} />
+
+---
+
+## Multiple groups on one page
+
+Each group generates a unique `name` via `useId()` — you can render multiple groups side by side without them interfering.
+
+<Canvas of={GroupStories.MultipleGroupsIndependent} />
+
+---
+
+## Controlled — event vs. shorthand
+
+`onChange(event, value)` is MUI-standard; `onValueChange(value)` is the shorthand for consumers who only need the string.
+
+<Canvas of={GroupStories.OnChangeWithEvent} />
+
+---
+
+## Helper text and error
+
+`helperText` renders below; `error` lights up the group label and helper text in `error.main`.
+
+<Canvas of={GroupStories.HelperTextAndError} />
+
+---
+
+## Warning variant
+
+`variant="warning"` gives the selected option a `warning.main` ~20%-alpha background. Use for "this choice has consequences" pickers (Delete all data / Reset workspace).
+
+<Canvas of={GroupStories.WarningVariant} />
+
+---
+
+## Disabled options
+
+Per-option `disabled: true` — disables the specific choice without disabling the group.
+
+<Canvas of={GroupStories.DisabledOptions} />
+
+---
+
+## Rich labels
+
+Each option's `label` is `ReactNode` — compose icons + text + descriptions inline.
+
+<Canvas of={GroupStories.RichLabels} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={GroupStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Options are data, children are not accepted
+
+Unlike [FabricCheckboxGroup](?path=/docs/components-fabriccheckboxgroup--overview), `FabricRadioGroup` requires the `options` array — passing `children` won't render radios. This is intentional: the data-driven API guarantees every radio shares the group's `name`.
+
+### Custom control per option
+
+If a specific option needs a custom control (e.g. a colored radio), pass `controlComponent` — replaces the underlying radio input for every option. Per-option custom controls aren't supported; use standalone [FabricRadio](?path=/docs/components-fabricradio--overview) instances inside a custom layout for that case.
+
+### `size` set globally on the group
+
+Passing `size` on the group applies to every option. To vary sizes per option, use standalone `FabricRadio` instances instead.
+
+---
+
+## API
+
+<Controls of={GroupStories.Default} />
+
+---
+
+## See also
+
+- **[FabricRadio](?path=/docs/components-fabricradio--overview)** — the individual radio.
+- **[FabricCheckboxGroup](?path=/docs/components-fabriccheckboxgroup--overview)** — multi-select equivalent.
+- **[FabricSelect](?path=/docs/components-fabricselect--overview)** — for long option lists.

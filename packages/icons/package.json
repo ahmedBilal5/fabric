@@ -1,0 +1,87 @@
+{
+  "name": "@fabric-kit/icons",
+  "version": "0.1.0",
+  "description": "Tree-shakeable icon set for Fabric, based on Google Material Symbols.",
+  "license": "MIT",
+  "author": "Ahmed Bilal",
+  "homepage": "https://ahmedbilal5.github.io/fabric/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedBilal5/fabric.git",
+    "directory": "packages/icons"
+  },
+  "bugs": {
+    "url": "https://github.com/ahmedBilal5/fabric/issues"
+  },
+  "keywords": [
+    "fabric",
+    "mui",
+    "material-ui",
+    "react",
+    "design-system",
+    "components"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./fabric-icons": {
+      "import": {
+        "types": "./dist/fabric-icons.d.ts",
+        "default": "./dist/fabric-icons.js"
+      }
+    },
+    "./fabric-icon-loaders": {
+      "import": {
+        "types": "./dist/fabric-icon-loaders.d.ts",
+        "default": "./dist/fabric-icon-loaders.js"
+      }
+    },
+    "./*": {
+      "import": {
+        "types": "./dist/icon.d.ts",
+        "default": "./dist/*.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "NOTICE",
+    "LICENSE"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "node scripts/generate.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/material": "^9.0.0",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/icons-material": "^9.0.0",
+    "@mui/material": "^9.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,0 +1,510 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Design Tokens/Overview" />
+
+<style>{`
+  .dt-hero {
+    text-align: center;
+    padding: 40px 0 32px;
+  }
+  .dt-hero h1 {
+    font-family: Geist, sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--mui-palette-text-primary, #2A2420);
+    margin: 0;
+  }
+  .dt-hero p {
+    font-family: 'Geist', sans-serif;
+    font-size: 1.125rem;
+    color: var(--mui-palette-text-secondary, #6E655D);
+    margin: 8px 0 0;
+    max-width: 640px;
+    margin-inline: auto;
+  }
+  .dt-section {
+    margin: 40px 0;
+  }
+  .dt-section h2 {
+    font-family: Geist, sans-serif;
+    font-size: 1.375rem;
+    font-weight: 600;
+    color: var(--mui-palette-text-primary, #2A2420);
+    margin: 0 0 12px;
+    border-bottom: 2px solid var(--mui-palette-divider, #E6E1DB);
+    padding-bottom: 8px;
+  }
+  .dt-section h3 {
+    font-family: Geist, sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--mui-palette-text-primary, #2E2925);
+    margin: 24px 0 8px;
+  }
+  .dt-section p, .dt-section li {
+    font-family: 'Geist', sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--mui-palette-text-primary, #2E2925);
+  }
+  .dt-section ul {
+    padding-left: 20px;
+  }
+  .dt-section code {
+    background: var(--mui-palette-action-hover, #F3F0EC);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+  }
+  .dt-flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .dt-flow-step {
+    border: 1px solid var(--mui-palette-divider, #E6E1DB);
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    position: relative;
+  }
+  .dt-flow-step strong {
+    display: block;
+    font-family: Geist, sans-serif;
+    font-size: 0.875rem;
+    margin-bottom: 4px;
+    color: var(--mui-palette-text-primary, #2A2420);
+  }
+  .dt-flow-step span {
+    font-size: 0.8rem;
+    color: var(--mui-palette-text-secondary, #6E655D);
+  }
+  .dt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-family: 'Geist', sans-serif;
+    font-size: 0.875rem;
+  }
+  .dt-table th, .dt-table td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--mui-palette-divider, #E6E1DB);
+  }
+  .dt-table th {
+    font-family: Geist, sans-serif;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mui-palette-text-secondary, #6E655D);
+  }
+  .dt-table code {
+    background: var(--mui-palette-action-hover, #F3F0EC);
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 0.825rem;
+  }
+  .dt-callout {
+    background: var(--mui-palette-action-hover, #F3F0EC);
+    border-left: 4px solid #B23E2A;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 20px 0;
+  }
+  .dt-callout p {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+  .dt-benefit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .dt-benefit {
+    border: 1px solid var(--mui-palette-divider, #E6E1DB);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .dt-benefit strong {
+    display: block;
+    font-family: Geist, sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: var(--mui-palette-text-primary, #2A2420);
+  }
+  .dt-benefit p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--mui-palette-text-secondary, #6E655D);
+  }
+`}</style>
+
+<div className="dt-hero">
+  <h1>Design Tokens</h1>
+  <p>
+    The single source of truth for every visual decision in Fabric:
+    colors, typography, spacing, elevation, motion and more.
+  </p>
+</div>
+
+---
+
+<div className="dt-section">
+
+## What Are Design Tokens?
+
+Design tokens are the **atomic visual values** that define how a product looks and feels.
+Rather than scattering raw hex codes, pixel values, and font stacks throughout a codebase,
+tokens give those values **semantic names** that communicate *intent* rather than implementation.
+
+A token is the smallest piece of a design system's visual language: a named constant that
+represents a specific design decision. When the design picks Fabric's clay for interactive
+elements, that decision becomes the token `action.primary`. When the spacing between
+sections is 24px, that decision becomes `spacing.xl`.
+
+### Why tokens instead of raw values?
+
+<div className="dt-benefit-grid">
+  <div className="dt-benefit">
+    <strong>Change once, update everywhere</strong>
+    <p>Rebrand from clay to blue? Change the theme once and every button, link and icon follows.</p>
+  </div>
+  <div className="dt-benefit">
+    <strong>Light and dark</strong>
+    <p>Dark mode, high contrast, and future themes are just alternative token sets mapped to the same semantic names.</p>
+  </div>
+  <div className="dt-benefit">
+    <strong>Shared vocabulary</strong>
+    <p>Designers and engineers reference the same token names. "Use <code>text.secondary</code>" means the same thing in design files, code and documentation.</p>
+  </div>
+  <div className="dt-benefit">
+    <strong>Guardrails</strong>
+    <p>TypeScript enforcement prevents ad-hoc values. If it's not a token, it won't compile — keeping the UI consistent by default.</p>
+  </div>
+  <div className="dt-benefit">
+    <strong>Scale, not snowflakes</strong>
+    <p>Constrained scales (spacing, font size, radii) eliminate one-off pixel values that erode consistency over time.</p>
+  </div>
+  <div className="dt-benefit">
+    <strong>Platform agnostic</strong>
+    <p>Tokens are plain data. Today they drive a React + MUI stack; tomorrow they could generate iOS, Android, or CSS custom properties.</p>
+  </div>
+</div>
+
+</div>
+
+---
+
+<div className="dt-section">
+
+## How Tokens Fit in the Fabric Architecture
+
+Design tokens are the **foundation layer** — everything above depends on them, but they depend on nothing.
+
+<div className="dt-flow">
+  <div className="dt-flow-step" style={{borderColor: '#B23E2A', background: 'rgba(178,62,42,0.04)'}}>
+    <strong>Design Tokens</strong>
+    <span>Raw values + semantic names</span>
+  </div>
+  <div className="dt-flow-step">
+    <strong>Theme</strong>
+    <span>Maps tokens → MUI theme</span>
+  </div>
+  <div className="dt-flow-step">
+    <strong>Primitives</strong>
+    <span>Layout components consuming tokens via theme</span>
+  </div>
+  <div className="dt-flow-step">
+    <strong>Components</strong>
+    <span>Full UI components styled with the system</span>
+  </div>
+</div>
+
+<div className="dt-callout">
+  <p>
+    <strong>Key principle:</strong> Components never import raw hex values or pixel numbers.
+    They consume tokens through the theme layer, ensuring every visual decision is traceable
+    back to a single authoritative definition.
+  </p>
+</div>
+
+</div>
+
+---
+
+<div className="dt-section">
+
+## Token Categories in This Package
+
+`@fabric-kit/design-tokens` ships the following token groups:
+
+<table className="dt-table">
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Import</th>
+      <th>Purpose</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Brand</strong></td>
+      <td><code>brand</code></td>
+      <td>Core identity colors: the clay primary, its lighter tint and the warm ink</td>
+    </tr>
+    <tr>
+      <td><strong>Text</strong></td>
+      <td><code>text</code></td>
+      <td>Foreground colors by role — primary, secondary, medium, muted, disabled, inverse, heading</td>
+    </tr>
+    <tr>
+      <td><strong>Surface</strong></td>
+      <td><code>surface</code></td>
+      <td>Background colors — page, card, panel, contextual highlights</td>
+    </tr>
+    <tr>
+      <td><strong>Border</strong></td>
+      <td><code>border</code></td>
+      <td>Stroke colors for dividers, inputs, and focus rings</td>
+    </tr>
+    <tr>
+      <td><strong>Status</strong></td>
+      <td><code>status</code></td>
+      <td>Feedback colors — success, warning, error, info, published</td>
+    </tr>
+    <tr>
+      <td><strong>Status Text</strong></td>
+      <td><code>statusText</code></td>
+      <td>Darker text shade of each status color (running, success, warning, cancelled, error), for text on the matching <code>surface</code> tint</td>
+    </tr>
+    <tr>
+      <td><strong>Action</strong></td>
+      <td><code>action</code></td>
+      <td>Interactive state colors — default, hover, active, disabled, selected</td>
+    </tr>
+    <tr>
+      <td><strong>Labels</strong></td>
+      <td><code>labels</code></td>
+      <td>Categorical palette for tags, badges, and chips</td>
+    </tr>
+    <tr>
+      <td><strong>Charts</strong></td>
+      <td><code>charts</code></td>
+      <td>Data visualization series colors</td>
+    </tr>
+    <tr>
+      <td><strong>Dark Mode</strong></td>
+      <td><code>dark</code></td>
+      <td>Full dark-mode override set — <code>dark.brand</code>, <code>dark.text</code>, <code>dark.surface</code>, etc.</td>
+    </tr>
+    <tr>
+      <td><strong>Typography</strong></td>
+      <td><code>fontFamily</code>, <code>fontWeight</code>, <code>fontSize</code>, <code>lineHeight</code>, <code>textVariant</code>, <code>fluidFontSize</code></td>
+      <td>Font stacks, weight scale, size scale, composite text presets, and clamp()-based fluid sizes for responsive headings</td>
+    </tr>
+    <tr>
+      <td><strong>Breakpoints</strong></td>
+      <td><code>breakpoints</code></td>
+      <td>6-step responsive scale — <code>xs</code>(0), <code>sm</code>(600), <code>md</code>(900), <code>lg</code>(1200), <code>xl</code>(1440), <code>2xl</code>(1920)</td>
+    </tr>
+    <tr>
+      <td><strong>Spacing</strong></td>
+      <td><code>spacing</code></td>
+      <td>4px-based spatial scale — <code>xs</code>(4) through <code>4xl</code>(64)</td>
+    </tr>
+    <tr>
+      <td><strong>Radii</strong></td>
+      <td><code>radii</code></td>
+      <td>Border radius scale — sharp to fully-rounded</td>
+    </tr>
+    <tr>
+      <td><strong>Shadows</strong></td>
+      <td><code>shadows</code></td>
+      <td>Elevation tokens from subtle (<code>xs</code>) to prominent (<code>panel</code>)</td>
+    </tr>
+    <tr>
+      <td><strong>Z-Index</strong></td>
+      <td><code>zIndex</code></td>
+      <td>Layering scale for overlays, dropdowns, modals, toasts</td>
+    </tr>
+    <tr>
+      <td><strong>Breakpoints</strong></td>
+      <td><code>breakpoints</code></td>
+      <td>Responsive width thresholds</td>
+    </tr>
+    <tr>
+      <td><strong>Opacity</strong></td>
+      <td><code>opacity</code></td>
+      <td>Transparency scale for disabled states, overlays</td>
+    </tr>
+    <tr>
+      <td><strong>Animation</strong></td>
+      <td><code>duration</code>, <code>easing</code></td>
+      <td>Motion timing and curve tokens</td>
+    </tr>
+    <tr>
+      <td><strong>Sizes</strong></td>
+      <td><code>iconSize</code>, <code>controlHeight</code></td>
+      <td>Standard dimensions for icons and interactive controls</td>
+    </tr>
+    <tr>
+      <td><strong>Layout</strong></td>
+      <td><code>panelWidth</code>, <code>dialogWidth</code>, <code>containerWidth</code></td>
+      <td>Structural width tokens for panels, dialogs, and containers</td>
+    </tr>
+    <tr>
+      <td><strong>Letter Spacing</strong></td>
+      <td><code>letterSpacing</code></td>
+      <td>Tracking values for headings, labels, and body text</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+---
+
+<div className="dt-section">
+
+## Naming Convention
+
+Tokens follow a **category → role** pattern that reads like natural language:
+
+```
+category.role
+```
+
+Examples:
+- `text.primary` — main foreground color
+- `surface.tertiary` — third-level background
+- `action.primaryHover` — button hover state
+- `spacing.xl` — large spacing step (24px)
+- `shadows.md` — medium elevation
+
+### Why semantic names?
+
+| Approach | Code | Problem |
+|----------|------|---------|
+| Raw value | `color: '#B23E2A'` | Meaningless: what is this red for? |
+| Descriptive | `color: colors.blue600` | Still abstract — when do I use 600 vs 500? |
+| **Semantic** | `color: action.primary` | Clear intent — this is an interactive primary element |
+
+Semantic naming answers the question *"what role does this value play?"* rather than
+*"what does this value look like?"*. This makes code self-documenting and makes it
+possible to swap visual values (e.g., rebrand, dark mode) without changing any consumer code.
+
+</div>
+
+---
+
+<div className="dt-section">
+
+## Usage
+
+### Install
+
+```bash
+npm install @fabric-kit/design-tokens
+```
+
+### Import tokens directly
+
+```tsx
+import { brand, text, spacing, shadows } from '@fabric-kit/design-tokens';
+
+// Use in inline styles, CSS-in-JS, or anywhere that accepts values
+const header = {
+  color: text.heading,
+  padding: spacing.lg,
+  boxShadow: shadows.header,
+  backgroundColor: brand.primary,
+};
+```
+
+### Through the theme (recommended)
+
+In most cases, you don't import tokens directly — they flow through `@fabric-kit/theme`:
+
+```tsx
+import { FabricButton } from '@fabric-kit/components';
+
+// The button already uses action.primary, text.inverse, spacing.md internally.
+// You never need to specify colors — the design system handles it.
+<FabricButton variant="contained">Save</FabricButton>
+```
+
+When you need a token value in custom styling, use the MUI `sx` prop which references the theme (which references the tokens):
+
+```tsx
+<Box sx={{ color: 'text.secondary', p: 2, borderRadius: 1 }} />
+```
+
+### TypeScript support
+
+Every token object is exported `as const` with a corresponding type.
+This gives you full autocomplete and compile-time validation:
+
+```tsx
+import { spacing, type Spacing } from '@fabric-kit/design-tokens';
+
+function getSpacing(key: keyof Spacing): number {
+  return spacing[key]; // Only valid keys accepted
+}
+```
+
+</div>
+
+---
+
+<div className="dt-section">
+
+## Design Decisions
+
+### One direction of flow
+
+Changes flow one way: tokens → theme → components. A component never defines a color or
+size that the tokens or theme don't already name.
+
+### Flat objects over deeply nested trees
+
+Tokens are organized as flat objects (`text.primary`, `spacing.xl`) rather than deeply
+nested structures (`tokens.color.text.primary.value`). This keeps imports simple,
+autocomplete fast, and bundle size minimal.
+
+### Dark mode as a parallel token set
+
+Rather than runtime CSS variable swapping at the token level, `@fabric-kit/design-tokens`
+exports a `dark` object with the same shape as the light tokens. The `@fabric-kit/theme`
+package handles the actual mode switching using MUI's CSS variable strategy —
+tokens stay pure data.
+
+### Constrained scales
+
+Spacing, font size, radii, and z-index use **named steps** (`xs`, `sm`, `md`, `lg`, `xl`)
+rather than arbitrary numbers. This prevents "spacing drift" where developers invent
+one-off values (13px, 17px, 22px) that slowly erode visual rhythm.
+
+</div>
+
+---
+
+<div className="dt-section">
+
+## Adding or Modifying Tokens
+
+1. **Edit the corresponding file** in `packages/design-tokens/src/` (e.g., `colors.ts`, `spacing.ts`).
+2. **Export from `index.ts`** if adding a new category.
+3. **Run the build** — `pnpm turbo build --filter=@fabric-kit/design-tokens`.
+4. **Update downstream** — if the token feeds into `@fabric-kit/theme`, update the mapping there.
+
+<div className="dt-callout">
+  <p>
+    <strong>Rule:</strong> Tokens are decisions, not code conveniences. Add one only when a
+    value is reused for the same reason in several places, and give it a name that says why.
+  </p>
+</div>
+
+</div>

@@ -1,0 +1,34 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as TimePickerStories from './FabricTimePicker.stories';
+
+<Meta of={TimePickerStories} name="Overview" />
+
+# FabricTimePicker
+
+Design-system time picker. Same shape as [FabricDatePicker](?path=/docs/components-fabricdatepicker--overview) but for time-of-day. `LocalizationProvider` + `AdapterDayjs` baked in, so no wrapping is needed at consumer sites. Value accepts `Date`, `Dayjs`, ISO string, or `null`; `onChange` always emits `Date | null`.
+
+**Use it for:** cutoff times · meeting windows · daily schedule inputs · anywhere the user picks a time-of-day without a date.
+
+**Do not use for:** date + time selection together ([FabricDateTimePicker](?path=/docs/advanced-components-fabricdatetimepicker--overview)) · durations ("2 hours 30 minutes") — use two `<FabricTextField>` or a custom incrementer.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricTimePicker/index.tsx) · [MUI X TimePicker docs](https://mui.com/x/react-date-pickers/time-picker/)
+
+---
+
+## Basic
+
+<Canvas of={TimePickerStories.Default} />
+
+## Controlled
+
+<Canvas of={TimePickerStories.Controlled} />
+
+## States
+
+<Canvas of={TimePickerStories.States} />
+
+---
+
+## API
+
+<Controls />

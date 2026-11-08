@@ -1,0 +1,207 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './FabricButton.stories';
+
+<Meta of={ButtonStories} name="Overview" />
+
+# FabricButton
+
+Buttons trigger actions and decisions: Save, Delete, Confirm, Export. `FabricButton` extends MUI `Button` (every MUI prop works), applies Fabric's look (4px corners, a semi-bold capitalized label, compact padding, no shadow) from the design tokens and theme, and adds `shape`, `loading`, `tooltip` (works on disabled buttons) and `menu` (split-button dropdown).
+
+**Use it in:**
+- Toolbars and header CTAs
+- Form submit / cancel rows
+- Dialog actions (via [FabricDialog](?path=/docs/components-fabricdialog--overview)'s `actions` prop)
+- Empty-state calls-to-action
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricButton/FabricButton.tsx) · [WAI-ARIA button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/button/) · [Material Design guidance](https://m2.material.io/components/buttons)
+
+---
+
+## Basic button
+
+`FabricButton` ships with the same three variants as MUI: `contained` (default emphasis), `outlined` (medium emphasis), and `text` (low emphasis). All three share Fabric's look (4px corners and a capitalized semi-bold label), so no per-page restyling is needed.
+
+<Canvas of={ButtonStories.AllVariants} />
+
+### Contained
+
+High-emphasis action. Use for the single primary action per surface — the one thing you most want the user to do.
+
+<Canvas of={ButtonStories.Default} />
+
+### Outlined
+
+Medium-emphasis. Use alongside contained buttons for secondary actions (Cancel next to Save, Back next to Continue).
+
+### Text
+
+Low-emphasis. Use in dense rows, dialog headers, and inside cards where the button competes with content for attention.
+
+---
+
+## Handling clicks
+
+`onClick` receives the standard React mouse event on the root `<button>` element. When the button also has a `menu`, `onClick` fires **before** the menu opens.
+
+<Source
+  code={`<FabricButton onClick={(event) => save(event)}>Save</FabricButton>`}
+  language="tsx"
+/>
+
+---
+
+## Shape
+
+`shape="standard"` (default) has 4px corners. `shape="round"` has 24px corners and 4px more side padding. Use `round` sparingly, for friendly call-to-action buttons; keep `standard` for toolbars, forms and dialogs.
+
+<Canvas of={ButtonStories.Shapes} />
+
+---
+
+## States
+
+Every variant has default, hover, press and disabled states. A button with a `menu` also shows an active look while the menu is open. For on/off toggles, use [FabricToggleButtonGroup](?path=/docs/components-fabrictogglebuttongroup--overview).
+
+<Canvas of={ButtonStories.States} />
+
+---
+
+## Color
+
+Passing a `color` value routes through MUI's palette so brand colors, dark-mode, and theme overrides work automatically. `primary` and the four semantic colors (`error`, `info`, `success`, `warning`) have tuned styles; filled semantic buttons are the color at partial opacity at rest and solid on hover. `color="error"` with `variant="outlined"` has a solid red border and label. `secondary` and `inherit` keep MUI defaults.
+
+<Canvas of={ButtonStories.AllColors} />
+
+For destructive actions specifically, use `color="error"` on a `contained` variant — it's the convention for delete / remove / discard operations.
+
+<Canvas of={ButtonStories.Destructive} />
+
+---
+
+## Sizes
+
+`small` (12px label, 26px tall), `medium` (default; 14px label, 28px tall) and `large` (16px label, 40px tall). Medium suits toolbars, forms and dialogs; use large for prominent calls to action such as a landing-page hero.
+
+<Canvas of={ButtonStories.AllSizes} />
+
+A label longer than its container wraps instead of overflowing.
+
+<Canvas of={ButtonStories.LongLabel} />
+
+---
+
+## Buttons with icons
+
+Icons help users scan a row of actions faster. Pass `startIcon` for the common case (icon before label). Use `endIcon` when the icon signals direction or reveals content (arrows, dropdowns, external links).
+
+<Canvas of={ButtonStories.WithStartIcon} />
+<Canvas of={ButtonStories.WithEndIcon} />
+
+**Tip:** for icon-only buttons, use MUI's `IconButton` — `FabricButton` requires a text label for accessibility.
+
+---
+
+## Loading
+
+Use the `loading` prop to show a spinner in place of the label and disable interaction. The button width stays the same so the row layout doesn't reflow.
+
+<Canvas of={ButtonStories.Loading} />
+<Canvas of={ButtonStories.LoadingInteractive} />
+
+> **Gotcha:** `loading` must be `boolean` or `null` — never conditionally spread. `<FabricButton {...(isSaving && { loading: true })}>` can trigger a [Google Translate crash](https://github.com/mui/material-ui/issues/27853) in the browser. Set the prop directly: `<FabricButton loading={isSaving}>`.
+
+---
+
+## Tooltip
+
+Wrap any button in an MUI `Tooltip` by passing a `tooltip` prop. Works with `disabled` buttons because `FabricButton` wraps the button in a `<span>` — MUI Tooltip's listeners can't attach directly to a disabled `<button>`.
+
+<Canvas of={ButtonStories.WithTooltip} />
+
+### On disabled buttons
+
+The span-wrap is why `<FabricButton disabled tooltip={{ title: 'Fix errors first' }}>` actually shows a tooltip — raw MUI wouldn't.
+
+<Canvas of={ButtonStories.WithTooltipOnDisabled} />
+
+Related: [FabricTooltip](?path=/docs/components-fabrictooltip--docs) for standalone tooltips.
+
+---
+
+## Split-menu button
+
+Pass a `menu` array to render a split-button — main label + caret dropdown. The main `onClick` still fires (open the menu), and each menu item has its own `onClick` handler.
+
+<Canvas of={ButtonStories.SplitMenu} />
+
+Menu items accept `startIcon`, `disabled`, `destructive` (red, for rows like Delete), and `data-testid`. The menu opens below the button with 4px corners, a 1px border, 26px rows and a primary-colored label on hover. While it is open the button shows its active look.
+
+<Canvas of={ButtonStories.SplitMenuWithIcons} />
+
+Related: [FabricMenu](?path=/docs/components-fabricmenu--docs) and [FabricMenuButton](?path=/docs/components-fabricmenubutton--docs) when the trigger isn't a button (or when you want more control over positioning).
+
+---
+
+## Composition — inside FabricDialog
+
+`FabricDialog.actions` accepts a `FabricButtonProps[]` — you get the full `FabricButton` surface (loading, tooltip, menu, `data-cy`) on each dialog action without extra config.
+
+<Source
+  code={`<FabricDialog
+  open={open}
+  onClose={onClose}
+  title='Delete workspace'
+  actions={[
+    { label: 'Cancel', onClick: onClose, variant: 'outlined' },
+    { label: 'Delete', onClick: onDelete, variant: 'contained', color: 'error', loading: deleting },
+  ]}
+/>`}
+  language="tsx"
+/>
+
+Related: [FabricDialog](?path=/docs/components-fabricdialog--overview).
+
+---
+
+## Kitchen sink
+
+Every knob at once — variants × colors × sizes × icons × loading × tooltip × menu.
+
+<Canvas of={ButtonStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Tooltip on disabled buttons requires the span-wrap
+
+Disabled `<button>` elements don't fire pointer events, so MUI Tooltip can't hook listeners onto them. `FabricButton` wraps its root in a `<span>` whenever `tooltip` is set — this is how the tooltip works on disabled buttons. Side effect: the effective DOM is `<span><button>...</button></span>`. If you're targeting the button with CSS selectors or refs, account for the extra span.
+
+### `loading` must be `boolean` or `null`
+
+The loading spinner overlay is always mounted (even when `loading={false}`) to prevent the [Google Translate crash](https://github.com/mui/material-ui/issues/27853) that hits conditionally-mounted DOM. Consequence: `loading` can't be `undefined` inside a conditional spread. Always pass an explicit boolean.
+
+### `menu` opens on primary click, not caret click
+
+The caret is decorative — the whole button opens the menu when `menu.length > 0`. If you need "click main action / click caret opens options" (like GitHub's split-buttons), compose two `FabricButton`s side-by-side or use a `FabricMenuButton`.
+
+### Icon-only buttons aren't supported
+
+`FabricButton` requires a text child for screen-reader accessibility. For icon-only actions (toolbar icons, close buttons), use MUI `IconButton` with an `aria-label`.
+
+---
+
+## API
+
+Full prop reference is generated from the TypeScript types and JSDoc comments — see the **Controls** panel on any story below, and the **Docs → FabricButton → Default** page for the auto-generated props table.
+
+<Controls of={ButtonStories.Default} />
+
+---
+
+## See also
+
+- **[FabricTooltip](?path=/docs/components-fabrictooltip--docs)** — standalone tooltip primitive.
+- **[FabricMenu](?path=/docs/components-fabricmenu--docs)** — headless menu primitive when the anchor isn't a button.
+- **[FabricMenuButton](?path=/docs/components-fabricmenubutton--docs)** — button + menu compound with a different API shape.
+- **[FabricDialog](?path=/docs/components-fabricdialog--overview)** — where `FabricButton` powers dialog actions.

@@ -1,0 +1,107 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as ChipStories from './FabricChip.stories';
+
+<Meta of={ChipStories} name="Overview" />
+
+# FabricChip
+
+Compact elements that represent an input, attribute, or action. Filter tokens, status tags, permission badges, and category labels all render through `FabricChip`. Extends MUI `Chip` verbatim — every prop, every variant, every callback is preserved.
+
+**Use it for:**
+- Filter tokens in search bars ("Status: Active" · "Owner: Me")
+- Removable input tags (email recipients, keyword lists)
+- Status / severity indicators (Draft, Published, Error)
+- Category / permission labels on cards and rows
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricChip/index.tsx) · [Material Design guidance](https://m2.material.io/components/chips)
+
+---
+
+## Basic chip
+
+<Canvas of={ChipStories.Default} />
+
+---
+
+## Variants, colors and sizes
+
+- `variant="filled" | "outlined" | "filledAlt"`.
+- `color`: `default`, `queued`, `running`, `success`, `warning`, `cancelled`, `error`, `suspended`, `archived`, `unknown`. `primary`, `secondary` and `info` keep MUI's styling.
+- `size="small" | "medium"`: 18px and 26px high.
+- `disabled` uses muted colors (the last chip in each row).
+
+<Canvas of={ChipStories.AllColors} />
+
+---
+
+## Thumbnail
+
+Pass an `<Avatar>` to `avatar`; it renders at 16px before the label.
+
+<Canvas of={ChipStories.WithThumbnail} />
+
+---
+
+## Use cases
+
+### File progress
+
+Show the processing state of a file upload.
+
+<Canvas of={ChipStories.FileProgress} />
+
+### Save status
+
+Show autosave state. Pass a cloud icon to `icon`; it renders at 16px with a 4px gap.
+
+<Canvas of={ChipStories.SaveStatus} />
+
+### Versions
+
+Version and edit-mode labels.
+
+<Canvas of={ChipStories.Versions} />
+
+---
+
+## Actions
+
+### Clickable
+
+Passing `onClick` makes the chip focusable and gives it hover/press states.
+
+<Canvas of={ChipStories.Clickable} />
+
+### Deletable
+
+Passing `onDelete` renders an X icon. The default delete-icon slot can be replaced with `deleteIcon`.
+
+<Canvas of={ChipStories.Deletable} />
+
+---
+
+## Limitations
+
+### `size="medium"` height doesn't scale with content
+
+MUI's chip is a fixed pill. If you need a chip that wraps to multiple lines, apply `sx={{ height: 'auto', '& .MuiChip-label': { whiteSpace: 'normal' } }}` — Fabric doesn't bake this in because 99% of chips are single-line.
+
+### `onDelete` fires independently of `onClick`
+
+The delete icon has its own click target — the parent chip's `onClick` won't fire when the user clicks the X. Handle deletion in `onDelete` only.
+
+### Focus visibility on outlined chips
+
+The outlined variant has a lower-contrast focus ring than the filled variant on dark backgrounds. If you're rendering chips on `surface.tertiary` or dark mode, verify focus visibility manually.
+
+---
+
+## API
+
+<Controls of={ChipStories.Default} />
+
+---
+
+## See also
+
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — for actual actions (Save, Delete). Chips are for tokens/tags/status.

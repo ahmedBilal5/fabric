@@ -1,0 +1,63 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "types": [
+      "node"
+    ],
+    "paths": {
+      "@fabric-kit/design-tokens": [
+        "./packages/design-tokens/src"
+      ],
+      "@fabric-kit/theme": [
+        "./packages/theme/src"
+      ],
+      "@fabric-kit/primitives": [
+        "./packages/primitives/src"
+      ],
+      "@fabric-kit/components": [
+        "./packages/components/src"
+      ],
+      "@fabric-kit/datagrid": [
+        "./packages/advanced-components/datagrid/src"
+      ],
+      "@fabric-kit/date-picker": [
+        "./packages/advanced-components/date-picker/src"
+      ],
+      "@fabric-kit/tree-view": [
+        "./packages/advanced-components/tree-view/src"
+      ],
+      "@fabric-kit/layout": [
+        "./packages/kits/layout/src"
+      ],
+      "@fabric-kit/versioning": [
+        "./packages/kits/versioning/src"
+      ],
+      "@fabric-kit/global-search": [
+        "./packages/kits/global-search/src"
+      ],
+      "@fabric-kit/chatbot": [
+        "./packages/kits/chatbot/src"
+      ],
+      "@fabric-kit/canvas-builder": [
+        "./packages/kits/canvas-builder/src"
+      ],
+      "@fabric-kit/icons/*": [
+        "./packages/icons/dist/icon.d.ts"
+      ]
+    }
+  },
+  "include": [
+    "packages/**/*.stories.tsx",
+    "packages/**/docs/**/*.ts",
+    "packages/**/docs/**/*.tsx",
+    ".storybook/**/*.ts",
+    ".storybook/**/*.tsx"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/dist"
+  ]
+}

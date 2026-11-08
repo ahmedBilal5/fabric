@@ -1,0 +1,50 @@
+{
+  "name": "@fabric-kit/design-tokens",
+  "version": "0.1.0",
+  "description": "Design tokens for Fabric: color, type, spacing, radii, shadows, motion and more. Framework-free.",
+  "license": "MIT",
+  "author": "Ahmed Bilal",
+  "homepage": "https://ahmedbilal5.github.io/fabric/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedBilal5/fabric.git",
+    "directory": "packages/design-tokens"
+  },
+  "bugs": {
+    "url": "https://github.com/ahmedBilal5/fabric/issues"
+  },
+  "keywords": [
+    "fabric",
+    "mui",
+    "material-ui",
+    "react",
+    "design-system",
+    "components"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

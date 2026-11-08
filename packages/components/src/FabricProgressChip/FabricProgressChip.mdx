@@ -1,0 +1,80 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as ProgressChipStories from './FabricProgressChip.stories';
+
+<Meta of={ProgressChipStories} name="Overview" />
+
+# FabricProgressChip
+
+Sync-status indicator chip with an animated fill effect for "Saving…", "Saved" and "Sync failed" indicators. Four semantic states, each with a pastel background, high-contrast text, a state-appropriate default icon, and a scoped keyframe animation.
+
+**Use it for:**
+- Auto-save state ("Saved", "Saving…", "Save failed")
+- Data-sync status ("Syncing…", "Synced", "Sync failed", "Idle")
+- Layout header chips near a title/breadcrumb
+- Inline row-level status in dense grids
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricProgressChip/index.tsx)
+
+---
+
+## The four states
+
+<Canvas of={ProgressChipStories.AllStates} />
+
+| Status | Background | Text | Default icon | Animation |
+|---|---|---|---|---|
+| `idle` | `#F5F5F5` | `#616161` | `PauseCircleOutlined` | Once |
+| `loading` | `#E6F7FE` | `#0277BD` | `HourglassEmpty` | Infinite |
+| `success` | `#F0F9ED` | `#1B5E20` | `CloudDoneOutlined` | Once |
+| `error` | `#FAC5C5` | `#B71C1C` | `ErrorOutlined` | Once |
+
+`loading` animates infinitely (indicating ongoing work); the other three animate once on mount to draw attention to the state transition, then stop.
+
+---
+
+## Auto-save pattern
+
+The most common consumer pattern — a chip driven by an `autoSaveStatus` object.
+
+<Canvas of={ProgressChipStories.AutoSaveStates} />
+
+---
+
+## Icon-only
+
+Omit `label` for a compact icon-only chip. It is still a real `<Chip>` with the state's background color, animation and `role="status"`.
+
+<Canvas of={ProgressChipStories.IconOnly} />
+
+---
+
+## Custom icon
+
+`icon` overrides the state default while preserving the state's color scheme and animation. Your icon's own styles (`sx`, `color`, `fontSize`) are kept.
+
+<Canvas of={ProgressChipStories.CustomIcon} />
+
+---
+
+## Many chips on one page
+
+Each chip runs its own animation in its own state color, so many chips can share a page.
+
+<Canvas of={ProgressChipStories.ManyOnPage} />
+
+---
+
+## Accessibility
+
+- `role="status"` on every instance so screen readers pick it up as a live status region.
+- `aria-live="polite"` when `status === 'loading'`; `aria-live="off"` otherwise. Loading transitions are announced without interrupting the user.
+- `prefers-reduced-motion: reduce` disables the fill animation and pins the background to the resting color.
+- The state color is not the only channel — the icon changes with the state, so color-blind users still get a semantic cue.
+
+---
+
+## Props
+
+`status`, `label` and `icon` are top-level props. `status` is a string literal: `'idle' | 'loading' | 'success' | 'error'`.
+
+All other MUI `ChipProps` (excluding `label`, `icon`, and `color` which are owned by FabricProgressChip) pass through — including `size`, `variant`, `onClick`, `sx`, `className`, and `slotProps`.

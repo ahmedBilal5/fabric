@@ -1,0 +1,133 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as AutocompleteStories from './FabricAutocomplete.stories';
+
+<Meta of={AutocompleteStories} name="Overview" />
+
+# FabricAutocomplete
+
+The autocomplete is a normal text input enhanced by a panel of suggested options. `FabricAutocomplete` wraps MUI `Autocomplete` with a `FabricTextField`-based default input — top-level `label`, `placeholder`, `error`, and `helperText` handle the 90% case, so consumers no longer hand-roll a 15-line `renderInput` for every field.
+
+**Use it in:**
+- Entity pickers (user, company, group, tag, workspace)
+- Filter combos ("filter by status", "filter by assignee")
+- Type-ahead search inside dropdowns
+- Create-new patterns (free solo)
+- Any place where a `<FabricSelect>` list would exceed ~10 options
+
+**Do not use for:** short mutually-exclusive lists ≤ 5 options (use [FabricSelect](?path=/docs/components-fabricselect--overview) or [FabricToggleButtonGroup](?path=/docs/components-fabrictogglebuttongroup--overview)) · yes/no toggles (use [FabricSwitch](?path=/docs/components-fabricswitch--overview)) · async server search with a custom result panel — those want a bespoke component.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricAutocomplete/index.tsx) · [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) · [MUI Autocomplete](https://mui.com/material-ui/react-autocomplete/)
+
+---
+
+## Basic usage
+
+Pass `options`, a controlled `value`/`onChange`, and top-level `label` / `placeholder`. The default `renderInput` uses `FabricTextField` under the hood.
+
+<Canvas of={AutocompleteStories.Default} />
+
+---
+
+## Multiple selection
+
+Set `multiple` to allow picking several values. The wrapper defaults `height` on the internal `FabricTextField` to `"auto"` so chips wrap naturally instead of clipping the input.
+
+<Canvas of={AutocompleteStories.Multiple} />
+
+---
+
+## Free solo (create-new)
+
+`freeSolo` lets users enter any value, not just picks from the list. Common for "add tag" / "add email" inputs.
+
+<Canvas of={AutocompleteStories.FreeSolo} />
+
+---
+
+## Disable clearable
+
+`disableClearable` hides the ✕ button — use when a value is always required.
+
+<Canvas of={AutocompleteStories.DisableClearable} />
+
+---
+
+## Grouped options
+
+Pass `groupBy` to render a sticky header per group. Options must already be sorted by group.
+
+<Canvas of={AutocompleteStories.Grouped} />
+
+---
+
+## Custom option rendering
+
+Use `renderOption` for rich rows — avatars, secondary text, badges. Provide `getOptionLabel` and `isOptionEqualToValue` when your option type isn't a plain string.
+
+<Canvas of={AutocompleteStories.CustomOptionRender} />
+
+---
+
+## Custom chips (multi)
+
+`renderTags` overrides how selected values render as chips. Spread `getTagProps({ index })` on each chip — MUI wires the delete handler through it.
+
+<Canvas of={AutocompleteStories.WithChips} />
+
+---
+
+## Error state
+
+`error` + `helperText` flow into the underlying `FabricTextField`.
+
+<Canvas of={AutocompleteStories.Error} />
+
+---
+
+## Disabled
+
+<Canvas of={AutocompleteStories.Disabled} />
+
+---
+
+## Loading
+
+Pass `loading` to show a spinner in the popover while options are fetched.
+
+<Canvas of={AutocompleteStories.Loading} />
+
+---
+
+## Full `renderInput` override
+
+Pass your own `renderInput` for full control — the top-level `label` / `placeholder` / `error` / `helperText` are then ignored (you own the input surface).
+
+<Canvas of={AutocompleteStories.CustomRenderInput} />
+
+---
+
+## Accessibility
+
+- Autocomplete implements the [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) — provide a `label` (or `aria-label` on the input) so screen readers announce the field.
+- **Keyboard:**
+  - `↑` / `↓` — move focus through options
+  - `Enter` — select the focused option
+  - `Esc` — close the popover (twice = clear the value)
+  - `Home` / `End` — jump to first / last option
+  - `Backspace` — remove the last chip in multi mode
+- The listbox announces "X results available" as the user types.
+- In multi mode, each chip is a focusable button with an accessible delete label.
+
+---
+
+## API
+
+<Controls of={AutocompleteStories.Default} />
+
+---
+
+## See also
+
+- **[FabricSelect](?path=/docs/components-fabricselect--overview)** — for a fixed, small option list.
+- **[FabricTextField](?path=/docs/components-fabrictextfield--overview)** — the input surface used by the default `renderInput`.
+- **[FabricChip](?path=/docs/components-fabricchip--overview)** — chips for `renderTags`.

@@ -1,0 +1,124 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as TabsStories from './FabricTabs.stories';
+
+<Meta of={TabsStories} name="Overview" />
+
+# FabricTabs
+
+Tabs make it easy to explore and switch between different views. They organize and allow navigation between groups of content that are related and at the same level of hierarchy. Extends MUI `Tabs` with a declarative `tabs` array.
+
+**Use it in:**
+- Filter drawers with "Saved" / "Shared" / "All" tab strips
+- Workspace layouts with feature tab headers (dataManager, dataModel, dataObject)
+- Node-settings modals with config tab strips (Workflow builder)
+- Any view with 2–12 switchable sections
+
+**Do not use for:** navigation bars (use a router-linked nav) · accordion sections (use [FabricAccordion](?path=/docs/components-fabricaccordion--overview)) · single-toggle views (use [FabricSwitch](?path=/docs/components-fabricswitch--overview)) · pagination (use [FabricPagination](?path=/docs/components-fabricpagination--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricTabs/index.tsx) · [WAI-ARIA tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/) · [MUI Tabs](https://mui.com/material-ui/react-tabs/) · [Material Design tabs](https://m2.material.io/components/tabs)
+
+---
+
+## Basic usage
+
+Pass `tabs` (array of `{ value, label }`), `value`, and `onChange`. Always provide a meaningful `aria-label`.
+
+<Canvas of={TabsStories.Default} />
+
+---
+
+## Appearance
+
+`appearance` sets the tab style: `underline` (default), `underlineAlt`, `fill`, `fillAlt`, `fillAlt2` or `border`. It works together with MUI's `variant`, which still controls layout.
+
+<Canvas of={TabsStories.Appearances} />
+
+---
+
+## Border bottom
+
+`borderBottom` adds a `1px solid` separator using the design-system `border.default` token.
+
+<Canvas of={TabsStories.WithBorderBottom} />
+
+---
+
+## Scrollable tabs
+
+Use `variant="scrollable"` and `scrollButtons="auto"` to display scroll arrows for long tab strips. FabricTabs inherits the full MUI `Tabs` surface.
+
+<Canvas of={TabsStories.Scrollable} />
+
+Labels do not wrap, so long labels also need `variant="scrollable"`:
+
+<Canvas of={TabsStories.LongLabels} />
+
+---
+
+## Centered
+
+The `centered` prop centers tabs when the strip is narrower than the container.
+
+<Canvas of={TabsStories.Centered} />
+
+---
+
+## Disabled tab
+
+Individual tabs can be disabled via `{ disabled: true }` in the tabs array.
+
+<Canvas of={TabsStories.WithDisabledTab} />
+
+---
+
+## Icon tabs
+
+Each tab item extends MUI `TabProps` — `icon` and `iconPosition` are first-class fields. Place icons at `start`, `end`, `top`, or `bottom`.
+
+<Canvas of={TabsStories.WithIcons} />
+
+---
+
+## Panel content (consumer pattern)
+
+FabricTabs is a pure tab strip — it does not render panels. Render the active panel yourself with conditional rendering.
+
+<Canvas of={TabsStories.WithPanelContent} />
+
+---
+
+## Container styling
+
+`containerSx` (typed `SxProps<Theme>`) styles the outer `Box`, for when you need `flexGrow`, fixed height, or other layout tweaks on the outer `Box`.
+
+<Canvas of={TabsStories.WithContainerSx} />
+
+---
+
+## Per-tab styling
+
+Individual tabs accept `sx` for one-off visual overrides (highlight color, compact width, bold weight).
+
+<Canvas of={TabsStories.TabLevelSx} />
+
+---
+
+## Accessibility
+
+- Label `Tabs` via `aria-label` or `aria-labelledby`. Name the strip for what it switches, e.g. `aria-label="Project sections"`.
+- **Keyboard:** Arrow keys move focus between tabs. Enter/Space selects. Home/End jump to first/last tab.
+- By default, tabs use "manual activation" — focus moves independently of selection. Pass `selectionFollowsFocus` if selection should follow focus automatically.
+
+---
+
+## API
+
+<Controls of={TabsStories.Default} />
+
+---
+
+## See also
+
+- **[FabricToggleButtonGroup](?path=/docs/components-fabrictogglebuttongroup--overview)** — for mutually-exclusive binary options (not navigation).
+- **[FabricAccordion](?path=/docs/components-fabricaccordion--overview)** — for expandable content sections.
+- **[FabricListItemSimple](?path=/docs/components-fabriclistitemsimple--overview)** — for sidebar navigation lists.

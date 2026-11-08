@@ -1,0 +1,145 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as CheckboxStories from './FabricCheckbox.stories';
+
+<Meta of={CheckboxStories} name="Overview" />
+
+# FabricCheckbox
+
+Checkboxes let users select one or more items from a set. Use it for settings, filters and multi-select rows. Extends MUI `Checkbox`, defaults `color="primary"`, and adds a first-class `label` slot so labeled checkboxes don't need a separate `<FormControlLabel>` wrapper.
+
+**Use it for:**
+- Boolean settings (Enable dark mode, Reduced motion)
+- Multi-select filters and table rows
+- Terms-of-service agreement rows
+- Bulk-action headers with the indeterminate state
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricCheckbox/index.tsx) · [WAI-ARIA checkbox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/checkbox/) · [Material Design guidance](https://m2.material.io/components/selection-controls#checkboxes)
+
+---
+
+## Basic checkboxes
+
+The `label` prop renders the checkbox inside a `<FormControlLabel>` automatically. Omit `label` to get a bare `<input type="checkbox">` — useful inside table cells where the row's text already labels the control.
+
+<Canvas of={CheckboxStories.Default} />
+<Canvas of={CheckboxStories.BareNoLabel} />
+
+---
+
+## Sizes
+
+`size="small" | "medium"` — `medium` (24px) is the default; `small` (20px) is denser and fits well in table cells / filter rows.
+
+<Canvas of={CheckboxStories.AllSizes} />
+
+---
+
+## Info icon
+
+`showInfo` adds the 16px info icon after the label. It is ignored when `label` is omitted.
+
+<Canvas of={CheckboxStories.ShowInfo} />
+
+---
+
+## Color
+
+Semantic color routes through MUI's palette so brand colors and dark-mode work automatically.
+
+<Canvas of={CheckboxStories.AllColors} />
+
+---
+
+## Label placement
+
+`labelPlacement="start" | "end" | "top" | "bottom"` — `end` (default) works for the vast majority of forms. Use `start` when the label describes a right-aligned column.
+
+<Canvas of={CheckboxStories.LabelPlacement} />
+
+---
+
+## Indeterminate
+
+The tri-state pattern for "some children selected." Visually distinct from both checked and unchecked. Semantically the checkbox is still binary — indeterminate is a display concern only.
+
+<Canvas of={CheckboxStories.Indeterminate} />
+
+---
+
+## Controlled — event vs. shorthand
+
+`onChange(event, checked)` fires the standard React event; `onCheckedChange(checked)` is the boolean-only shortcut for the common case. Use `onChange` when you need `event.currentTarget` for form libraries.
+
+<Canvas of={CheckboxStories.OnCheckedChangeShorthand} />
+<Canvas of={CheckboxStories.StopPropagation} />
+
+---
+
+## Custom icons
+
+Pass `icon` (unchecked) and `checkedIcon` — e.g. bookmark/star toggles.
+
+<Canvas of={CheckboxStories.CustomIcons} />
+
+---
+
+## Disabled and required
+
+Both propagate to the underlying `<input>` and the `<FormControlLabel>` styling.
+
+<Canvas of={CheckboxStories.DisabledAndRequired} />
+
+---
+
+## `disableTypography`
+
+By default the label is wrapped in MUI `<Typography>`. Pass `disableTypography` when you want the raw label node (custom `<Text>`, styled `<span>`, etc.).
+
+<Canvas of={CheckboxStories.DisableTypography} />
+
+---
+
+## Multi-checkbox groups
+
+For actual multi-checkbox groups (Notification channels, Preferences), use [FabricCheckboxGroup](?path=/docs/components-fabriccheckboxgroup--overview) — the group provides the `<FormGroup>` semantic tree, group label, helper text, and error state.
+
+<Canvas of={CheckboxStories.Group_Vertical} />
+<Canvas of={CheckboxStories.Group_Horizontal} />
+<Canvas of={CheckboxStories.Group_Error} />
+<Canvas of={CheckboxStories.Group_SelectAll} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={CheckboxStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Indeterminate is display-only
+
+`indeterminate={true}` visually shows the mixed state but `checked` still submits as boolean. Persist your "some / all / none" state separately from `checked`.
+
+### `onChange` vs `onCheckedChange` fire order
+
+When both are supplied, `onChange(event, checked)` fires FIRST, then `onCheckedChange(checked)`. Consumers that call `event.preventDefault()` in `onChange` will still see the boolean handler fire — this is intentional so uncontrolled analytics can piggyback.
+
+### `label` types
+
+`label` is typed as `ReactNode` — but MUI's `<FormControlLabel>` `label` prop is `ReactNode`, so this is a widening. Passing complex nodes (icons + text) works; passing `null` renders the checkbox with an empty label wrapper. Prefer omitting `label` entirely for icon-only cells.
+
+---
+
+## API
+
+<Controls of={CheckboxStories.Default} />
+
+---
+
+## See also
+
+- **[FabricCheckboxGroup](?path=/docs/components-fabriccheckboxgroup--overview)** — multi-checkbox composite with group label, helper text, error state.
+- **[FabricRadio](?path=/docs/components-fabricradio--overview)** / **[FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)** — single-choice from a set (mutually exclusive).
+- **[FabricSwitch](?path=/docs/components-fabricswitch--overview)** — on/off for a single setting (use when only one option and toggling has immediate effect).

@@ -1,0 +1,130 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as SelectStories from './FabricSelect.stories';
+
+<Meta of={SelectStories} name="Overview" />
+
+# FabricSelect
+
+Dropdown picker for one-from-many selections when there are too many options for radios. Extends MUI `Select` with a data-driven `options` API, first-class `error` / `helperText`, and typed `renderValue` that searches both the `options` array and any `<MenuItem>` children.
+
+**Use it for:**
+- ≥5 mutually exclusive options ("Assign to..." with all workspace members, "Country" pickers)
+- Filter-bar dropdowns
+- Inline table-cell editors
+- Form fields where the answer set is finite but too long for radios
+
+**Do not use for:** ≤4 options where every choice matters (use [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)) · free-text with suggestions (use MUI `Autocomplete`) · multi-select (compose with MUI's `Select multiple` pattern).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricSelect/index.tsx) · [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/examples/combobox-select-only/) · [Material Design guidance](https://m2.material.io/components/menus#exposed-dropdown-menu)
+
+---
+
+## Basic select
+
+Pass `options` as an array — each item is `{ value, label, icon?, disabled? }`. Label + helper text auto-wired via `useId()`.
+
+<Canvas of={SelectStories.Default} />
+
+---
+
+## Sizes
+
+`size="small" | "medium"` — small fits inline in table cells and dense filter rows.
+
+<Canvas of={SelectStories.SizeVariants} />
+
+---
+
+## Custom `<MenuItem>` children
+
+When `options` doesn't fit (dividers, subheaders, custom menu-item content), pass children instead.
+
+<Canvas of={SelectStories.ChildrenSlot} />
+
+---
+
+## Icons per option
+
+Each option's `icon` accepts a `ReactNode`, or an image URL string.
+
+<Canvas of={SelectStories.WithIcons_ReactNode} />
+<Canvas of={SelectStories.WithIcons_URL} />
+
+---
+
+## Show value alongside label
+
+`showValue` renders `label (value)` — useful for internal admin pickers where the underlying ID is meaningful.
+
+<Canvas of={SelectStories.ShowValue} />
+
+---
+
+## Custom `renderValue`
+
+Override the closed-state rendering — icon + label + status pill, formatted decimals, custom truncation, etc.
+
+<Canvas of={SelectStories.CustomRenderValue} />
+
+---
+
+## Required and error
+
+`required` adds the asterisk; `error` colors the outline and helper text. Compose with a helper-text message for validation.
+
+<Canvas of={SelectStories.RequiredAndError} />
+
+---
+
+## Disabled option
+
+Per-option `disabled: true` disables specific choices without disabling the whole select.
+
+<Canvas of={SelectStories.DisabledOption} />
+
+---
+
+## Handlers
+
+Both handlers fire when set: `onChange(event, child)` first, then `onValueChange(value, event, child)`. Use `onChange` with form libraries and `onValueChange` for the common case.
+
+<Canvas of={SelectStories.OnChangeAndOnValueChange} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={SelectStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### `options` vs `children` — both are supported
+
+Unlike [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview), FabricSelect accepts either. If you pass both, children render after the `options` items.
+
+### `renderValue` typing
+
+`renderValue` is typed as `(selected: string) => ReactNode`. Multi-select generic (`Select<T[]>`) isn't currently exposed — use raw MUI `Select` for multi-select scenarios.
+
+### `containerSx` vs `sx`
+
+`containerSx` targets the outer `<FormControl>` wrapper (`minWidth`, layout); `sx` targets the inner `<Select>`. Keeping them separate means `minWidth` and layout styles land where you expect.
+
+### No multi-select shortcut
+
+Set `multiple` via `SelectProps` and manage the value as `string[]` — Fabric doesn't add a helper because the multi-select UX (chips? checkbox items? Bulk actions?) is highly context-specific.
+
+---
+
+## API
+
+<Controls of={SelectStories.Default} />
+
+---
+
+## See also
+
+- **[FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)** — when there are ≤4 mutually-exclusive options and space allows.
+- **[FabricTextField](?path=/docs/components-fabrictextfield--overview)** — inline text input; the search-mode variant is a common filter-bar sibling.

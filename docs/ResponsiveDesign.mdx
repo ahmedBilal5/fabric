@@ -1,0 +1,303 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Responsive Design" />
+
+<style>{`
+  .rd-hero { text-align: center; padding: 40px 0 32px; }
+  .rd-hero h1 { font-family: Geist, sans-serif; font-size: 2rem; font-weight: 700; color: var(--mui-palette-text-primary, #2A2420); margin: 0; }
+  .rd-hero p { font-family: 'Geist', sans-serif; font-size: 1.125rem; color: var(--mui-palette-text-secondary, #6E655D); margin: 8px auto 0; max-width: 640px; }
+  .rd-section { margin: 40px 0; }
+  .rd-section h2 { font-family: Geist, sans-serif; font-size: 1.375rem; font-weight: 600; color: var(--mui-palette-text-primary, #2A2420); margin: 0 0 12px; border-bottom: 2px solid var(--mui-palette-divider, #E6E1DB); padding-bottom: 8px; }
+  .rd-section h3 { font-family: Geist, sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--mui-palette-text-primary, #2E2925); margin: 24px 0 8px; }
+  .rd-section p, .rd-section li { font-family: 'Geist', sans-serif; font-size: 0.9375rem; line-height: 1.65; color: var(--mui-palette-text-primary, #2E2925); }
+  .rd-section ul { padding-left: 20px; }
+  .rd-section code { background: var(--mui-palette-action-hover, #F3F0EC); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
+  .rd-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-family: 'Geist', sans-serif; font-size: 0.875rem; }
+  .rd-table th, .rd-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--mui-palette-divider, #E6E1DB); }
+  .rd-table th { font-family: Geist, sans-serif; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--mui-palette-text-secondary, #6E655D); }
+  .rd-table code { background: var(--mui-palette-action-hover, #F3F0EC); padding: 2px 5px; border-radius: 3px; font-size: 0.825rem; }
+  .rd-callout { background: var(--mui-palette-action-hover, #F3F0EC); border-left: 4px solid #B23E2A; border-radius: 6px; padding: 16px 20px; margin: 20px 0; }
+  .rd-callout p { margin: 0; font-size: 0.875rem; }
+  .rd-shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .rd-shift-card { border: 1px solid var(--mui-palette-divider, #E6E1DB); border-radius: 10px; padding: 20px; }
+  .rd-shift-card strong { display: block; font-family: Geist, sans-serif; font-size: 0.95rem; margin-bottom: 6px; color: var(--mui-palette-text-primary, #2A2420); }
+  .rd-shift-card p { margin: 0; font-size: 0.85rem; color: var(--mui-palette-text-secondary, #6E655D); }
+`}</style>
+
+<div className="rd-hero">
+  <h1>Responsive Design</h1>
+  <p>
+    How Fabric makes responsive UIs the default — breakpoints, responsive props, visibility controls, and fluid typography.
+  </p>
+</div>
+
+---
+
+<div className="rd-section">
+
+## Breakpoint Tokens
+
+All breakpoints are defined in `@fabric-kit/design-tokens` and wired into the MUI theme. Use these everywhere — never hardcode pixel values.
+
+<table className="rd-table">
+  <thead>
+    <tr><th>Token</th><th>px</th><th>Target</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>xs</code></td><td>0</td><td>Small phones</td><td>320–599px</td></tr>
+    <tr><td><code>sm</code></td><td>600</td><td>Large phones / small tablets</td><td>Density shift point</td></tr>
+    <tr><td><code>md</code></td><td>900</td><td>Tablets / small laptops</td><td><strong>Primary layout shift</strong></td></tr>
+    <tr><td><code>lg</code></td><td>1200</td><td>Desktops</td><td>Standard desktop layout</td></tr>
+    <tr><td><code>xl</code></td><td>1440</td><td>Large desktops</td><td>Current primary design target</td></tr>
+    <tr><td><code>2xl</code></td><td>1920</td><td>Ultra-wide</td><td>Max-width cap</td></tr>
+  </tbody>
+</table>
+
+### Two Key Shift Points
+
+<div className="rd-shift-grid">
+  <div className="rd-shift-card">
+    <strong>Below md (900px) — Layout restructuring</strong>
+    <p>Sidebar → overlay drawer. Content goes full-width. Flex layouts switch from row to column. Panels stack vertically.</p>
+  </div>
+  <div className="rd-shift-card">
+    <strong>Below sm (600px) — Density & typography</strong>
+    <p>Topbar compacts. Dialogs go full-screen. Grid layouts go single-column. DataGrid reduces density. Typography shrinks one step.</p>
+  </div>
+</div>
+
+</div>
+
+---
+
+<div className="rd-section">
+
+## Responsive Props on Primitives
+
+Every layout primitive (`FabricFlex`, `FabricStack`, `FabricInline`, `FabricGrid`, `FabricText`) accepts **responsive objects** on its core props. Pass a scalar for all breakpoints, or a `{ breakpoint: value }` object to change at specific breakpoints.
+
+```tsx
+import { FabricFlex, FabricStack, FabricGrid, FabricText } from '@fabric-kit/primitives';
+
+// Switches from vertical stack on mobile to horizontal row on desktop
+<FabricFlex
+  direction={{ xs: 'column', md: 'row' }}
+  gap={{ xs: 'sm', md: 'lg' }}
+>
+  <Panel />
+  <Panel />
+</FabricFlex>
+
+// Grid: 1 column on mobile, 3 on desktop
+<FabricGrid
+  columns={{ xs: '1fr', md: '1fr 1fr 1fr' }}
+  gap={{ xs: 'sm', lg: 'xl' }}
+>
+  <Card /><Card /><Card />
+</FabricGrid>
+
+// Text size changes at breakpoints
+<FabricText size={{ xs: 'lg', md: '2xl' }}>
+  Responsive heading
+</FabricText>
+```
+
+### Supported Responsive Props
+
+<table className="rd-table">
+  <thead>
+    <tr><th>Primitive</th><th>Responsive Props</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>FabricFlex</code></td><td><code>direction</code>, <code>gap</code>, <code>align</code>, <code>justify</code>, <code>wrap</code></td></tr>
+    <tr><td><code>FabricStack</code></td><td><code>gap</code>, <code>align</code>, <code>justify</code></td></tr>
+    <tr><td><code>FabricInline</code></td><td><code>gap</code>, <code>align</code></td></tr>
+    <tr><td><code>FabricGrid</code></td><td><code>gap</code>, <code>columns</code>, <code>rows</code>, <code>align</code>, <code>justify</code></td></tr>
+    <tr><td><code>FabricText</code></td><td><code>size</code></td></tr>
+  </tbody>
+</table>
+
+### TypeScript
+
+The `ResponsiveValue<T>` type is exported from `@fabric-kit/primitives`:
+
+```tsx
+import type { ResponsiveValue, Space, Breakpoint } from '@fabric-kit/primitives';
+
+// ResponsiveValue<T> = T | Partial<Record<Breakpoint, T>>
+const gap: ResponsiveValue<Space> = { xs: 'sm', md: 'lg' };
+```
+
+</div>
+
+---
+
+<div className="rd-section">
+
+## useBreakpoint Hook
+
+A typed wrapper around MUI's `useMediaQuery` tied to Fabric's breakpoint tokens. Import from `@fabric-kit/theme` — do not use `useMediaQuery` directly.
+
+```tsx
+import { useBreakpoint } from '@fabric-kit/theme';
+
+function MyComponent() {
+  const isMobile = useBreakpoint('down', 'md');
+  const isDesktop = useBreakpoint('up', 'lg');
+  const isTabletOnly = useBreakpoint('only', 'md');
+  const isBetween = useBreakpoint('between', 'sm', 'lg');
+
+  return isMobile ? <MobileLayout /> : <DesktopLayout />;
+}
+```
+
+### API
+
+<table className="rd-table">
+  <thead>
+    <tr><th>Signature</th><th>Returns <code>true</code> when…</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>useBreakpoint('up', 'md')</code></td><td>viewport ≥ 900px</td></tr>
+    <tr><td><code>useBreakpoint('down', 'md')</code></td><td>viewport &lt; 900px</td></tr>
+    <tr><td><code>useBreakpoint('only', 'md')</code></td><td>900px ≤ viewport &lt; 1200px</td></tr>
+    <tr><td><code>useBreakpoint('between', 'sm', 'lg')</code></td><td>600px ≤ viewport &lt; 1200px</td></tr>
+  </tbody>
+</table>
+
+<div className="rd-callout">
+  <p><strong>Prefer CSS over JS.</strong> Use responsive props or <code>sx</code> breakpoint objects when possible. Reserve <code>useBreakpoint</code> for cases where you need to conditionally <em>render</em> different components (not just style them differently).</p>
+</div>
+
+</div>
+
+---
+
+<div className="rd-section">
+
+## Show / Hide Components
+
+CSS-only responsive visibility — no JavaScript, no layout shift. Renders or hides children at breakpoints using `display: none`.
+
+```tsx
+import { Show, Hide } from '@fabric-kit/primitives';
+
+// Show sidebar only on desktop
+<Show above="md">
+  <Sidebar />
+</Show>
+
+// Show hamburger menu only on mobile
+<Show below="md">
+  <HamburgerButton />
+</Show>
+
+// Hide advanced filters on small screens
+<Hide below="sm">
+  <AdvancedFilters />
+</Hide>
+```
+
+### Props
+
+<table className="rd-table">
+  <thead>
+    <tr><th>Prop</th><th>Type</th><th>Effect</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>above</code></td><td><code>Breakpoint</code></td><td>Show/Hide at this breakpoint and above</td></tr>
+    <tr><td><code>below</code></td><td><code>Breakpoint</code></td><td>Show/Hide below this breakpoint</td></tr>
+  </tbody>
+</table>
+
+Both `above` and `below` can be combined to target a specific range.
+
+</div>
+
+---
+
+<div className="rd-section">
+
+## Fluid Typography
+
+Heading variants (`h1`–`h5`, `subtitle1`) use `clamp()`-based font sizes that scale smoothly between the `sm` (600px) and `xl` (1440px) breakpoints. No breakpoint jumps — sizes interpolate with the viewport.
+
+<table className="rd-table">
+  <thead>
+    <tr><th>Variant</th><th>Mobile (600px)</th><th>Desktop (1440px)</th><th>Token</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>h1</td><td>24px</td><td>32px</td><td><code>fluidFontSize['4xl']</code></td></tr>
+    <tr><td>h2</td><td>20px</td><td>24px</td><td><code>fluidFontSize['3xl']</code></td></tr>
+    <tr><td>h3</td><td>18px</td><td>20px</td><td><code>fluidFontSize['2xl']</code></td></tr>
+    <tr><td>h4</td><td>16px</td><td>18px</td><td><code>fluidFontSize.xl</code></td></tr>
+    <tr><td>h5</td><td>15px</td><td>16px</td><td><code>fluidFontSize.lg</code></td></tr>
+    <tr><td>body1, body2, caption</td><td colspan="2">Fixed (no scaling)</td><td><code>fontSize.md</code>, <code>fontSize.sm</code></td></tr>
+  </tbody>
+</table>
+
+Body text, labels, and captions stay fixed — they're already small enough for mobile.
+
+```tsx
+import { fluidFontSize } from '@fabric-kit/design-tokens';
+
+// Use directly in custom styles
+const heroStyle = { fontSize: fluidFontSize['4xl'] };
+// Or just use MUI Typography variants — they already use fluid sizes
+<Typography variant="h1">Scales automatically</Typography>
+```
+
+</div>
+
+---
+
+<div className="rd-section">
+
+## Component-Level Responsive Defaults
+
+Several components have built-in responsive behavior that activates automatically:
+
+<table className="rd-table">
+  <thead>
+    <tr><th>Component</th><th>Prop</th><th>Default</th><th>Behavior</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>FabricDialog</code></td><td><code>responsiveFullScreen</code></td><td><code>true</code></td><td>Goes full-screen below 600px</td></tr>
+    <tr><td><code>FabricDatagrid</code></td><td><code>responsiveDensity</code></td><td><code>true</code></td><td>Compact rows (36px) and headers (32px) below 600px</td></tr>
+  </tbody>
+</table>
+
+Theme-level responsive overrides (automatic for all consumers):
+- **Dialog paper:** Constrained margin and max-width below `sm`
+- **Drawer paper:** Capped at `drawerWidth.mobileMax` on mobile
+- **Tabs:** Reduced min-height on mobile
+- **Container:** Defaults to `maxWidth="xl"`
+
+These opt-in props default to `true` — consumers get responsive behavior for free. Override with `responsiveFullScreen={false}` or `responsiveDensity={false}` if needed.
+
+</div>
+
+---
+
+<div className="rd-section">
+
+## sx Responsive Shorthand
+
+Any Fabric component supports MUI's `sx` responsive object syntax as an escape hatch. This works on any CSS property:
+
+```tsx
+<Box
+  sx={{
+    flexDirection: { xs: 'column', md: 'row' },
+    padding: { xs: 1, sm: 2, md: 3 },
+    display: { xs: 'none', md: 'flex' },
+    fontSize: { xs: '0.875rem', lg: '1rem' },
+  }}
+/>
+```
+
+<div className="rd-callout">
+  <p><strong>Prefer typed responsive props over raw <code>sx</code>.</strong> Use <code>&lt;FabricFlex direction=&#123;&#123; xs: 'column', md: 'row' &#125;&#125;&gt;</code> instead of <code>sx=&#123;&#123; flexDirection: &#123; xs: 'column', md: 'row' &#125; &#125;&#125;</code>. The typed API gives autocomplete and compile-time validation.</p>
+</div>
+
+</div>

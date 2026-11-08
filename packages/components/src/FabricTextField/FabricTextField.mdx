@@ -1,0 +1,102 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as TextFieldStories from './FabricTextField.stories';
+
+<Meta of={TextFieldStories} name="Overview" />
+
+# FabricTextField
+
+The design-system text field. It extends MUI `TextField`, widens `label` to `ReactNode`, and adds a search mode. All styling comes from the theme (`MuiOutlinedInput`, `MuiInputLabel`, `MuiFormHelperText`), so plain MUI `TextField`, `FabricSelect`, `FabricAutocomplete` and the pickers match it.
+
+**Use it for:**
+- Form fields (name, email, description)
+- Search and filter bars (`search`)
+- Small number entry (`type="number"`)
+- Multi-line notes (`multiline`)
+
+**Do not use for:** finite options (use [FabricSelect](?path=/docs/components-fabricselect--overview)) or rich text.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricTextField/FabricTextField.tsx)
+
+---
+
+## Input
+
+40px high (32px with `size="small"`), 8px corners and a 1px border. The 14px SemiBold label rests inside the box and floats onto the top border on focus or when filled. Focus shows a primary-colored border.
+
+<Canvas of={TextFieldStories.Default} />
+
+---
+
+## States
+
+Default, filled, required, help text, disabled and error. Error turns the border and help text red; the label stays dark.
+
+<Canvas of={TextFieldStories.States} />
+
+---
+
+## Leading icon
+
+Pass a `startAdornment` in `slotProps.input`. The icon is 24px and follows the label color.
+
+<Canvas of={TextFieldStories.LeadingIcon} />
+
+---
+
+## Trailing icon
+
+Pass an `IconButton` (`p: 4px`, 18px icon) as the `endAdornment`.
+
+<Canvas of={TextFieldStories.TrailingIcon} />
+
+---
+
+## Search
+
+`search` renders a compact box with a search icon and no label. A clear (×) button shows once the field has a value; it calls `onClear`, or `onChange` with an empty value. The box is a `<form>` and Enter does not submit the page; pass `searchPaperProps.onSubmit` to handle it.
+
+<Canvas of={TextFieldStories.Search} />
+
+---
+
+## Numeric
+
+`type="number"` hides the native spinners and adds an up/down stepper. The stepper respects `min`, `max` and `step` from `slotProps.htmlInput`. It is skipped if you pass your own `endAdornment`.
+
+<Canvas of={TextFieldStories.Numeric} />
+
+---
+
+## Text area
+
+`multiline` with `rows`. The `height` prop is ignored and the box can be resized vertically. An end adornment sits at the top right. Put `FabricChip`s in a start adornment: they wrap, and the label stays floated.
+
+<Canvas of={TextFieldStories.TextArea} />
+
+---
+
+## Underlined
+
+`variant="standard"`: 36px, bottom stroke only.
+
+<Canvas of={TextFieldStories.Underline} />
+
+## Limitations
+
+- The label floats on focus or when filled, not on hover. Hover only darkens the label.
+- Read-only fields get a dimmed fill.
+- The text area uses the browser's native resize handle.
+- `height` sets a fixed input height; it is ignored for `multiline` fields.
+- MUI v9 change events are `ChangeEvent<HTMLInputElement | HTMLTextAreaElement>`; widen narrow handler types.
+
+---
+
+## API
+
+<Controls of={TextFieldStories.Default} />
+
+---
+
+## See also
+
+- **[FabricSelect](?path=/docs/components-fabricselect--overview)**: finite-option pickers.

@@ -1,0 +1,95 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as PaginationStories from './FabricPagination.stories';
+
+<Meta of={PaginationStories} name="Overview" />
+
+# FabricPagination
+
+The Pagination component enables the user to select a specific page from a range of pages. `FabricPagination` wraps MUI `TablePagination` with a sliding-window page-number display, a rows-per-page dropdown, and a "from – to of count" label. Use it under card grids and custom lists. (`FabricDatagrid` has its own built-in pagination.)
+
+**Use it in:**
+- Card-view listings (data models, smart views, data objects, rules, templates)
+- Any grid/table that needs client-side or server-side pagination controls
+- Toolbars below data grids
+
+**Do not use for:** infinite scroll · cursor-based pagination · "load more" buttons · URL-based page navigation (use MUI `Pagination` instead).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricPagination/index.tsx) · [MUI TablePagination](https://mui.com/material-ui/react-pagination/#table-pagination) · [MUI Pagination](https://mui.com/material-ui/react-pagination/)
+
+---
+
+## Basic usage
+
+Pass `count`, `page`, `rowsPerPage`, `onPageChange`, and `onRowsPerPageChange`. The component handles page recalculation when rows-per-page changes.
+
+<Canvas of={PaginationStories.Default} />
+
+---
+
+## Few records (single page)
+
+When all records fit on one page, the page-number buttons collapse to a single "1" indicator.
+
+<Canvas of={PaginationStories.FewRecords} />
+
+---
+
+## Single record
+
+With a single record the label reads "1 of 1" and the page buttons are disabled.
+
+<Canvas of={PaginationStories.SingleRecord} />
+
+---
+
+## Rows-per-page options
+
+Default is `[10, 25, 50, 100]`. Pass `rowsPerPageOptions` for other page sizes.
+
+<Canvas of={PaginationStories.CustomRowsPerPageOptions} />
+
+---
+
+## Hidden page numbers
+
+`hidePageNumbers` shows only a current-page indicator (plain text rather than buttons). Used for compact pagination in tight layouts.
+
+<Canvas of={PaginationStories.HiddenPageNumbers} />
+
+---
+
+## Pagination ranges (sliding window)
+
+With many pages, the sliding window shows up to 3 page buttons centered on the current page. Navigate to see the window slide — similar to MUI's `siblingCount` concept.
+
+<Canvas of={PaginationStories.ManyPages} />
+
+---
+
+## Sx override
+
+Pass `sx` to customize the toolbar container.
+
+<Canvas of={PaginationStories.WithSxOverride} />
+
+---
+
+## Accessibility
+
+- The component uses MUI `TablePagination` which renders proper ARIA attributes on navigation buttons.
+- Page buttons have accessible labels ("go to page 1", "go to previous page", etc.).
+- The rows-per-page dropdown is a native `<select>` for maximum screen-reader compatibility.
+- **Keyboard:** Tab navigates between controls (select, page buttons, prev/next). Enter/Space activates.
+
+---
+
+## API
+
+<Controls of={PaginationStories.Default} />
+
+---
+
+## See also
+
+- **[FabricTabs](?path=/docs/components-fabrictabs--overview)** — for switching content sections (not paginating data).
+- **[FabricSelect](?path=/docs/components-fabricselect--overview)** — standalone dropdown control.

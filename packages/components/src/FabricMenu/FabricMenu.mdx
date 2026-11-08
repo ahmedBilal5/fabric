@@ -1,0 +1,111 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as MenuStories from './FabricMenu.stories';
+
+<Meta of={MenuStories} name="Overview" />
+
+# FabricMenu
+
+Headless anchored menu — a thin wrapper around MUI `Menu` that bakes in Fabric's menu look (8px radius, dropdown shadow, 232px min-width, SemiBold 14/20 capitalized labels, hover / press / active colors) and accepts a data-driven `items` prop OR arbitrary children. Extends MUI `Menu`.
+
+**Use it for:**
+- Row-action menus anchored to icon triggers
+- Overflow menus behind a `MoreVert` button
+- Right-click / context menus (via controlled `open` + `anchorEl`)
+- Any anchored options list where a full `<FabricMenuButton>` is overkill
+
+**Do not use for:** button-with-menu compounds where the trigger IS the button — use [FabricMenuButton](?path=/docs/components-fabricmenubutton--overview) instead.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricMenu/index.tsx) · [WAI-ARIA menu-button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/) · [Material Design guidance](https://m2.material.io/components/menus)
+
+---
+
+## With children
+
+Pass `<MenuItem>` children when you need custom item rendering (icons, dividers, submenus, custom content).
+
+<Canvas of={MenuStories.WithChildren} />
+
+---
+
+## With items array
+
+Pass an `items` array for the common case — Fabric builds the `<MenuItem>` elements internally. Each item accepts `label`, `icon`, `onClick`, `disabled`, `selected`, `divideAfter`, `testId`, and `sx`.
+
+<Canvas of={MenuStories.WithItems} />
+
+> If both `items` and `children` are supplied, `items` wins and `children` is ignored — pass one or the other.
+
+---
+
+## App shortcuts
+
+The default look: 232px wide, 8px radius, 32px icon slot, and 1px separators between groups. `divideAfter: true` on an item renders a separator after it (ignored on the last item). With `children`, place a `<Divider component="li" />` between items — it picks up the same separator color.
+
+<Canvas of={MenuStories.AppShortcuts} />
+
+---
+
+## Item states
+
+| State | How to get it |
+|---|---|
+| default | default item |
+| hover | `:hover` / keyboard focus |
+| press | `:active` |
+| active | `selected: true` (or `selected` on a child `MenuItem`) |
+| disabled | `disabled: true` |
+
+<Canvas of={MenuStories.ActiveAndDisabled} />
+
+Labels are capitalized by default. Override with `slotProps.list.sx['& .MuiMenuItem-root'].textTransform = 'none'` when a menu needs sentence case.
+
+---
+
+## Custom anchor origin
+
+`anchorOrigin` + `transformOrigin` position the menu relative to the anchor. Defaults to `{ vertical: 'bottom', horizontal: 'left' }` matching MUI.
+
+<Canvas of={MenuStories.CustomAnchorOrigin} />
+
+---
+
+## Consumer paper override
+
+`slotProps.paper.sx` merges into the DS paper defaults — consumer keys win.
+
+<Canvas of={MenuStories.ConsumerPaperOverride} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={MenuStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### No `forwardRef`
+
+MUI `Menu` renders into a portal; wrapping in another `forwardRef` doesn't help consumers reach the DOM node. If you need the anchor's ref, use `useRef` on your trigger element.
+
+### `items` vs `children` — not both
+
+Passing both silently drops `children`. If you need custom item rendering, use `children` only.
+
+### Right-click context menus need manual positioning
+
+Set `open` + `anchorReference="anchorPosition"` + `anchorPosition={{ top, left }}` on the raw MUI props — Fabric doesn't add a shortcut for this pattern because it's rare enough to keep the API surface small.
+
+---
+
+## API
+
+<Controls of={MenuStories.WithItems} />
+
+---
+
+## See also
+
+- **[FabricMenuButton](?path=/docs/components-fabricmenubutton--overview)** — trigger + menu compound with a built-in `IconButton`.
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — the `menu` prop on FabricButton renders a split-button (main label + caret) using this same primitive under the hood.

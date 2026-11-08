@@ -1,0 +1,116 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Kits/Canvas Builder/FabricCanvasBuilder/Overview" />
+
+# FabricCanvasBuilder
+
+`FabricCanvasBuilder` is a node-based workflow canvas built on [React Flow](https://reactflow.dev). Use it for automation builders, data pipelines, approval flows and any other graph that people edit by dragging nodes and connecting them.
+
+```bash
+pnpm add @fabric-kit/canvas-builder @xyflow/react
+```
+
+## Package
+
+```ts
+import {
+  FabricCanvasBuilder,
+  FabricCanvasNode,
+  FabricCanvasEdge,
+  FabricCanvasHandle,
+  FabricCanvasNodeToolbar,
+} from '@fabric-kit/canvas-builder';
+```
+
+## Anatomy
+
+- **Canvas shell** (`FabricCanvasBuilder`) – wraps React Flow provider, drag/drop hooks, controls, and minimap.
+- **Node renderer** (`FabricCanvasNode`) – icon, badge, validation border, handles, and editable label.
+- **Node toolbar** (`FabricCanvasNodeToolbar`) – configure and delete actions with confirmation.
+- **Edge renderer** (`FabricCanvasEdge`) – curved (bezier) path, loop path, optional target arrow, label chip, delete affordance.
+- **Handle renderer** (`FabricCanvasHandle`) – connected-state dot with optional handle labels.
+
+## Usage guidance
+
+1. Define `nodeTypes` and `edgeTypes` in the consumer app.
+2. Use `FabricCanvasNode` inside each custom node type renderer.
+3. Use `FabricCanvasEdge` for custom edge visuals and label/delete support.
+4. Keep graph state (`nodes`, `edges`) controlled in the consumer store.
+5. Wire node/edge action callbacks into app state transitions (for example opening node settings modals).
+
+```tsx
+<FabricCanvasBuilder
+  mode='edit'
+  nodes={nodes}
+  edges={edges}
+  nodeTypes={nodeTypes}
+  edgeTypes={edgeTypes}
+  onNodesChange={onNodesChange}
+  onEdgesChange={onEdgesChange}
+  onConnect={onConnect}
+/>
+```
+
+### Wiring node settings modal behavior
+
+`FabricCanvasNodeToolbar` fires `onNodeConfigure(nodeId, nodeConfig)` through `FabricCanvasNode` action handlers.  
+A typical app:
+
+1. store selected node metadata in app state
+2. open a modal/drawer when `onNodeConfigure` fires
+3. save updates back into the controlled `nodes` store
+
+Storybook stories in this package intentionally keep these callbacks as no-ops so the stories remain app-agnostic.
+
+## Node shape and states
+
+- `shape` on `FabricCanvasNode` selects the card proportions: `"wide"` (default, 128×88) or `"square"` (112×96, tighter padding, same content size). Pick one per app and keep it consistent across the canvas.
+- `disabled` greys out the whole card (icon, border, text and handles). A selected node keeps its selection border.
+- Put an output handle at `Position.Bottom` (for example `error`, `false` or a loop body) to keep the right side free for the main path.
+- Do not pass your own `configureIcon`, `deleteIcon` or `renderDeleteControl` unless the design requires it; the shared ones follow the current Fabric look.
+
+## Accessibility notes
+
+- Configure/delete toolbar actions expose semantic `aria-label`s.
+- Labels use standard text content (not icon-only affordances).
+- Edge hit target uses an invisible wider stroke to improve pointer discoverability.
+- Consumers should keep keyboard focus indicators enabled in app theme overrides.
+
+## Responsive behavior
+
+- Canvas fills the parent width and uses viewport height constraints from the host layout.
+- Storybook scenarios validate behavior at Fabric viewports:
+  - `fabricMobile` (375×812)
+  - `fabricTablet` (900×1024)
+  - `fabricDesktop` (1440×900)
+  - `fabricWide` (1920×1080)
+
+### Story coverage map
+
+- `DefaultEditMode`, `ViewModeNoEditing`
+- `InteractivePropsControls` (`mode`, `showControls`, `showMiniMap`)
+- `NodeCallbacksAndDeleteFlow`, `LabelEditingKeyboardPath`
+- `EdgeDeleteBehavior`, `EdgeDeleteKeyboardPath`
+- `ValidationStates`, `SelectedNodeAndEdgeStates`, `LoopEdgeState`, `DisabledNode`, `SquareNodeShape`
+- `LongLabelsAndOverflow`, `DenseGraphWithManyNodes`, `EmptyState`, `MissingOptionalNodeData`
+- `ResponsiveMobileViewport`, `ResponsiveTabletViewport`, `ResponsiveDesktopViewport`, `ResponsiveWideViewport`
+
+## Design-system alignment
+
+- Uses Fabric package imports (`@fabric-kit/components`, `@fabric-kit/primitives`, `@fabric-kit/icons`) for UI internals.
+- Routes colors through semantic theme paths where available.
+- Replaces hardcoded spacing/radius/typography values with token-driven values where possible.
+- Keeps a few fixed geometry constants (edge hit area, handle size) where no token fits.
+
+## Do
+
+- Do keep consumer node/edge state controlled and serializable.
+- Do pass `mode='view'` for read-only screens.
+- Do keep node connector definitions stable (`id`, `type`, `position`) to avoid broken edge references.
+- Do verify dark mode and mobile viewport behavior before release.
+
+## Don't
+
+- Don’t deep import internal files from this package.
+- Don’t bypass `FabricCanvasEdge` for editable workflows that need label/delete affordances.
+- Don’t introduce new ad-hoc color literals when a semantic theme/token value exists.

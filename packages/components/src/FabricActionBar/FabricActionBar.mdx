@@ -1,0 +1,153 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ActionBarStories from './FabricActionBar.stories';
+
+<Meta of={ActionBarStories} name="Overview" />
+
+# FabricActionBar
+
+A header strip for the top of settings pages, side panels, editors and filter drawers. It lines up a title, actions and any custom content in one consistent row.
+
+**Use it in:**
+- Settings / detail-page headers (title + save/cancel actions)
+- Left / right panel headers (drawers, filter panels, tree panels)
+- Card / list toolbars (title + filter chip + refresh + primary CTA)
+- Inline editable-title bars (`heading.editable`)
+
+**Do not use for:** primary app navigation (use `FabricBreadcrumbs` + your router) · in-content section headers (use plain `Typography`) · full-width app bars (use MUI `AppBar` directly — FabricActionBar is a content-scoped strip, not a fixed app chrome).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricActionBar/index.tsx) · [WAI-ARIA toolbar pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/)
+
+---
+
+## Layout
+
+```
++------------------------------------------------------------+
+| [slots.left] [leftControls] [heading]        [rightControls] [slots.right] |
++------------------------------------------------------------+
+```
+
+**Left content:** free-form `slots.left` → `leftControls` (buttons) → `heading` block (icon + text + chip + edit affordance)
+**Right content:** `rightControls` (buttons) → free-form `slots.right`
+
+Defaults: height `52px`, padding `12px 24px`, paper background, no bottom border (`bordered` adds a 1px divider), and `spacing.sm` between items. The title uses the heading font at 16px SemiBold, capitalized, with a 24px icon. Buttons in `leftControls` / `rightControls` default to `size="small"` and text buttons use a muted label color; props passed per item win.
+
+---
+
+## Basic usage
+
+<Canvas of={ActionBarStories.Default} />
+
+---
+
+## Heading with icon and chip
+
+<Canvas of={ActionBarStories.HeadingWithIcon} />
+
+---
+
+## Right controls
+
+The classic "title on the left, action buttons on the right" pattern.
+
+<Canvas of={ActionBarStories.RightControls} />
+
+---
+
+## Left controls + right controls
+
+A Back button goes in `leftControls`, for example `{ children: 'Back', startIcon: <ArrowBackIcon />, onClick: goBack }`.
+
+<Canvas of={ActionBarStories.LeftControls} />
+
+---
+
+## With field
+
+<Canvas of={ActionBarStories.WithField} />
+
+---
+
+## With tabs
+
+Tabs go in `slots.right`; the `underlineAlt` tab appearance fits the bar best.
+
+<Canvas of={ActionBarStories.WithTabs} />
+
+---
+
+## Free-form slots
+
+Use `slots.left` / `slots.right` for anything that isn't a button — status counts, timestamps, custom widgets.
+
+<Canvas of={ActionBarStories.WithSlots} />
+
+---
+
+## Bordered vs. borderless
+
+`bordered` toggles the bottom hairline (off by default). Keep `bordered={false}` when the ActionBar sits inside a container that already has its own edge (drawer, card, dialog).
+
+<Canvas of={ActionBarStories.Bordered} />
+
+---
+
+## Editable heading
+
+`heading.editable` reveals an edit pencil on hover. Clicking it swaps the text for an inline `FabricTextField`; Enter or the check icon confirms (Escape cancels). `onEditComplete` may be async — a spinner replaces the check icon while pending.
+
+<Canvas of={ActionBarStories.EditableHeadingStory} />
+
+---
+
+## Long title
+
+Titles truncate with ellipsis inside their available space; the right content stays anchored.
+
+<Canvas of={ActionBarStories.LongTitleEllipsis} />
+
+---
+
+## Drawer header
+
+The most common non-page usage — an ActionBar as the top bar of a drawer. `bordered={false}` because the drawer surface has its own edge.
+
+<Canvas of={ActionBarStories.DrawerHeader} />
+
+---
+
+## Panel header with a view switcher
+
+A side-panel title on the left and a segmented control in `slots.right`.
+
+<Canvas of={ActionBarStories.PanelHeader} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={ActionBarStories.AllTogether} />
+
+---
+
+## Accessibility
+
+- The root is a plain `<div>`; add `role='toolbar'` and an `aria-label` when the bar is the primary control cluster on the page.
+- The heading text is a `<Typography>` paragraph with the page-title style by default — not a landmark heading. If the bar's title also serves as the page title, put a semantic `<h1>` inside `slots.left` or use `variant='h1'` on the heading.
+- Editable heading uses a real `<input>` (`FabricTextField`); Enter confirms, Escape cancels, spinner reads as `role='progressbar'` during save.
+- Buttons in `leftControls` / `rightControls` are rendered by `FabricButton` — pass an `aria-label` per item when the button carries only an icon.
+
+---
+
+## API
+
+<Controls of={ActionBarStories.Default} />
+
+---
+
+## See also
+
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — the buttons rendered in `leftControls` / `rightControls`.
+- **[FabricBreadcrumbs](?path=/docs/components-fabricbreadcrumbs--overview)** — pair with ActionBar for full page-header composition.
+- **[FabricChip](?path=/docs/components-fabricchip--overview)** — for the `heading.chip` slot.
+- **[FabricTextField](?path=/docs/components-fabrictextfield--overview)** — the internal input for editable headings.

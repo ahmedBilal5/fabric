@@ -1,0 +1,41 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as DateTimePickerStories from './FabricDateTimePicker.stories';
+
+<Meta of={DateTimePickerStories} name="Overview" />
+
+# FabricDateTimePicker
+
+Design-system date + time picker. The dropdown shows a calendar ("Date") beside a digital clock ("Time") with an `HH : MM : SS` readout and an AM / PM toggle. `LocalizationProvider` + `AdapterDayjs` are baked in. Value accepts `Date`, `Dayjs`, ISO string, or `null`; `onChange` always emits `Date | null`.
+
+**Use it for:** meeting start times · schedule cutoffs · anywhere one value needs both a date and a time-of-day.
+
+**Do not use for:** date only ([FabricDatePicker](?path=/docs/advanced-components-fabricdatepicker--overview)) · time only ([FabricTimePicker](?path=/docs/advanced-components-fabrictimepicker--overview)) · ranges ([FabricDateRangePicker](?path=/docs/advanced-components-fabricdaterangepicker--overview)).
+
+**Behavior notes:**
+- There is no Cancel / OK bar, so the popup stays open after a selection and closes on an outside click or Escape.
+- `withSeconds={false}` hides the seconds column and readout segment.
+- The AM / PM toggle in the readout replaces MUI's meridiem column.
+
+---
+
+## Basic
+
+<Canvas of={DateTimePickerStories.Default} />
+
+## Controlled
+
+<Canvas of={DateTimePickerStories.Controlled} />
+
+## Without seconds
+
+<Canvas of={DateTimePickerStories.WithoutSeconds} />
+
+## States
+
+<Canvas of={DateTimePickerStories.States} />
+
+---
+
+## API
+
+<Controls />

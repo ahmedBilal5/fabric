@@ -1,0 +1,98 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as BreadcrumbsStories from './FabricBreadcrumbs.stories';
+
+<Meta of={BreadcrumbsStories} name="Overview" />
+
+# FabricBreadcrumbs
+
+Breadcrumbs consist of a list of links that help a user visualize a page's location within the hierarchical structure of a website, and allow navigation up to any of its ancestors. `FabricBreadcrumbs` wraps MUI `Breadcrumbs` with a data-driven `items` array — the last item auto-renders as the current-page indicator (bold, non-link) so consumers stop hand-rolling a `map + last-item-special-case` at every detail page.
+
+**Use it in:**
+- Detail-page headers (product, template, data-object, workflow)
+- Wizard progress trails
+- Nested folder / tree navigation
+- Any view where the user needs to jump back up the hierarchy
+
+**Do not use for:** primary navigation (use a sidebar or top nav) · tab switching (use [FabricTabs](?path=/docs/components-fabrictabs--overview)) · stepper progress in a single-page wizard (use a stepper).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricBreadcrumbs/index.tsx) · [WAI-ARIA breadcrumb pattern](https://www.w3.org/WAI/ARIA/apg/patterns/breadcrumb/) · [MUI Breadcrumbs](https://mui.com/material-ui/react-breadcrumbs/)
+
+---
+
+## Basic usage
+
+Pass an `items` array of `{ label, href }`. The last item automatically renders as the current page (bold, non-link, with `aria-current="page"`).
+
+<Canvas of={BreadcrumbsStories.Default} />
+
+---
+
+## Click handlers (SPA navigation)
+
+For single-page-app routing, use `onClick` instead of `href` to trigger imperative navigation.
+
+<Canvas of={BreadcrumbsStories.WithClickHandlers} />
+
+---
+
+## Per-item link component (react-router)
+
+Pass `LinkComponent` on a single item to swap the underlying anchor for a router-specific `Link`. Router-specific props (`to`, `state`, `replace`) go through `linkProps`.
+
+<Canvas of={BreadcrumbsStories.CustomLinkComponent} />
+
+---
+
+## With icons
+
+Each item accepts an `icon` node that renders inline before the label.
+
+<Canvas of={BreadcrumbsStories.WithIcons} />
+
+---
+
+## Custom separator
+
+Override the default `NavigateNextIcon` with any icon or string.
+
+<Canvas of={BreadcrumbsStories.CustomSeparator} />
+
+<Canvas of={BreadcrumbsStories.TextSeparator} />
+
+---
+
+## Collapsed with ellipsis
+
+For deep hierarchies, use `maxItems` + `itemsBeforeCollapse` + `itemsAfterCollapse` — MUI renders the first N, an ellipsis button, and the last M items.
+
+<Canvas of={BreadcrumbsStories.Collapsed} />
+
+---
+
+## Long labels
+
+Breadcrumbs stay on one line by default. Wrap in a container with `maxWidth` and MUI handles overflow via wrap.
+
+<Canvas of={BreadcrumbsStories.LongLabels} />
+
+---
+
+## Accessibility
+
+- The root `<nav>` element is labelled via `aria-label="breadcrumb"` (MUI default).
+- The current-page item is marked `aria-current="page"` so screen readers announce it correctly.
+- Non-current items render as `<a>` elements and are keyboard-focusable in order.
+- Icons in items should be decorative — the label carries the accessible text.
+
+---
+
+## API
+
+<Controls of={BreadcrumbsStories.Default} />
+
+---
+
+## See also
+
+- **[FabricTabs](?path=/docs/components-fabrictabs--overview)** — for switching between sibling views (not navigating a hierarchy).
+- **[FabricMenu](?path=/docs/components-fabricmenu--overview)** — for a "back to…" dropdown when the hierarchy is deep.

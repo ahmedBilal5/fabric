@@ -1,0 +1,1 @@
+export { FabricFooter } from "./FabricFooter";

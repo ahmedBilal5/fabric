@@ -1,0 +1,95 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as GridStories from './FabricGrid.stories';
+
+<Meta of={GridStories} name="Overview" />
+
+# FabricGrid
+
+Responsive 12-column layout — the design-system pass-through for MUI v9 `Grid` (the CSS Grid-based successor to `Grid2`). Every prop passes through unchanged.
+
+**Use it for:**
+
+- Two-column dialog form layouts (name / value, key / description)
+- Responsive card grids (4-across on desktop, 2-across on tablet, 1-across on mobile)
+- Sidebar-plus-main compositions (`size={{ xs: 12, md: 4 }}` + `size={{ xs: 12, md: 8 }}`)
+- Any layout that needs breakpoint-aware column sizing beyond what `Flex` / `Inline` / `Stack` primitives cover
+
+**Prefer primitives when possible:**
+
+- Fixed row of items with equal gap → `Inline gap="md"`
+- Single-column stack of items → `Stack gap="md"`
+- Simple two-thirds / one-third split → `Flex` with `flexBasis` on children
+
+Reach for `FabricGrid` when breakpoint-responsive column arithmetic (`size={{ xs, sm, md, lg, xl }}`) actually earns its cost.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricGrid/index.tsx) · [MUI v9 Grid docs](https://mui.com/material-ui/react-grid/)
+
+---
+
+## Default
+
+<Canvas of={GridStories.Default} />
+
+Three equal columns via `size={4}` (out of the default 12). Same behavior as raw MUI Grid — no wrapper magic.
+
+---
+
+## Responsive breakpoints
+
+The `size` prop accepts a responsive object: `size={{ xs, sm, md, lg, xl }}`. Coming from MUI v5's `<Grid item xs={12} sm={6}>`? Write `<FabricGrid size={{ xs: 12, sm: 6 }}>`.
+
+<Canvas of={GridStories.Responsive} />
+
+---
+
+## `auto` and `grow`
+
+`size="auto"` sizes to content; `size="grow"` fills the remaining space. Combine to build content-plus-fill toolbars.
+
+<Canvas of={GridStories.AutoAndGrow} />
+
+---
+
+## `offset`
+
+Push an item to the right by N columns without an empty spacer element.
+
+<Canvas of={GridStories.Offset} />
+
+---
+
+## Custom column count
+
+Override the default 12 columns via the `columns` prop — handy for wide dashboards.
+
+<Canvas of={GridStories.CustomColumnCount} />
+
+---
+
+## Asymmetric spacing
+
+`rowSpacing` and `columnSpacing` decouple vertical and horizontal gaps.
+
+<Canvas of={GridStories.AsymmetricSpacing} />
+
+---
+
+## Nested grids
+
+Any `<FabricGrid size={n}>` can itself be a `container` — MUI's CSS Grid tracks nesting level via `unstable_level` so gaps compose without margin collapse.
+
+<Canvas of={GridStories.NestedGrids} />
+
+---
+
+## Consumer `sx` override
+
+The wrapper does not merge any sx of its own — consumer `sx` reaches MUI Grid untouched.
+
+<Canvas of={GridStories.WithSxOverride} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={GridStories.KitchenSink} />

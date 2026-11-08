@@ -1,0 +1,110 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as MenuButtonStories from './FabricMenuButton.stories';
+
+<Meta of={MenuButtonStories} name="Overview" />
+
+# FabricMenuButton
+
+`IconButton` trigger + `FabricMenu` compound in one component. A `MoreVert` (or custom icon) button that opens an anchored menu of items. Manages its own open state; controlled mode available.
+
+**Use it for:**
+- Row-action overflow menus (⋮ Edit / Duplicate / Delete)
+- Toolbar overflow ("More options")
+- Card-corner action lists (share, export, archive)
+- Any tap-target-then-menu pattern where the trigger is a small icon
+
+**Do not use for:** wide triggers (whole buttons that open a menu) — use [FabricButton](?path=/docs/components-fabricbutton--overview) with the `menu` prop for split-buttons, or compose `IconButton` + [FabricMenu](?path=/docs/components-fabricmenu--overview) manually for custom anchors.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricMenuButton/index.tsx) · [WAI-ARIA menu-button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/)
+
+---
+
+## Basic
+
+Trigger renders a `MoreVertIcon` inside an `IconButton`. Click opens the menu. `items` is the data-driven API — each item accepts `label`, `icon`, `onClick`, `disabled`, `divider`.
+
+<Canvas of={MenuButtonStories.Default} />
+
+---
+
+## Custom icon
+
+Replace the trigger icon by passing `icon` — Settings gear, Filter icon, three-dots-horizontal, whatever fits.
+
+<Canvas of={MenuButtonStories.CustomIcon} />
+
+---
+
+## Without tooltip
+
+Trigger tooltip defaults to `"Options"`. Pass `noTooltip` for cases where the icon speaks for itself or the wrapping row already labels it.
+
+<Canvas of={MenuButtonStories.NoTooltip} />
+
+---
+
+## Item dividers
+
+Each item accepts `divider: true` — renders a bottom border below that item to visually group related actions.
+
+<Canvas of={MenuButtonStories.WithDividers} />
+
+---
+
+## Custom children
+
+Pass menu children directly (custom `<MenuItem>` rendering with icons + secondary text + shortcut keys) instead of the `items` array.
+
+<Canvas of={MenuButtonStories.CustomChildren} />
+
+---
+
+## Controlled open state
+
+For programmatic open/close (keyboard shortcuts, external triggers, analytics gating), pass `open` + `onOpenChange`.
+
+<Canvas of={MenuButtonStories.Controlled} />
+
+---
+
+## Custom trigger
+
+Replace the entire `IconButton` with a custom trigger element via `trigger` render prop. Useful when the trigger needs to be a `<Chip>`, a text button, or a custom shape.
+
+<Canvas of={MenuButtonStories.CustomTrigger} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={MenuButtonStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Trigger is an `IconButton` by default
+
+If you need the trigger to be a real button (variant + color + label), use [FabricButton](?path=/docs/components-fabricbutton--overview) with the `menu` prop instead — it renders a proper split-button. `FabricMenuButton` is specifically for icon-only triggers.
+
+### Menu closes on any item click
+
+Every `item.onClick` closes the menu after firing. If you need a menu that stays open (multi-select filters, toggleable filters), use [FabricMenu](?path=/docs/components-fabricmenu--overview) directly and manage `open` state yourself.
+
+### Tooltip and menu don't stack cleanly on the same trigger
+
+When the tooltip is open and the user clicks to open the menu, the tooltip hides first then the menu opens — brief flicker. Not ideal but tolerable; use `noTooltip` for high-frequency triggers.
+
+---
+
+## API
+
+<Controls of={MenuButtonStories.Default} />
+
+---
+
+## See also
+
+- **[FabricMenu](?path=/docs/components-fabricmenu--overview)** — headless menu primitive used internally.
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — for label + caret split-buttons via the `menu` prop.
+- **[FabricTooltip](?path=/docs/components-fabrictooltip--overview)** — the trigger tooltip.

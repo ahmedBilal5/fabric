@@ -1,0 +1,150 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as AlertStories from './FabricAlert.stories';
+import * as InformationBarStories from './InformationBar.stories';
+
+<Meta of={AlertStories} name="Overview" />
+
+# FabricAlert
+
+An alert displays a short, important message in a way that attracts the user's attention without interrupting the user's task. `FabricAlert` wraps MUI `Alert` with a first-class `title` prop, opt-in `collapsible` animation, and opt-in `autoHideMs` auto-close.
+
+**Use it in:**
+- Feedback banners after long-running actions (sync complete, import failed)
+- Persistent status headers on data-management pages (schema drift, quota warnings)
+- Form-level error / warning summaries
+- Toast-like transient success confirmations (with `autoHideMs`)
+
+**Do not use for:** transient toasts anchored to the viewport (use [FabricSnackbar](?path=/docs/components-fabricsnackbar--overview)) · confirmation dialogs (use [FabricDialog](?path=/docs/components-fabricdialog--overview)) · inline form-field errors (use `error` + `helperText` on [FabricTextField](?path=/docs/components-fabrictextfield--overview) etc.).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricAlert/index.tsx) · [WAI-ARIA alert pattern](https://www.w3.org/WAI/ARIA/apg/patterns/alert/) · [MUI Alert](https://mui.com/material-ui/react-alert/)
+
+---
+
+## Basic usage
+
+Pass `subVariant` (and optionally `variant`) plus children — they set the icon and colors.
+
+```tsx
+<FabricAlert variant="standard" subVariant="criticalUrgent" title="Urgent">
+  The import failed.
+</FabricAlert>
+```
+
+<Canvas of={AlertStories.Default} />
+
+---
+
+## Sub-variants
+
+`subVariant` is the meaning of the alert and sets its color and icon. Colors come from the theme's `palette.semantic` (`main`, `bg`, `text`).
+
+<Canvas of={AlertStories.SubVariants} />
+
+---
+
+## Variants
+
+`variant="standard"` (default) uses a soft-tinted background. `standardAlt` is white with a colored border and keeps the semantic text color. `outlined` is white with a colored border and regular text. `filled` uses a solid semantic background — pick the highest-contrast variant for the most critical messages.
+
+<Canvas of={AlertStories.Variants} />
+
+---
+
+## Information bar
+
+`FabricInformationBar` is a thin single-line bar: an icon, one line of text, an optional `action`, and a close button when `onClose` is passed. Its `variant` values are `default`, `information`, `success`, `warning`, `cancelled`, `urgent`. `urgent` renders with `role="alert"`; the others use `role="status"`.
+
+```tsx
+<FabricInformationBar variant="warning" onClose={dismiss}>
+  Schema drift detected on 3 sources.
+</FabricInformationBar>
+```
+
+<Canvas of={InformationBarStories.AllStates} />
+
+---
+
+## With title
+
+Pass `title` — FabricAlert renders it as an `AlertTitle` above the body.
+
+<Canvas of={AlertStories.WithTitle} />
+
+---
+
+## With action
+
+Pass an `action` node — usually a button — to give users a next step directly on the alert. When `onClose` is also set, the action and the close ✕ render side by side.
+
+<Canvas of={AlertStories.WithAction} />
+
+---
+
+## Dismissible
+
+Pass `onClose` to render a close ✕ button.
+
+<Canvas of={AlertStories.WithCloseButton} />
+
+---
+
+## Collapsible animation
+
+`collapsible` wraps the alert in an MUI `Collapse` (driven by the `open` prop) so it animates in and out instead of disappearing instantly.
+
+<Canvas of={AlertStories.Collapsible} />
+
+---
+
+## Auto-hide
+
+`autoHideMs` fires `onClose` after N milliseconds. Combine with `collapsible` for a smooth exit.
+
+Auto-hide is off by default. Use it only for confirmations the user doesn't need to read in full, and never for errors.
+
+<Canvas of={AlertStories.AutoHide} />
+
+---
+
+## Custom icon
+
+Pass `icon` to override the sub-variant default for one-off cases.
+
+<Canvas of={AlertStories.CustomIcon} />
+
+---
+
+## No icon
+
+<Canvas of={AlertStories.NoIcon} />
+
+---
+
+## Rich content
+
+Children accept any `ReactNode` — lists, code, links, formatted text.
+
+<Canvas of={AlertStories.RichContent} />
+
+---
+
+## Accessibility
+
+- MUI Alert renders `role="alert"` on the root element so assistive tech announces the message immediately.
+- For non-urgent status messages, override with `role="status"` — screen readers announce it politely without interrupting.
+- The close button has an accessible label ("Close") from MUI. Localize via `slotProps.closeButton['aria-label']`.
+- **Keyboard:** the close button is focusable and activatable via Enter or Space.
+
+---
+
+## API
+
+<Controls of={AlertStories.Default} />
+
+---
+
+## See also
+
+- **[FabricSnackbar](?path=/docs/components-fabricsnackbar--overview)** — for viewport-anchored toasts.
+- **[FabricDialog](?path=/docs/components-fabricdialog--overview)** — for confirmations requiring a decision.
+- **[FabricTooltip](?path=/docs/components-fabrictooltip--overview)** — for on-hover hints.

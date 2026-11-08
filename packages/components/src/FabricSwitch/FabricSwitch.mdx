@@ -1,0 +1,123 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as SwitchStories from './FabricSwitch.stories';
+
+<Meta of={SwitchStories} name="Overview" />
+
+# FabricSwitch
+
+On/off toggles for a single boolean setting where the state change takes effect immediately. Use it for settings such as "Dark mode", "Notifications" or "Auto-save". Extends MUI `Switch` with a 34×20 track, a 16px thumb and a primary-colored checked track (from `@fabric-kit/design-tokens`), and adds a first-class `label` slot.
+
+**Use it for:**
+- Single boolean settings where the change is immediate (Dark mode on/off)
+- Feature flags in admin UIs
+- Row-level toggles ("Active", "Notifications")
+- Mobile-primary UX where switches read as physical toggles
+
+**Do not use for:** submit-form toggles (use [FabricCheckbox](?path=/docs/components-fabriccheckbox--overview) — expected UX in form contexts) · multi-option choice (use [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview) or [FabricCheckboxGroup](?path=/docs/components-fabriccheckboxgroup--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricSwitch/index.tsx) · [Material Design guidance](https://m2.material.io/components/selection-controls#switches)
+
+---
+
+## Basic switches
+
+`label` renders inside `<FormControlLabel>`. Omit `label` for a bare switch (e.g. inside table cells where the row already labels it).
+
+<Canvas of={SwitchStories.Default} />
+<Canvas of={SwitchStories.BareNoLabel} />
+
+---
+
+## States
+
+Off, on, disabled and required. Disabled dims the track with `opacity.disabled` and the label uses `text.disabled`.
+
+<Canvas of={SwitchStories.States} />
+
+---
+
+## Sizes
+
+`size="medium"` (default) keeps the thumb inside the track, scaled to a 34×20 track with a 16px thumb. `size="small"` is the same design at 26×16 with a 12px thumb.
+
+<Canvas of={SwitchStories.Sizes} />
+
+---
+
+## Color
+
+The default `color="primary"` uses the theme primary color. Other palette colors work too.
+
+<Canvas of={SwitchStories.AllColors} />
+
+---
+
+## Label placement
+
+<Canvas of={SwitchStories.LabelPlacement} />
+
+---
+
+## Info icon
+
+`showInfo` adds the 16px info icon after the label. It is ignored when `label` is omitted.
+
+<Canvas of={SwitchStories.ShowInfo} />
+
+---
+
+## Rich label (ReactNode)
+
+`label` is `ReactNode` — icon + text, formatted spans, price + description.
+
+<Canvas of={SwitchStories.ReactNodeLabel} />
+
+---
+
+## Controlled — event vs. shorthand
+
+`onChange(event, checked)` fires the MUI-standard event; `onCheckedChange(checked)` is the boolean shortcut. Both fire when set — event handler first.
+
+<Canvas of={SwitchStories.OnCheckedChangeShorthand} />
+
+---
+
+## Limitations
+
+### Switches vs checkboxes vs radios
+
+The choice is UX, not technical:
+- **Switch** — single boolean, immediate effect. "Dark mode" toggling flips theme now.
+- **Checkbox** — one or more selections in a form. "Agree to terms" submits with the form.
+- **Radio** — mutually exclusive from a small set. "Send weekly / monthly / never".
+
+Read [Checkbox vs. Switch (UX Planet)](https://uxplanet.org/checkbox-vs-toggle-switch-7fc6e83f10b8) if unsure.
+
+### `label` types
+
+`label` is `ReactNode` — same widening as `FabricCheckbox`. Passing `null` renders the switch with an empty label wrapper; omit `label` entirely for icon-only cells.
+
+### Label typography
+
+The label uses `textVariant.pageTitleMd` with `capitalize`. Off-state label and info icon use `field.label`; the on-state label uses `text.primary`.
+
+### Track / thumb dimensions are visual constants
+
+The track, thumb and height are literal px values in the styled component — no clean semantic token maps to a switch's specific dimensions. Colors, radii, timings and typography still route through tokens.
+
+### `onChange` vs `onCheckedChange` fire order
+
+Same as [FabricCheckbox](?path=/docs/components-fabriccheckbox--overview) — event handler fires first, then the boolean shorthand. Consumers that `preventDefault` in `onChange` will still see `onCheckedChange`.
+
+---
+
+## API
+
+<Controls of={SwitchStories.Default} />
+
+---
+
+## See also
+
+- **[FabricCheckbox](?path=/docs/components-fabriccheckbox--overview)** — for form-context booleans.
+- **[FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)** — for mutually-exclusive choices.

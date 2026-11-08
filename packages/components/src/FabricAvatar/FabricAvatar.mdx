@@ -1,0 +1,111 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as AvatarStories from './FabricAvatar.stories';
+
+<Meta of={AvatarStories} name="Overview" />
+
+# FabricAvatar
+
+User and entity avatars for permission list rows, "shared with" columns, and identity badges throughout the app. Extends MUI `Avatar` with two first-class props for the patterns every consumer was hand-rolling: `name` (auto-initials + deterministic HSL color + `alt`) and `size` (preset xs/sm/md/lg or a pixel value).
+
+**Use it for:**
+- User identity rows in permission / share panels
+- "Owner" / "Assigned to" grid cells
+- Company / entity representation with a fallback letter
+- Any place a photo *might* exist and initials are the guaranteed fallback
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricAvatar/index.tsx) · [Material Design guidance](https://m2.material.io/design/communication/avatar.html)
+
+---
+
+## Auto-derived from `name`
+
+The single most useful feature — pass a name and get initials, a deterministic background color, and an `alt` for screen readers, all in one prop.
+
+<Canvas of={AvatarStories.FromName} />
+
+The color is a hash of the name mapped to an HSL hue with fixed saturation/lightness — the same name always renders the same color, giving each user a stable visual identity across pages. The initials logic returns two letters for multi-word names, one for single-word, and an empty string for empty names.
+
+To use the fixed brand colors instead, pass `appearance="default"` (yellow) or `appearance="inverse"` (brown).
+
+<Canvas of={AvatarStories.Appearances} />
+
+---
+
+## Sizes
+
+Preset sizes (`xs`=20 · `sm`=24 · `md`=32 · `lg`=40) match the design system. Numeric values are also accepted for one-off cases. Font-size scales with the box so initials always fit.
+
+<Canvas of={AvatarStories.AllSizes} />
+
+Consumers were previously writing `sx={{ height: '32px', width: '32px', fontSize: '14px' }}` inline every time — the `md` preset replaces that. Column config files can now use `<FabricAvatar name={owner} size='sm' />` and be done.
+
+---
+
+## Variants
+
+Same as MUI: `circular` (default), `rounded` (6px radius), `square`. Pass `border` for a grey border with a small gap.
+
+<Canvas of={AvatarStories.AllVariants} />
+
+<Canvas of={AvatarStories.Borders} />
+
+---
+
+## With an image
+
+When `src` is set, the image renders and `name` supplies the `alt` text automatically. If the image fails to load, MUI falls back to the derived initials.
+
+<Canvas of={AvatarStories.WithImage} />
+
+---
+
+## With an icon
+
+Icon-only avatars work through `children` — the `name`-derived background stays in play if you also pass `name`. To override the auto-background, add `sx={{ bgcolor: ... }}`.
+
+<Canvas of={AvatarStories.WithIcon} />
+
+---
+
+## Overriding initials
+
+Explicit `children` always wins over derived initials. Useful when you want a single-letter monogram on a name that would otherwise produce two letters.
+
+<Canvas of={AvatarStories.InitialsOverride} />
+
+---
+
+## Example: permission list row
+
+A typical access list: each row shows an avatar derived from the user's name.
+
+<Canvas of={AvatarStories.PermissionListRow} />
+
+```tsx
+import { FabricAvatar } from '@fabric-kit/components';
+
+<FabricAvatar name={user.name} size="md" />
+```
+
+---
+
+## Precedence rules
+
+When both a derived value and an explicit prop are set, **the explicit prop always wins**:
+
+| Case | Result |
+|---|---|
+| `name='Jane Doe'` alone | initials `JD`, HSL background from hash of "Jane Doe", `alt='Jane Doe'` |
+| `name='Jane Doe'` + `children='?'` | children `?`, HSL background from hash of "Jane Doe" |
+| `name='Jane Doe'` + `sx={{ bgcolor: 'red' }}` | initials `JD`, background `red` |
+| `name='Jane Doe'` + `alt='User avatar'` | initials `JD`, `alt='User avatar'` |
+| `name='Jane Doe'` + `src='...'` | image (with initials fallback), `alt='Jane Doe'` |
+| `size='md'` + `sx={{ width: 48 }}` | width `48`, height `32` |
+
+---
+
+## Accessibility
+
+- `alt` defaults to `name` when the avatar has an image but no explicit `alt`. Screen readers announce the user's name instead of "image".
+- Initials-only avatars render as text inside a `<div>` — announced as the initials, which is usually fine for dense grids. For a full-page profile header, pass an explicit `alt` (avatars ignore `alt` when there's no image, so use `aria-label` on a wrapper if the initials alone are ambiguous).
+- The derived HSL background is fixed at 55% saturation / 45% lightness for consistent contrast against white text. If you override the background, ensure the WCAG contrast ratio for your foreground color.

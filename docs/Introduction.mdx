@@ -1,0 +1,108 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Welcome" />
+
+<style>{`
+  .fw {
+    --fw-ink: var(--mui-palette-text-primary, #2E2925);
+    --fw-muted: var(--mui-palette-text-secondary, #6E655D);
+    --fw-rule: var(--mui-palette-divider, #E6E1DB);
+    --fw-paper: var(--mui-palette-background-paper, #FFFFFF);
+    --fw-desk: var(--mui-palette-background-default, #F8F6F3);
+    --fw-accent: var(--mui-palette-primary-main, #B23E2A);
+    --fw-board: #2A2420;
+    --fw-board-type: #F3EEE9;
+    --fw-font: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    --fw-mono: 'Geist Mono', ui-monospace, monospace;
+    font-family: var(--fw-font);
+    color: var(--fw-ink);
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+  .fw h1, .fw h2, .fw h3 { font-family: var(--fw-font); color: var(--fw-ink); font-weight: 600; letter-spacing: -0.02em; border: 0; }
+  .fw-hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; padding: 40px 0 56px; }
+  .fw-hero h1 { font-size: 56px; line-height: 1.04; margin: 0 0 20px; }
+  .fw-hero p { font-size: 19px; line-height: 1.5; color: var(--fw-muted); margin: 0 0 28px; max-width: 34ch; }
+  .fw-cmd { display: flex; align-items: center; gap: 12px; background: var(--fw-board); color: var(--fw-board-type); border-radius: 8px; padding: 16px 20px; font: 15px/1.4 var(--fw-mono); overflow-x: auto; white-space: nowrap; }
+  .fw-cmd span { color: #EB8E74; }
+  .fw-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+  .fw-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 8px; font: 500 15px var(--fw-font); text-decoration: none; transition: transform 120ms ease-out; }
+  .fw-btn:hover { transform: translateY(-1px); }
+  .fw-btn:focus-visible, .fw-row a:focus-visible { outline: 2px solid var(--fw-accent); outline-offset: 2px; }
+  .fw-btn--ink { background: var(--fw-board); color: var(--fw-board-type) !important; }
+  .fw-btn--line { border: 1px solid var(--fw-rule); color: var(--fw-ink) !important; background: var(--fw-paper); }
+  .fw-mark { aspect-ratio: 1; width: 100%; max-width: 320px; justify-self: end; }
+  .fw-section { padding: 48px 0; border-top: 1px solid var(--fw-rule); }
+  .fw-section h2 { font-size: 32px; margin: 0 0 8px; }
+  .fw-section > p { color: var(--fw-muted); font-size: 17px; margin: 0 0 28px; max-width: 60ch; }
+  .fw-layers { list-style: none; margin: 0; padding: 0; }
+  .fw-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 5fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--fw-rule); align-items: baseline; }
+  .fw-row strong { font-weight: 600; font-size: 17px; }
+  .fw-row code { font-family: var(--fw-mono); font-size: 13.5px; background: none; border: 0; padding: 0; color: var(--fw-ink); }
+  .fw-row span { color: var(--fw-muted); font-size: 15px; }
+  .fw-row a { color: var(--fw-ink); text-decoration-color: var(--fw-accent); text-underline-offset: 3px; }
+  .fw-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .fw-card { background: var(--fw-paper); border: 1px solid var(--fw-rule); border-radius: 8px; padding: 24px; }
+  .fw-card h3 { font-size: 19px; margin: 0 0 8px; }
+  .fw-card p { color: var(--fw-muted); font-size: 15px; line-height: 1.55; margin: 0; }
+  @media (max-width: 760px) {
+    .fw-hero { grid-template-columns: 1fr; }
+    .fw-hero h1 { font-size: 40px; }
+    .fw-mark { display: none; }
+    .fw-row, .fw-cards { grid-template-columns: 1fr; gap: 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) { .fw-btn { transition: none; } .fw-btn:hover { transform: none; } }
+`}</style>
+
+<div className="fw">
+
+<div className="fw-hero">
+  <div>
+    <h1>MUI, with the app already built.</h1>
+    <p>Fabric is a free, open-source design system on top of MUI: a warm theme, polished components and ready-made kits for the screens every product needs.</p>
+    <div className="fw-cmd" aria-label="Install command"><span>pnpm add</span> @fabric-kit/components @fabric-kit/theme</div>
+    <div className="fw-actions">
+      <a className="fw-btn fw-btn--ink" href="?path=/docs/foundations-installation--docs">Installation guide</a>
+      <a className="fw-btn fw-btn--line" href="?path=/docs/kits-layout-overview--docs">See the kits</a>
+    </div>
+  </div>
+  <svg className="fw-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+    <rect x="6" y="12" width="36" height="6" rx="3" fill="#B23E2A"/>
+    <rect x="6" y="21" width="36" height="6" rx="3" fill="#B23E2A"/>
+    <rect x="6" y="30" width="36" height="6" rx="3" fill="#B23E2A"/>
+    <rect x="12" y="6" width="6" height="36" rx="3" fill="#2A2420"/>
+    <rect x="21" y="6" width="6" height="36" rx="3" fill="#2A2420"/>
+    <rect x="30" y="6" width="6" height="36" rx="3" fill="#2A2420"/>
+    <rect x="10" y="12" width="10" height="6" fill="#B23E2A"/>
+    <rect x="28" y="12" width="10" height="6" fill="#B23E2A"/>
+    <rect x="19" y="21" width="10" height="6" fill="#B23E2A"/>
+    <rect x="10" y="30" width="10" height="6" fill="#B23E2A"/>
+    <rect x="28" y="30" width="10" height="6" fill="#B23E2A"/>
+  </svg>
+</div>
+
+<div className="fw-section">
+  <h2>Woven in layers</h2>
+  <p>Each layer builds only on the ones above it. Install what you need; everything is tree-shakeable.</p>
+  <ul className="fw-layers">
+    <li className="fw-row"><strong>Tokens</strong><code>@fabric-kit/design-tokens</code><span>Color, type, spacing, radii, shadows and motion as plain values. <a href="?path=/docs/foundations-design-tokens-overview--docs">Tokens</a></span></li>
+    <li className="fw-row"><strong>Theme</strong><code>@fabric-kit/theme</code><span>An MUI theme with light and dark modes, plus <code>createFabricTheme</code> for your brand. <a href="?path=/docs/foundations-theming--docs">Theming</a></span></li>
+    <li className="fw-row"><strong>Primitives</strong><code>@fabric-kit/primitives</code><span>Flex, Stack, Inline, Grid, Text and Surface for layout without one-off CSS.</span></li>
+    <li className="fw-row"><strong>Components</strong><code>@fabric-kit/components</code><span>MUI components with better defaults and extra props: loading buttons, data-driven selects, menus, dialogs.</span></li>
+    <li className="fw-row"><strong>Data controls</strong><code>datagrid · date-picker · tree-view</code><span>The free, MIT-licensed MUI X controls, styled to match.</span></li>
+    <li className="fw-row"><strong>Kits</strong><code>layout · global-search · chatbot · versioning · canvas-builder</code><span>Whole features: an app shell, a search palette, an AI assistant, version history and a workflow canvas.</span></li>
+    <li className="fw-row"><strong>Icons</strong><code>@fabric-kit/icons</code><span>3,300+ Material Symbols, plus every <code>@mui/icons-material</code> name. <a href="?path=/docs/foundations-icons-overview--docs">Icons</a></span></li>
+  </ul>
+</div>
+
+<div className="fw-section">
+  <h2>How Fabric thinks</h2>
+  <p>Three rules decide every API.</p>
+  <div className="fw-cards">
+    <div className="fw-card"><h3>Still MUI</h3><p>Every Fabric component accepts its MUI props, <code>sx</code> and refs. Use raw MUI next to Fabric whenever you like.</p></div>
+    <div className="fw-card"><h3>Bring your backend</h3><p>Kits never call an API. Search, chat and version history take async functions, so they work with REST, GraphQL or anything else.</p></div>
+    <div className="fw-card"><h3>Free, all the way</h3><p>MIT licensed, and built only on free MUI packages. No license key, no paid tier.</p></div>
+  </div>
+</div>
+
+</div>

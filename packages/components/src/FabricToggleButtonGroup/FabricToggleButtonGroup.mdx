@@ -1,0 +1,101 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ToggleStories from './FabricToggleButtonGroup.stories';
+
+<Meta of={ToggleStories} name="Overview" />
+
+# FabricToggleButtonGroup
+
+A Toggle Button can be used to group related options. The `ToggleButtonGroup` controls the selected state of its child buttons when given its own `value` prop. Extends MUI `ToggleButtonGroup` with a declarative `items` array.
+
+**Use it in:**
+- View-mode switchers (grid ↔ list ↔ card)
+- Binary filter toggles (include ↔ exclude)
+- Small mutually-exclusive option groups (≤ 5 items)
+- Text-formatting toolbars (bold, italic, underline)
+
+**Do not use for:** radio-style forms (use [FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)) · navigation tabs (use [FabricTabs](?path=/docs/components-fabrictabs--overview)) · dropdowns with many options (use [FabricSelect](?path=/docs/components-fabricselect--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricToggleButtonGroup/index.tsx) · [WAI-ARIA button pattern](https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/) · [MUI Toggle Button](https://mui.com/material-ui/react-toggle-button/)
+
+---
+
+## Exclusive selection
+
+With exclusive selection, selecting one option deselects any other. This is the default (`exclusive={true}`). To enforce that a button must always be active, guard `onChange` against `null`.
+
+<Canvas of={ToggleStories.Default} />
+
+---
+
+## Multiple selection
+
+Multiple selection allows for logically-grouped options, like bold, italic, and underline, to have multiple options selected. Set `exclusive={false}`.
+
+<Canvas of={ToggleStories.MultiSelect} />
+
+---
+
+## Text labels
+
+Text-only toggle. Each item renders a label when `label` is set and an icon when `icon` is set.
+
+<Canvas of={ToggleStories.TextLabels} />
+
+## Icons with labels
+
+Both icon and text in the same button.
+
+<Canvas of={ToggleStories.IconsWithLabels} />
+
+---
+
+## Vertical buttons
+
+The buttons can be stacked vertically with the `orientation` prop set to `"vertical"`.
+
+<Canvas of={ToggleStories.Vertical} />
+
+---
+
+## Disabled states
+
+Disable the entire group with the `disabled` prop, or disable individual items via `{ disabled: true }` in the items array.
+
+<Canvas of={ToggleStories.DisabledGroup} />
+<Canvas of={ToggleStories.DisabledItem} />
+
+---
+
+## Enforce value set
+
+If you want to enforce that at least one button must be active, guard `onChange` against `null`:
+
+```tsx
+const handleChange = (event, newValue) => {
+  if (newValue !== null) {
+    setValue(newValue);
+  }
+};
+```
+
+---
+
+## Accessibility
+
+- `ToggleButtonGroup` uses `role="group"`. Provide an accessible label with `aria-label` or `aria-labelledby`.
+- Each toggle button sets `aria-pressed` according to its state. Provide per-item `aria-label` for icon-only buttons.
+- **Keyboard:** Arrow keys move focus within the group. Space or Enter toggles the focused button. Home/End move to first/last button.
+
+---
+
+## API
+
+<Controls of={ToggleStories.Default} />
+
+---
+
+## See also
+
+- **[FabricRadioGroup](?path=/docs/components-fabricradiogroup--overview)** — for form-bound single-select where submission matters.
+- **[FabricTabs](?path=/docs/components-fabrictabs--overview)** — for navigation between views/panels.
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — standalone action buttons.

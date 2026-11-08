@@ -1,0 +1,79 @@
+{
+  "name": "@fabric-kit/components",
+  "version": "0.1.0",
+  "description": "Fabric components: polished, accessible wrappers around MUI with consistent defaults.",
+  "license": "MIT",
+  "author": "Ahmed Bilal",
+  "homepage": "https://ahmedbilal5.github.io/fabric/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedBilal5/fabric.git",
+    "directory": "packages/components"
+  },
+  "bugs": {
+    "url": "https://github.com/ahmedBilal5/fabric/issues"
+  },
+  "keywords": [
+    "fabric",
+    "mui",
+    "material-ui",
+    "react",
+    "design-system",
+    "components"
+  ],
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "typecheck:stories": "tsc --noEmit -p tsconfig.stories.json"
+  },
+  "dependencies": {
+    "@fabric-kit/date-picker": "workspace:^",
+    "@fabric-kit/design-tokens": "workspace:^",
+    "@fabric-kit/icons": "workspace:^",
+    "@fabric-kit/primitives": "workspace:^",
+    "@fabric-kit/theme": "workspace:^",
+    "dayjs": "^1.11.10"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/lab": "^9.0.0-beta.0",
+    "@mui/material": "^9.0.0",
+    "@mui/x-date-pickers": "^9.0.0",
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0"
+  },
+  "devDependencies": {
+    "@emotion/react": "^11.0.0",
+    "@emotion/styled": "^11.0.0",
+    "@mui/lab": "^9.0.0-beta.0",
+    "@mui/material": "^9.0.0",
+    "@mui/x-date-pickers": "^9.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.5.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

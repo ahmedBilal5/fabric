@@ -1,0 +1,71 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as IconButtonStories from './FabricIconButton.stories';
+
+<Meta of={IconButtonStories} name="Overview" />
+
+# FabricIconButton
+
+An icon-only button. `FabricIconButton` wraps MUI `IconButton` with Fabric's button look at a fixed 26px square. It sits next to [FabricButton](?path=/docs/components-fabricbutton--overview) and takes the same `variant` and `shape` props.
+
+**Props added to MUI `IconButton`:**
+- `variant`: `text` (default), `outlined` or `contained`.
+- `shape`: `standard` (4px corners, default) or `round` (24px corners, a circle at 26px).
+- `color`: `primary` (default), or `error`, `info`, `success`, `warning`. The semantic colors reuse the semantic `FabricButton` states (for example a red delete button).
+- `aria-label`: **required**. An icon-only control has no visible name, so screen readers need one.
+
+Both MUI `size` values render at 26px. The icon slot is 18px in the `round` shape and 16px in the `standard` one. The `outlined` variant has a grey stroke that darkens on hover; the icon turns blue. The rest of the MUI `IconButton` surface (`disabled`, `href`, `component`, handlers, `sx`) is unchanged. The MUI `color` prop is not accepted; colors follow the button states.
+
+**Use it for:** toolbar actions, close / delete / edit buttons, and menu triggers that show only an icon.
+
+**Do not use for:** actions with a text label (use [FabricButton](?path=/docs/components-fabricbutton--overview)).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricIconButton/FabricIconButton.tsx) · [MUI IconButton](https://mui.com/material-ui/react-button/#icon-buttons)
+
+---
+
+## Playground
+
+<Canvas of={IconButtonStories.Default} />
+<Controls of={IconButtonStories.Default} />
+
+---
+
+## Variants
+
+<Canvas of={IconButtonStories.Variants} />
+
+---
+
+## Shapes
+
+<Canvas of={IconButtonStories.Shapes} />
+
+---
+
+## Colors
+
+<Canvas of={IconButtonStories.Colors} />
+
+---
+
+## Disabled
+
+<Canvas of={IconButtonStories.Disabled} />
+
+---
+
+## Dark mode
+
+Dark mode uses the dark-scheme tokens. The right button below sits in a `.dark` wrapper.
+
+<Canvas of={IconButtonStories.DarkMode} />
+
+---
+
+## Accessibility
+
+- `aria-label` is required, since the button has no visible name.
+- It is a native `button`: Tab focuses it, and Enter and Space activate it.
+- At 26px the touch target is small. For touch-first screens, set a larger `width` and `height` in `sx`.
+
+<Canvas of={IconButtonStories.Keyboard} />

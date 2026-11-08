@@ -1,0 +1,117 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as AppShellStories from './FabricAppShell.stories';
+
+<Meta title="Kits/Layout/Overview" />
+
+# Layout kit
+
+`@fabric-kit/layout` gives you a complete application frame: a collapsible sidebar, a top bar, an optional banner and footer, and a notification drawer. Drop your page inside `FabricAppShell` and you get a responsive, dark-mode-ready shell in a few lines.
+
+```bash
+pnpm add @fabric-kit/layout @fabric-kit/theme @mui/material @emotion/react @emotion/styled
+```
+
+<Canvas of={AppShellStories.Default} />
+
+## What's in the kit
+
+| Component | What it does |
+| --- | --- |
+| `FabricAppShell` | Composes the sidebar, top bar, banner and footer around your page. Manages the sidebar state for you, or lets you control it. |
+| `FabricSidebar` | Navigation rail: 240px open, 66px collapsed on desktop, a temporary overlay on mobile. Optional logo and workspace switcher. |
+| `FabricTopBar` | App title, a search slot, custom action buttons, notifications, a theme toggle, an app switcher and a user menu. |
+| `FabricBanner` | A one-line, full-width notice above the shell (info, success, warning or error) with an optional action. |
+| `FabricFooter` | Links, a logo slot and an optional copyright line. |
+| `FabricNotificationDrawer` | A right-hand list of notifications with mark-all-read, load-more and per-item actions. |
+| `FabricUserMenu`, `FabricAppSwitcher` | The top bar's menus, exported for custom headers. |
+
+## Quick start
+
+```tsx
+import { FabricAppShell, type NavigationItem } from '@fabric-kit/layout';
+import DashboardOutlined from '@fabric-kit/icons/DashboardOutlined';
+import SettingsOutlined from '@fabric-kit/icons/SettingsOutlined';
+
+const nav: NavigationItem[] = [
+  { key: 'dashboard', label: 'Dashboard', icon: <DashboardOutlined />, path: '/' },
+  { key: 'settings', label: 'Settings', icon: <SettingsOutlined />, path: '/settings' },
+];
+
+export function App() {
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+
+  return (
+    <FabricAppShell
+      sidebarProps={{ open: true, onToggle: () => {}, items: nav, selectedKey: 'dashboard' }}
+      topBarProps={{
+        appTitle: 'Acme Analytics',
+        user: { firstName: 'Jane', lastName: 'Doe', email: 'jane@example.com' },
+        notificationCount: 3,
+        onNotificationClick: () => setNotificationsOpen(true),
+        onUserMenuAction: (action) => console.log(action),
+      }}
+    >
+      <Dashboard />
+    </FabricAppShell>
+  );
+}
+```
+
+`sidebarProps.open` and `onToggle` are required by the type but ignored by `FabricAppShell`, which owns the sidebar state unless you pass `sidebarOpen` and `onSidebarOpenChange`.
+
+## Routing
+
+Each navigation item takes a `path` and an optional `onClick`. To render items as your router's links, pass the link component:
+
+```tsx
+import { Link } from 'react-router-dom';
+
+<FabricAppShell sidebarProps={{ ...sidebar, linkComponent: Link }} {...rest} />
+```
+
+## Top bar actions
+
+Add your own icon buttons (help, feedback, a cart, a sandbox toggle) with `actions`. Each one can show a badge:
+
+```tsx
+topBarProps={{
+  appTitle: 'Acme Store',
+  actions: [
+    { id: 'help', label: 'Help', icon: <HelpOutline />, onClick: openHelp },
+    { id: 'cart', label: 'Cart', icon: <ShoppingCartOutlined />, onClick: openCart, badge: 2 },
+  ],
+}}
+```
+
+Pass `renderSearch` to put a search field in the bar (for example `FabricGlobalSearch` from `@fabric-kit/global-search`), and `showThemeToggle` with `themeMode` and `onThemeToggleClick` to add a light/dark switch.
+
+## Banners and footers
+
+```tsx
+<FabricAppShell
+  bannerSlot={
+    <FabricBanner
+      fixed={false}
+      severity="warning"
+      message="Scheduled maintenance on Saturday from 02:00 to 04:00 UTC."
+      action={{ label: 'Details', onClick: openStatusPage }}
+    />
+  }
+  footerSlot={<FabricFooter companyName="Acme Inc." links={[{ label: 'Privacy', href: '/privacy' }]} />}
+  {...props}
+/>
+```
+
+Inside the shell, pass `fixed={false}`: the shell measures the banner and pushes the sidebar and content down. On its own, a `FabricBanner` is fixed to the top of the viewport.
+
+## Responsive behavior
+
+- **Desktop (≥ md):** a permanent sidebar, 240px open and 66px collapsed, with a toggle at the bottom. A 56px top bar with the search slot visible.
+- **Mobile (< md):** the sidebar becomes a temporary overlay opened from a menu button in the top bar, and the search slot hides.
+
+## Accessibility
+
+- The sidebar is a `nav` landmark and the page content is `main`.
+- The selected navigation item has `aria-current="page"`.
+- Every icon button in the top bar has an accessible label; custom `actions` use their `label`.
+- The banner uses `role="alert"` for warnings and errors and `role="status"` otherwise.

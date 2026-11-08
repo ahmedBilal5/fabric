@@ -1,0 +1,79 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as DatePickerStories from './FabricDatePicker.stories';
+
+<Meta of={DatePickerStories} name="Overview" />
+
+# FabricDatePicker
+
+Design-system date picker. Wraps MUI X `<DatePicker>` with `LocalizationProvider` + `AdapterDayjs` baked in, so consumers don't need to install dayjs or wrap the tree in a provider. `value` accepts a native `Date`, a `Dayjs`, an ISO string, or `null`; `onChange` always fires with a plain `Date | null`.
+
+**Use it for:**
+- Effective-from / valid-until fields on rules, quotes, and workflows
+- Filter-bar single-date selection
+- Form fields where the user picks a single calendar date (no time-of-day)
+
+**Do not use for:** date + time selection (compose MUI X `<DateTimePicker>`) · date ranges (compose two pickers or MUI X `<DateRangePicker>` from Pro) · relative offsets ("in 2 weeks") — use plain `<FabricTextField>` with helper text.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricDatePicker/index.tsx) · [MUI X DatePicker docs](https://mui.com/x/react-date-pickers/date-picker/)
+
+---
+
+## Basic date picker
+
+Uncontrolled `<FabricDatePicker>` with a label. No provider wrapping needed.
+
+<Canvas of={DatePickerStories.Default} />
+
+---
+
+## Controlled
+
+`value` and `onChange` are the standard React pattern. `onChange` always fires with a plain `Date | null`.
+
+<Canvas of={DatePickerStories.Controlled} />
+
+---
+
+## States
+
+Matches the text field states. The calendar icon sits at the start and the label floats on focus. `disabled`, `required` and `error` are first-class; helper text is wired via `aria-describedby`.
+
+<Canvas of={DatePickerStories.States} />
+
+---
+
+## Constraints
+
+`disableFuture`, `disablePast`, `minDate`, `maxDate` pass through unchanged from MUI X.
+
+<Canvas of={DatePickerStories.MinMaxRange} />
+
+---
+
+## Layout
+
+Omit `width` to let the picker fill its container (`fullWidth` behavior on the underlying `<TextField>` slot).
+
+<Canvas of={DatePickerStories.FullWidth} />
+
+---
+
+## Value shape
+
+`value` accepts a `Date`, a `Dayjs`, an ISO string, or `null`. `onChange` always emits `Date | null`.
+
+---
+
+## API
+
+<Controls />
+
+---
+
+## Accessibility
+
+- Label + input linked via `useId()` (`aria-labelledby`)
+- Helper text linked via `aria-describedby` (`useId()`)
+- Error state uses `aria-invalid` (via MUI's `error` prop) — announced by screen readers
+- Calendar popover is a `role="dialog"` (MUI X built-in) with focus trap and Escape-to-close
+- Keyboard: `←`/`→` day, `↑`/`↓` week, `Page Up`/`Page Down` month, `Shift+Page Up`/`Page Down` year

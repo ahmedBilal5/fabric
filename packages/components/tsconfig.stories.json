@@ -1,0 +1,20 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "declaration": false,
+    "declarationMap": false,
+    "rootDir": "src",
+    "paths": {
+      "@fabric-kit/design-tokens": ["../design-tokens/src/index.ts"],
+      "@fabric-kit/theme": ["../theme/src/index.ts"],
+      "@fabric-kit/primitives": ["../primitives/src/index.ts"]
+    }
+  },
+  "include": ["src/**/*.stories.tsx"],
+  "references": [
+    { "path": "../design-tokens" },
+    { "path": "../theme" },
+    { "path": "../primitives" }
+  ]
+}

@@ -1,0 +1,75 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as DrawerStories from './FabricDrawer.stories';
+
+<Meta of={DrawerStories} name="Overview" />
+
+# FabricDrawer
+
+Navigation drawers provide ergonomic access to destinations in a site or app functionality such as switching accounts. Extends MUI `Drawer` with `anchor` defaulting to `"right"`.
+
+**Use it in:**
+- Filter panels (right-anchored, non-modal)
+- Settings / detail side-sheets
+- Function-list panels in data-flow editors
+- Preview drawers (bottom-anchored)
+
+**Do not use for:** dialogs requiring confirmation (use [FabricDialog](?path=/docs/components-fabricdialog--overview)) · permanent app-shell sidebars (use styled MUI Drawer directly).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricDrawer/index.tsx) · [MUI Drawer](https://mui.com/material-ui/react-drawer/) · [Material Design navigation drawer](https://m2.material.io/components/navigation-drawer)
+
+---
+
+## Temporary drawer
+
+Temporary navigation drawers can toggle open or closed. Closed by default, the drawer opens temporarily above all other content until a section is selected. The Drawer can be cancelled by clicking the overlay or pressing Escape.
+
+<Canvas of={DrawerStories.Default} />
+
+---
+
+## Anchor
+
+Use the `anchor` prop to specify which side of the screen the Drawer originates from. The default is `"right"`, the usual place for detail and filter panels. Use `"bottom"` for preview and query-builder panels.
+
+<Canvas of={DrawerStories.BottomAnchor} />
+
+---
+
+## Persistent drawer (non-modal panel)
+
+The most common pattern in the codebase — a persistent side panel that doesn't block interaction with the main content. Use `variant="persistent"` with relative positioning.
+
+<Canvas of={DrawerStories.NonModalPanel} />
+
+---
+
+## Custom width
+
+Control width via `PaperProps.sx` or the `sx` prop.
+
+<Canvas of={DrawerStories.CustomWidth} />
+
+---
+
+## Accessibility
+
+- The drawer renders as a MUI `Modal` in temporary mode — focus is trapped inside and restored on close.
+- Pressing Escape closes the drawer (via `onClose` with `reason: 'escapeKeyDown'`).
+- Persistent drawers don't trap focus — they coexist with page content.
+
+---
+
+## API
+
+Extends `DrawerProps` from MUI directly. No custom props beyond `anchor` defaulting to `"right"`.
+
+<Controls of={DrawerStories.Default} />
+
+---
+
+## See also
+
+- **[FabricDialog](?path=/docs/components-fabricdialog--overview)** — modal requiring user decision.
+- **[FabricListItemSimple](?path=/docs/components-fabriclistitemsimple--overview)** — sidebar list often rendered inside a drawer.
+- **[FabricMenu](?path=/docs/components-fabricmenu--overview)** — popup menu for contextual actions.
+| All other MUI Drawer props | — | Passed through directly |

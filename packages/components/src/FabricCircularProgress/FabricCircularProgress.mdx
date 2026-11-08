@@ -1,0 +1,113 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as CircularProgressStories from './FabricCircularProgress.stories';
+
+<Meta of={CircularProgressStories} name="Overview" />
+
+# FabricCircularProgress
+
+Loading spinner for asynchronous work — button submit states, layout skeleton screens, tree-row fetches, and full-page load overlays. Extends MUI `CircularProgress` verbatim; the one change is that `size` defaults to `24` (MUI's default is `40`), which suits buttons, rows and dense layouts.
+
+**Use it for:**
+- Submit-button spinners inside disabled `<Button>` while saving
+- Layout-level "loading…" overlays before initial data arrives
+- Inline tree-row / table-cell activity indicators
+- Determinate progress with a percentage label overlay
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricCircularProgress/index.tsx) · [Material Design guidance](https://m2.material.io/components/progress-indicators)
+
+---
+
+## Basic spinner
+
+Default renders an indeterminate 24 px spinner in the primary theme color.
+
+<Canvas of={CircularProgressStories.Default} />
+
+---
+
+## Sizes
+
+`size` accepts both `number` (px) and `string` (any CSS length — `"1.5rem"`, `"32px"`, `"2em"`). Default is `24`.
+
+<Canvas of={CircularProgressStories.AllSizes} />
+<Canvas of={CircularProgressStories.StringSize} />
+
+Common sizing conventions in the codebase:
+
+| Context | Size |
+|---|---:|
+| Inline inside a table / tree row | `14–20` |
+| Inside a submit button | `16` |
+| Layout skeleton loading | `24` (default) |
+| Page-level overlay | `40` |
+| Determinate with percentage label | `56` |
+
+---
+
+## Colors
+
+Standard MUI theme colors plus `"inherit"` (matches the parent text color — useful inside colored buttons).
+
+<Canvas of={CircularProgressStories.AllColors} />
+
+---
+
+## Thickness
+
+`thickness` controls the stroke width of the ring (default `3.6`). Heavier values read better at small sizes.
+
+<Canvas of={CircularProgressStories.Thickness} />
+
+---
+
+## Indeterminate vs. determinate
+
+`variant="indeterminate"` (default) spins continuously and is used when the total work is unknown. `variant="determinate"` fills the ring from `0` to `value` (`0–100`) and is used when progress is measurable.
+
+<Canvas of={CircularProgressStories.Indeterminate} />
+<Canvas of={CircularProgressStories.Determinate} />
+<Canvas of={CircularProgressStories.DeterminateProgression} />
+
+### Determinate with a percentage label
+
+The most common composition — wrap the spinner in a positioned `Box` and center a `<Typography>` on top.
+
+<Canvas of={CircularProgressStories.DeterminateWithLabel} />
+
+---
+
+## Inside a submit button
+
+Loading spinners inside disabled buttons — the single most common consumer pattern (hundreds of call sites). `size={16}` + `sx={{ color: '#fff' }}` matches the button's foreground.
+
+<Canvas of={CircularProgressStories.InsideButton} />
+
+---
+
+## Inside a dense list row
+
+Small inline spinners inside table cells and tree items. Use `size={14–20}` and a heavier `thickness={5}` so the ring stays visible at small sizes.
+
+<Canvas of={CircularProgressStories.InsideTableRow} />
+
+---
+
+## Accessibility
+
+MUI's `CircularProgress` renders as `role="progressbar"` with `aria-valuemin={0}` and `aria-valuemax={100}` (plus `aria-valuenow={value}` in determinate mode). Screen readers announce it correctly out of the box.
+
+For indeterminate spinners inside a labeled region (a section, a card, a dialog), no additional `aria-label` is needed — the surrounding context supplies the "what is loading" narration. For bare page-level spinners, add an `aria-label="Loading…"` explicitly.
+
+```tsx
+<FabricCircularProgress aria-label="Loading products" />
+```
+
+---
+
+## Anti-patterns
+
+Do **not** use `FabricCircularProgress` for:
+
+- **Buttons that should stay clickable while loading.** Use MUI `<LoadingButton>` (the button itself owns the spinner slot).
+- **Long-running background work** where the user has moved on. Fire a `FabricSnackbar` with an action instead — a spinner someone can't see is invisible progress.
+- **Skeleton loading of *content*.** Use MUI `<Skeleton>` — it conveys shape and hierarchy while loading, not just "something is happening".

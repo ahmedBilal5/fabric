@@ -1,0 +1,126 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as SnackbarStories from './FabricSnackbar.stories';
+
+<Meta of={SnackbarStories} name="Overview" />
+
+# FabricSnackbar
+
+Brief, non-critical notifications that float above the UI to confirm actions or surface background events. "Changes saved", "Refresh in progress", "Failed to sync — retry?" — all render through `FabricSnackbar`. Composes MUI `Snackbar` + [FabricAlert](?path=/docs/components-fabricalert--overview) in its `standardAlt` look (white fill, semantic border, text and icon) with a drop shadow, so a toast matches the alerts in light and dark mode.
+
+**Use it for:**
+- Confirmation toasts after a save / delete / bulk action
+- Background-process status (Sync running, Import complete)
+- Non-blocking warnings ("Some fields require review")
+- Quick error notifications where the user doesn't need to acknowledge
+
+**Do not use for:** blocking confirmations (use [FabricDialog](?path=/docs/components-fabricdialog--overview)) · critical errors that require immediate action (use `Alert` inline) · long-form content (use a full modal).
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricSnackbar/index.tsx) · [WAI-ARIA alert role](https://www.w3.org/TR/wai-aria-1.1/#alert) · [Material Design guidance](https://m2.material.io/components/snackbars)
+
+---
+
+## Primary
+
+Every story below opens from a button because MUI Snackbar is a fixed-position portal — permanently-open stories would overflow Storybook's canvas.
+
+<Canvas of={SnackbarStories.Primary} />
+
+---
+
+## Severities
+
+Four severities, each mapped to a FabricAlert `subVariant` (color + icon): `success` → `completeSuccess`, `info` → `runningInProgressInfo`, `warning` → `warningFailed`, `error` → `criticalUrgent`. Only one snackbar visible at a time to avoid stacking.
+
+<Canvas of={SnackbarStories.AllSeverities} />
+
+---
+
+## Title only
+
+Header-only snackbar for terse confirmations.
+
+<Canvas of={SnackbarStories.TitleOnly} />
+
+---
+
+## Body only
+
+Body-only for background-process messages that don't warrant a bold header.
+
+<Canvas of={SnackbarStories.BodyOnly} />
+
+---
+
+## Rich title (ReactNode)
+
+`title` is a `ReactNode`: compose icons, formatted spans, or `<strong>` emphasis.
+
+<Canvas of={SnackbarStories.RichTitle} />
+
+---
+
+## Positioning
+
+`vertical="top" | "bottom"` and `horizontal="left" | "center" | "right"` — flat props that compose into MUI's `anchorOrigin` internally. Defaults to `top` / `right`.
+
+<Canvas of={SnackbarStories.TopLeft} />
+<Canvas of={SnackbarStories.BottomCenter} />
+
+---
+
+## Offset below a fixed banner
+
+`topOffset?: number` pushes a top-anchored toast down, for example below a fixed `FabricBanner` or app bar.
+
+<Canvas of={SnackbarStories.TopOffset} />
+
+---
+
+## Alert-props override
+
+`alertProps` forwards to the inner FabricAlert — pass `sx`, `className`, a custom `action` button, or another `variant` (e.g. `filled`). Consumer `sx` keys win over DS defaults.
+
+<Canvas of={SnackbarStories.AlertPropsOverride} />
+
+---
+
+## Kitchen sink
+
+<Canvas of={SnackbarStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### Portal — permanently-open stories overflow Storybook
+
+MUI Snackbar renders into a portal at `document.body` with `position: fixed`. Every Storybook demo uses a button-trigger render to avoid overflowing the canvas iframe. Consumers writing tests should render inside a portal-aware container (e.g. `render(<Snackbar open>` with a jsdom body).
+
+### `onClose(event, reason)` — `clickaway` fires on every backdrop click
+
+By default the snackbar auto-dismisses when the user clicks anywhere outside. If undesired, wrap the handler: `(_event, reason) => { if (reason !== 'clickaway') hideSnackbar(); }`.
+
+### `autoHideDuration` is user-controlled — no minimum
+
+Passing very short durations (< 3000ms) is technically allowed but violates [WCAG 2.2 SC 2.2.3 Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html). Prefer ≥ 5000ms for messages the user needs to read.
+
+### Custom close icon isn't supported
+
+The severity icon comes from `iconMapping`; the outer `Snackbar` doesn't have an X-close by default. Add one via `alertProps.action=<IconButton onClick={close}><CloseIcon/></IconButton>`.
+
+### Multiple snackbars stack visually
+
+Rendering two `open` snackbars stacks them at the same viewport corner. For queued notifications, use `notistack` or manage a queue in state and render one at a time.
+
+---
+
+## API
+
+<Controls of={SnackbarStories.Primary} />
+
+---
+
+## See also
+
+- **[FabricDialog](?path=/docs/components-fabricdialog--overview)** — for blocking confirmations that require user acknowledgement.
+- **[FabricTooltip](?path=/docs/components-fabrictooltip--overview)** — for hover-only inline hints.

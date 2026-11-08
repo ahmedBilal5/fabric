@@ -1,0 +1,125 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from '../src/FabricChatbot/FabricChatbot.stories';
+
+<Meta title="Kits/Chatbot/Overview" />
+
+# Chatbot
+
+`FabricChatbot` is a floating assistant: a launcher button in the corner that opens a chat panel. It handles the UI (streaming text, a stop button, starter suggestions, source links, errors, keyboard and screen-reader support). You connect it to any backend with one async function.
+
+```bash
+pnpm add @fabric-kit/chatbot
+```
+
+## Connect a backend
+
+`onSend` receives the question and a context with an `AbortSignal`, an `onToken` callback for streaming, and the conversation so far.
+
+### Plain-text streaming
+
+```tsx
+import { FabricChatbot, readTextStream } from '@fabric-kit/chatbot';
+
+<FabricChatbot
+  suggestions={['How do I reset my password?']}
+  onSend={async (question, { signal, onToken, history }) => {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question, history }),
+      signal,
+    });
+    if (!res.ok || !res.body) throw new Error(`Chat failed: ${res.status}`);
+    await readTextStream(res.body, onToken);
+  }}
+/>
+```
+
+### Server-sent events
+
+Many LLM APIs stream SSE. `readServerSentEvents` hands you each event's `data`; return `false` to stop.
+
+```tsx
+import { readServerSentEvents } from '@fabric-kit/chatbot';
+
+onSend={async (question, { signal, onToken }) => {
+  const res = await fetch('/api/chat/stream', { method: 'POST', body: question, signal });
+  let sources = [];
+  await readServerSentEvents(res.body!, (data) => {
+    if (data === '[DONE]') return false;
+    const event = JSON.parse(data);
+    if (event.delta) onToken(event.delta);
+    if (event.sources) sources = event.sources;
+  });
+  return { sources }; // [{ label, href }]
+}}
+```
+
+### No streaming
+
+Resolve with a string, or `{ content, sources }`.
+
+```tsx
+onSend={async (question, { signal }) => {
+  const res = await fetch(`/api/answer?q=${encodeURIComponent(question)}`, { signal });
+  const { answer, links } = await res.json();
+  return { content: answer, sources: links };
+}}
+```
+
+<Canvas of={Stories.StreamingAnswer} />
+
+## Behavior
+
+| Situation | What the user sees |
+| --- | --- |
+| Waiting for the first token | A typing indicator |
+| Streaming | Text appears as `onToken` is called; the send button becomes **Stop** |
+| Stop pressed | The request's `signal` aborts; the partial answer stays, marked "Stopped" |
+| `onSend` throws | `labels.errorMessage`, and `onError(error)` is called |
+| `onSend` finishes with no text | `labels.emptyReplyMessage` |
+| Component unmounts mid-answer | The request is aborted |
+
+Only one question is in flight at a time.
+
+## Props
+
+| Prop | Type | Default | |
+| --- | --- | --- | --- |
+| `onSend` | `(question, { signal, onToken, history }) => Promise<Reply \| string \| void>` | required | Calls your backend. |
+| `initialMessage` | `string` | `"Hi! How can I help you today?"` | First assistant message. `""` for none. |
+| `suggestions` | `string[]` | `[]` | Starter questions, shown until the user asks something. |
+| `defaultOpen` | `boolean` | `false` | Open on mount. |
+| `open`, `onOpenChange` | `boolean`, `(open) => void` | | Control the panel yourself, e.g. from a "Help" menu item. |
+| `hideable` | `boolean` | `true` | Lets users tuck the launcher into a small edge tab. |
+| `icon` | `ReactNode` | robot icon | Launcher and header icon. |
+| `renderMessageContent` | `(message) => ReactNode` | plain text | Render Markdown or rich content. |
+| `labels` | `FabricChatbotLabels` | English | Every user-facing string, for translation or rebranding. |
+| `onError` | `(error) => void` | | Report failures to your logging. Not called when the user stops an answer. |
+
+All other `div` props, `sx` and `ref` go to the fixed-position root.
+
+## Rendering Markdown
+
+Fabric doesn't bundle a Markdown parser. Bring your own:
+
+```tsx
+import Markdown from 'react-markdown';
+
+<FabricChatbot
+  onSend={send}
+  renderMessageContent={(message) => <Markdown>{message.content}</Markdown>}
+/>
+```
+
+## Accessibility
+
+- The launcher is a labelled button with `aria-expanded` and `aria-controls`.
+- The panel is a labelled dialog; <kbd>Esc</kbd> minimizes it and returns focus to the launcher.
+- The message list is an `aria-live="polite"` log, so screen readers announce answers.
+- The composer is a form: <kbd>Enter</kbd> sends.
+- The typing animation respects `prefers-reduced-motion`.
+
+## Relation to MUI
+
+The chatbot is composed from Fabric primitives and components (`FabricIconButton`, `FabricTextField`, `FabricChip`), so it follows your theme, including dark mode.

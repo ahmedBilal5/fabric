@@ -1,0 +1,160 @@
+import { Meta, Story, Canvas, Source, Controls } from '@storybook/addon-docs/blocks';
+import * as DialogStories from './FabricDialog.stories';
+
+<Meta of={DialogStories} name="Overview" />
+
+# FabricDialog
+
+Modal dialogs inform users about a task, require decisions, or involve multiple form fields inside a temporary surface. Use it for "Are you sure?" prompts, short creation forms and confirm-deletion flows. Extends MUI `Dialog`, adds a data-driven `actions` API, first-class `title` / `subtitle` / `titleIcon` slots, and an optional `confirmDelete` mode gated behind typing "DELETE".
+
+**Use it for:**
+- Confirm-before-destructive-action prompts (delete workspace, discard changes)
+- Multi-field creation forms (New workspace, New rule, New tag)
+- Detail viewers (Record details, Version history)
+- Any modal decision the user must acknowledge before continuing
+
+**Do not use for:** transient success/error toasts — use [FabricSnackbar](?path=/docs/components-fabricsnackbar--overview). For inline warnings that don't block flow, use MUI `Alert`.
+
+**Quick links:** [Source](https://github.com/ahmedBilal5/fabric/blob/main/packages/components/src/FabricDialog/FabricDialog.tsx) · [WAI-ARIA dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) · [Material Design guidance](https://m2.material.io/components/dialogs)
+
+---
+
+## Basic dialog
+
+`open` + `onClose` control visibility. `title` renders in the header, `actions` become footer buttons — each entry accepts the full `FabricButtonProps` surface (loading, tooltip, menu, `data-cy`).
+
+<Canvas of={DialogStories.Default} />
+
+---
+
+## With title icon
+
+`titleIcon` accepts any `ReactNode` — an icon, an inline badge, or a small `<Chip>`. Renders inline before the title text. Add `titleIconTone="info"` or `"attention"` to wrap an (uncoloured) icon in a 36px tinted circle.
+
+<Canvas of={DialogStories.WithTitleIcon} />
+
+---
+
+## Message dialogs
+
+The default look: an 8px panel with the panel shadow, 24/32 Medium capitalised title, a 32px bordered close button in the title row, 24px body padding and a 16/24 footer. The theme (`MuiDialog*` overrides) owns the panel, title, body and footer; `FabricDialog` owns the close button and the tinted icon circle. Width is left to the consumer — the stories use `dialogWidth.md`.
+
+### General message
+
+<Canvas of={DialogStories.GeneralMessage} />
+
+### Revoke access (dual confirmation)
+
+Use a plain `FabricTextField` inside the dialog to gate the action behind any phrase. `confirmDelete` stays reserved for the "DELETE" pattern. These examples end with a single round arrow button; the X in the header acts as cancel.
+
+<Canvas of={DialogStories.DualConfirmation} />
+
+### Transfer ownership
+
+<Canvas of={DialogStories.TransferOwnership} />
+
+### Title with action pills / checkbox
+
+<Canvas of={DialogStories.ActionPills} />
+
+<Canvas of={DialogStories.WithCheckbox} />
+
+### Form dialogs: Add member, Share, Create new
+
+These use a plain primary-coloured icon (no `titleIconTone` circle).
+
+<Canvas of={DialogStories.AddMember} />
+
+<Canvas of={DialogStories.Share} />
+
+<Canvas of={DialogStories.CreateNew} />
+
+### Long content
+
+<Canvas of={DialogStories.LongContent} />
+
+### Mobile
+
+<Canvas of={DialogStories.MobileFullScreen} />
+
+### Not closable
+
+<Canvas of={DialogStories.NotClosable} />
+
+---
+
+## Dividers
+
+`dividers` shows horizontal dividers above the content AND above the action row. Use for content-heavy dialogs where the sections need visual separation.
+
+<Canvas of={DialogStories.WithDividers} />
+
+---
+
+## Confirm-delete — uncontrolled (default)
+
+The most common destructive-action pattern. Gate the delete button behind typing "DELETE" (case-insensitive, trimmed). The dialog owns the input state.
+
+<Canvas of={DialogStories.ConfirmDeleteUncontrolled} />
+
+---
+
+## Confirm-delete — controlled
+
+Pair `deleteConfirmValue` + `onDeleteConfirmValueChange` when the confirm input needs to participate in a surrounding form (react-hook-form, redux-form).
+
+<Canvas of={DialogStories.ConfirmDeleteControlled} />
+
+---
+
+## Consumer overrides
+
+`paperSx` and `slotProps.paper.sx` both merge into the MUI Paper slot with consumer keys winning over DS defaults.
+
+<Canvas of={DialogStories.PaperSxOverride} />
+
+---
+
+## `onClose(event, reason)`
+
+Preserves MUI's signature — the `reason` argument distinguishes `backdropClick` from `escapeKeyDown` from explicit close. Ignore the args for the common case; use them when accidental dismissal matters (unsaved forms, mid-flow flows).
+
+<Canvas of={DialogStories.OnCloseReason} />
+
+---
+
+## Kitchen sink
+
+Every knob at once — three actions, dividers, custom title icon, subtitle, and rich body.
+
+<Canvas of={DialogStories.KitchenSink} />
+
+---
+
+## Limitations
+
+### `confirmDelete` matches by label OR color
+
+The delete-detection heuristic gates an action if `label === "delete"` (case-insensitive, trimmed) OR `color === "error"`. If your destructive action is neither ("Remove", "Archive", "Erase"), rename it or set `color="error"`. Custom detection isn't currently supported.
+
+### `dividers` adds two dividers
+
+`dividers` draws a line above the content and another above the actions. If you want only the top divider, drop `dividers` and add a `<Divider />` manually.
+
+### Aria-labelling requires either `title` or explicit `aria-label`
+
+`useId()`-generated `aria-labelledby` points at the title text. If you pass a completely custom header (via `content` or `children`), also pass `aria-labelledby={yourId}` or the modal will lack a name.
+
+---
+
+## API
+
+<Controls of={DialogStories.Default} />
+
+---
+
+## See also
+
+- **[FabricButton](?path=/docs/components-fabricbutton--overview)** — each entry in `actions` is a `FabricButtonProps` object.
+- **[FabricSnackbar](?path=/docs/components-fabricsnackbar--overview)** — for non-blocking notifications instead of a dialog.
+- **[FabricTextField](?path=/docs/components-fabrictextfield--overview)** — inside dialog forms; the confirm-delete input already uses one.
