@@ -1,9 +1,9 @@
 import { create } from "storybook/theming/create";
+import { BRAND_PALETTES, type BrandName, DEFAULT_BRAND, isBrand } from "./brand-palettes";
 
 /**
- * Storybook UI themes (sidebar, toolbar and docs chrome) in Fabric's colors.
- * Plain values: the manager bundle doesn't resolve workspace packages.
- * Kept in sync with `@fabric-kit/design-tokens` by hand.
+ * Storybook UI themes (sidebar, toolbar and docs chrome), one per sample brand
+ * and mode, so the whole window follows the brand picked in the toolbar.
  */
 const shared = {
   brandTitle: "Fabric",
@@ -15,54 +15,51 @@ const shared = {
   fontCode: "'Geist Mono', ui-monospace, monospace",
 } as const;
 
-export const sbLightTheme = create({
-  ...shared,
-  base: "light",
-  brandImage: "./fabric-logo.svg",
-  colorPrimary: "#B23E2A",
-  colorSecondary: "#B23E2A",
-  appBg: "#F8F6F3",
-  appContentBg: "#FFFFFF",
-  appPreviewBg: "#FFFFFF",
-  appBorderColor: "#E6E1DB",
-  textColor: "#2E2925",
-  textInverseColor: "#FFFFFF",
-  textMutedColor: "#6E655D",
-  barTextColor: "#6E655D",
-  barSelectedColor: "#B23E2A",
-  barHoverColor: "#B23E2A",
-  barBg: "#FFFFFF",
-  buttonBg: "#F8F6F3",
-  buttonBorder: "#E6E1DB",
-  booleanBg: "#F1EDE8",
-  booleanSelectedBg: "#FFFFFF",
-  inputBg: "#FFFFFF",
-  inputBorder: "#D9D2CA",
-  inputTextColor: "#2E2925",
-});
+export type Mode = "light" | "dark";
 
-export const sbDarkTheme = create({
-  ...shared,
-  base: "dark",
-  brandImage: "./fabric-logo-dark.svg",
-  colorPrimary: "#EB8E74",
-  colorSecondary: "#C9553E",
-  appBg: "#1C1815",
-  appContentBg: "#151210",
-  appPreviewBg: "#151210",
-  appBorderColor: "#3A332E",
-  textColor: "#F0ECE8",
-  textInverseColor: "#151210",
-  textMutedColor: "#B5ACA3",
-  barTextColor: "#B5ACA3",
-  barSelectedColor: "#EB8E74",
-  barHoverColor: "#F2B09D",
-  barBg: "#2A2420",
-  buttonBg: "#2A2420",
-  buttonBorder: "#4A423B",
-  booleanBg: "#151210",
-  booleanSelectedBg: "#3A332E",
-  inputBg: "#151210",
-  inputBorder: "#4A423B",
-  inputTextColor: "#F0ECE8",
-});
+function build(brand: BrandName, mode: Mode) {
+  const c = BRAND_PALETTES[brand][mode];
+  const light = mode === "light";
+  return create({
+    ...shared,
+    base: mode,
+    brandImage: light ? "./fabric-logo.svg" : "./fabric-logo-dark.svg",
+    colorPrimary: c.primary,
+    colorSecondary: c.selected,
+    appBg: light ? c.bg : c.subtle,
+    appContentBg: light ? c.paper : c.bg,
+    appPreviewBg: light ? c.paper : c.bg,
+    appBorderColor: light ? c.divider : c.dividerLight,
+    textColor: c.text,
+    textInverseColor: light ? "#FFFFFF" : c.bg,
+    textMutedColor: c.textSecondary,
+    barTextColor: c.textSecondary,
+    barSelectedColor: c.primary,
+    barHoverColor: c.primary,
+    barBg: c.paper,
+    buttonBg: light ? c.bg : c.paper,
+    buttonBorder: c.divider,
+    booleanBg: light ? c.subtle : c.bg,
+    booleanSelectedBg: light ? c.paper : c.dividerLight,
+    inputBg: light ? c.paper : c.bg,
+    inputBorder: c.borderStrong,
+    inputTextColor: c.text,
+  });
+}
+
+const cache = new Map<string, ReturnType<typeof create>>();
+
+/** The Storybook UI theme for a brand and mode. Unknown brands fall back to Fabric. */
+export function sbTheme(brand: unknown, mode: Mode) {
+  const name = isBrand(brand) ? brand : DEFAULT_BRAND;
+  const key = `${name}/${mode}`;
+  let theme = cache.get(key);
+  if (!theme) {
+    theme = build(name, mode);
+    cache.set(key, theme);
+  }
+  return theme;
+}
+
+export const sbLightTheme = sbTheme(DEFAULT_BRAND, "light");
+export const sbDarkTheme = sbTheme(DEFAULT_BRAND, "dark");

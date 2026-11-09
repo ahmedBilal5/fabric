@@ -38,14 +38,12 @@
 
 import {
   accordion,
-  border,
   dark,
   duration,
   easing,
   field,
   spacing,
   surface,
-  text,
 } from "@fabric-kit/design-tokens";
 import CloseIcon from "@fabric-kit/icons/Close";
 import DragIndicatorIcon from "@fabric-kit/icons/DragIndicator";
@@ -176,20 +174,20 @@ interface RowColors {
 const LIGHT: RowColors = {
   text: field.label,
   textHover: field.labelHover,
-  textActive: text.primary,
+  textActive: "var(--mui-palette-text-primary)",
   hoverBg: accordion.hoverBg,
   activeBg: surface.tertiary,
-  line: border.default,
+  line: "var(--mui-palette-divider)",
   mark: "var(--mui-palette-primary-main)",
 };
 
 const DARK: RowColors = {
   text: dark.field.label,
   textHover: dark.field.labelHover,
-  textActive: dark.text.primary,
+  textActive: "var(--mui-palette-text-primary)",
   hoverBg: dark.accordion.hoverBg,
   activeBg: dark.surface.tertiary,
-  line: dark.border.default,
+  line: "var(--mui-palette-divider)",
   mark: "var(--mui-palette-primary-main)",
 };
 

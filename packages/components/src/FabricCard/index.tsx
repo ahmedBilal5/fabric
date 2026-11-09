@@ -29,7 +29,7 @@
  * ```
  */
 
-import { border, dark, radii, shadows, surface } from "@fabric-kit/design-tokens";
+import { dark, radii, shadows, surface } from "@fabric-kit/design-tokens";
 import { Card, type CardProps } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import type { KeyboardEvent } from "react";
@@ -87,7 +87,7 @@ const FabricCardImpl = forwardRef<HTMLDivElement, FabricCardProps>(function Fabr
     () => (theme) => ({
       borderRadius: `${radii.lg}px`,
       // Zero width but keep the colour, so recipes that only set a border width or style still get it.
-      border: `0 solid ${border.default}`,
+      border: `0 solid var(--mui-palette-divider)`,
       ...(suppressShadow ? { boxShadow: shadows.sm } : null),
       ...(tint
         ? {

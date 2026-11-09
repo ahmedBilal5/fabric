@@ -23,7 +23,6 @@
  */
 
 import {
-  border,
   brand,
   dark,
   duration,
@@ -34,7 +33,6 @@ import {
   radii,
   status,
   stepper,
-  text,
 } from "@fabric-kit/design-tokens";
 import { IconButton, type IconButtonProps } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
@@ -74,9 +72,9 @@ const lightColors: StateColors = {
   main: "var(--mui-palette-primary-main)",
   hover: "var(--mui-palette-primary-dark)",
   press: brand.navy,
-  subtle: text.secondary,
+  subtle: "var(--mui-palette-text-secondary)",
   onMain: "var(--mui-palette-primary-contrastText)",
-  stroke: border.default,
+  stroke: "var(--mui-palette-divider)",
   strokeActive: field.underline,
   selectedBg: "var(--mui-palette-action-selected)",
   disabledFill: stepper.disabledBg,
@@ -86,9 +84,9 @@ const darkColors: StateColors = {
   main: "var(--mui-palette-primary-main)",
   hover: "var(--mui-palette-primary-light)",
   press: "var(--mui-palette-primary-main)",
-  subtle: dark.text.secondary,
+  subtle: "var(--mui-palette-text-secondary)",
   onMain: "var(--mui-palette-primary-contrastText)",
-  stroke: dark.border.default,
+  stroke: "var(--mui-palette-divider)",
   strokeActive: dark.border.strong,
   selectedBg: "var(--mui-palette-action-selected)",
   disabledFill: dark.stepper.disabledBg,

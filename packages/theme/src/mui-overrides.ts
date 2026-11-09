@@ -60,8 +60,10 @@ declare module "@mui/material/styles" {
 
   interface PaletteOptions {
     semantic?: SemanticPalette;
-    appShell?: AppShellPalette;
-    datagrid?: DatagridPalette;
+    /** Merged onto Fabric's app-shell colors by `createFabricTheme`, so set only what you change. */
+    appShell?: Partial<AppShellPalette>;
+    /** Merged onto Fabric's data grid colors by `createFabricTheme`, so set only what you change. */
+    datagrid?: Partial<DatagridPalette>;
   }
 }
 

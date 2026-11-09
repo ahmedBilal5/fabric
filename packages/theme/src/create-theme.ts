@@ -256,8 +256,8 @@ const lightButtonColors: ButtonStateColors = {
   main: "var(--mui-palette-primary-main)",
   hover: "var(--mui-palette-primary-dark)",
   press: brand.navy,
-  disabledBorder: border.default,
-  subtleText: text.secondary,
+  disabledBorder: "var(--mui-palette-divider)",
+  subtleText: "var(--mui-palette-text-secondary)",
   semanticLabel: text.inverse,
   semantic: {
     error: status.error,
@@ -272,8 +272,8 @@ const darkButtonColors: ButtonStateColors = {
   main: "var(--mui-palette-primary-main)",
   hover: "var(--mui-palette-primary-light)",
   press: "var(--mui-palette-primary-main)",
-  disabledBorder: dark.border.default,
-  subtleText: dark.text.secondary,
+  disabledBorder: "var(--mui-palette-divider)",
+  subtleText: "var(--mui-palette-text-secondary)",
   semanticLabel: dark.text.inverse,
   semantic: {
     error: dark.status.error,
@@ -838,16 +838,16 @@ const baseThemeOptions: ThemeOptions = {
         // are actually swapping.
         ".dark .MuiPickersSectionList-root, .dark .MuiPickersSectionList-section, .dark .MuiPickersSectionList-sectionContent, .dark .MuiPickersInputBase-root, .dark .MuiPickersOutlinedInput-input, .dark .MuiPickersFilledInput-input":
           {
-            color: dark.text.primary,
+            color: "var(--mui-palette-text-primary)",
           },
         ".light .MuiPickersSectionList-root, .light .MuiPickersSectionList-section, .light .MuiPickersSectionList-sectionContent, .light .MuiPickersInputBase-root, .light .MuiPickersOutlinedInput-input, .light .MuiPickersFilledInput-input":
           {
-            color: text.primary,
+            color: "var(--mui-palette-text-primary)",
           },
         ".dark .Mui-disabled.MuiPickersInputBase-root .MuiPickersSectionList-root, .dark .Mui-disabled.MuiPickersInputBase-root .MuiPickersSectionList-sectionContent":
-          { color: dark.text.disabled },
+          { color: "var(--mui-palette-text-disabled)" },
         ".light .Mui-disabled.MuiPickersInputBase-root .MuiPickersSectionList-root, .light .Mui-disabled.MuiPickersInputBase-root .MuiPickersSectionList-sectionContent":
-          { color: text.disabled },
+          { color: "var(--mui-palette-text-disabled)" },
         // Icons inside the pickers should also invert.
         ".dark .MuiPickersInputBase-root .MuiSvgIcon-root, .dark .MuiPickersTextField-root .MuiSvgIcon-root":
           {
@@ -864,10 +864,10 @@ const baseThemeOptions: ThemeOptions = {
         // the rule above. But if MUI treats placeholder differently, catch it
         // with the placeholder pseudo too.
         '.dark .MuiPickersSectionList-sectionContent[data-content=""]': {
-          color: dark.text.disabled,
+          color: "var(--mui-palette-text-disabled)",
         },
         '.light .MuiPickersSectionList-sectionContent[data-content=""]': {
-          color: text.disabled,
+          color: "var(--mui-palette-text-disabled)",
         },
         // Picker outline uses its own class (`.MuiPickersOutlinedInput-notchedOutline`),
         // not `.MuiOutlinedInput-notchedOutline`, so MUI's `divider` never
@@ -899,48 +899,48 @@ const baseThemeOptions: ThemeOptions = {
         // hex at render time so it never switches with the CSS class toggle.
         // Pin it per mode so selected-row alpha blending uses the right base.
         ".dark .MuiDataGrid-root": {
-          "--DataGrid-containerBackground": dark.surface.secondary,
-          "--DataGrid-rowBorderColor": dark.border.default,
-          color: dark.text.primary,
+          "--DataGrid-containerBackground": "var(--mui-palette-background-default)",
+          "--DataGrid-rowBorderColor": "var(--mui-palette-divider)",
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-panelContent": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-panelFooter": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         // // Column menu renders in a portal outside the DataGrid DOM tree.
         ".dark .MuiDataGrid-panel .MuiPaper-root, .dark .MuiDataGrid-menu .MuiPaper-root": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-panel .MuiSvgIcon-root, .dark .MuiDataGrid-menu .MuiSvgIcon-root": {
-          color: dark.text.secondary,
+          color: "var(--mui-palette-text-secondary)",
         },
         // Filter panel inputs + selects
         ".dark .MuiDataGrid-panel .MuiInputBase-root, .dark .MuiDataGrid-panel .MuiSelect-select": {
-          color: dark.text.primary,
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-panel .MuiInputLabel-root, .dark .MuiDataGrid-panel .MuiFormLabel-root":
           {
-            color: dark.text.secondary,
+            color: "var(--mui-palette-text-secondary)",
           },
         ".dark .MuiDataGrid-panel .MuiOutlinedInput-notchedOutline": {
-          borderColor: dark.border.default,
+          borderColor: "var(--mui-palette-divider)",
         },
         ".dark .MuiDataGrid-panel .MuiSelect-icon": {
-          color: dark.text.secondary,
+          color: "var(--mui-palette-text-secondary)",
         },
         // // Column visibility / management panel (portal)
         ".dark .MuiDataGrid-columnsManagement, .dark .MuiDataGrid-columnsPanel": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-paper, .dark .MuiDataGrid-panelContent": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         // Grid popups share the column-menu look in dark mode: row fill + MUI elevation-1 overlay.
         // The filter panel had no overlay and its Column / Operator dropdowns had the stronger
@@ -957,17 +957,17 @@ const baseThemeOptions: ThemeOptions = {
           backgroundImage: "var(--mui-overlays-1)",
         },
         ".dark .MuiDataGrid-columnHeaders .MuiDataGrid-filler": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-columnHeaders .MuiDataGrid-scrollbarFiller": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         //for the dropdown list in filter operator and column
         ".dark .MuiPaper-root.MuiPopover-paper.MuiMenu-paper": {
-          backgroundColor: dark.surface.primary,
-          color: dark.text.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
+          color: "var(--mui-palette-text-primary)",
         },
         //for the dropdown list in filter operator and column hover
         ".dark .MuiButtonBase-root.MuiMenuItem-root:hover": {
@@ -975,7 +975,7 @@ const baseThemeOptions: ThemeOptions = {
         },
         //for the expand icon in tree data
         ".dark .MuiDataGrid-row .MuiButtonBase-root.MuiIconButton-root": {
-          color: dark.text.primary,
+          color: "var(--mui-palette-text-primary)",
         },
         ".dark .MuiDataGrid-row.Mui-selected .MuiButtonBase-root.MuiIconButton-root": {
           color: dark.text.inverse,
@@ -1007,22 +1007,22 @@ const baseThemeOptions: ThemeOptions = {
         // the popper paper + every inner surface for both modes.
         ".dark .MuiPickersPopper-paper, .dark .MuiPickersLayout-root, .dark .MuiDateCalendar-root, .dark .MuiYearCalendar-root, .dark .MuiMonthCalendar-root, .dark .MuiMultiSectionDigitalClock-root, .dark .MuiPickersToolbar-root, .dark .MuiPickersActionBar-root":
           {
-            backgroundColor: dark.surface.primary,
-            color: dark.text.primary,
+            backgroundColor: "var(--mui-palette-background-paper)",
+            color: "var(--mui-palette-text-primary)",
           },
         ".light .MuiPickersPopper-paper, .light .MuiPickersLayout-root, .light .MuiDateCalendar-root, .light .MuiYearCalendar-root, .light .MuiMonthCalendar-root, .light .MuiMultiSectionDigitalClock-root, .light .MuiPickersToolbar-root, .light .MuiPickersActionBar-root":
           {
-            backgroundColor: surface.primary,
-            color: text.primary,
+            backgroundColor: "var(--mui-palette-background-paper)",
+            color: "var(--mui-palette-text-primary)",
           },
         // Calendar header (month/year label + arrow buttons) + weekday labels.
         ".dark .MuiPickersCalendarHeader-root, .dark .MuiPickersCalendarHeader-label, .dark .MuiPickersCalendarHeader-switchViewButton, .dark .MuiPickersArrowSwitcher-button":
           {
-            color: dark.text.primary,
+            color: "var(--mui-palette-text-primary)",
           },
         ".light .MuiPickersCalendarHeader-root, .light .MuiPickersCalendarHeader-label, .light .MuiPickersCalendarHeader-switchViewButton, .light .MuiPickersArrowSwitcher-button":
           {
-            color: text.primary,
+            color: "var(--mui-palette-text-primary)",
           },
         // The design date-dropdown: arrows and weekday labels are muted, Sundays are red.
         ".light .MuiPickersArrowSwitcher-button": { color: picker.nav },
@@ -1043,16 +1043,16 @@ const baseThemeOptions: ThemeOptions = {
         // AFTER our CssBaseline block loads (Emotion runtime insertion order),
         // so equal-specificity rules lose the cascade fight.
         ".dark .MuiPickerDay-root, .dark .MuiPickersDay-root": {
-          color: `${dark.text.primary} !important`,
+          color: `var(--mui-palette-text-primary) !important`,
         },
         ".light .MuiPickerDay-root, .light .MuiPickersDay-root": {
-          color: `${text.primary} !important`,
+          color: `var(--mui-palette-text-primary) !important`,
         },
         ".dark .MuiPickerDay-root.Mui-disabled, .dark .MuiPickersDay-root.Mui-disabled": {
-          color: `${dark.text.disabled} !important`,
+          color: `var(--mui-palette-text-disabled) !important`,
         },
         ".light .MuiPickerDay-root.Mui-disabled, .light .MuiPickersDay-root.Mui-disabled": {
-          color: `${text.disabled} !important`,
+          color: `var(--mui-palette-text-disabled) !important`,
         },
         // The design: days from neighbouring months keep their color but are faded.
         ".MuiPickerDay-dayOutsideMonth, .MuiPickersDay-dayOutsideMonth": { opacity: 0.4 },
@@ -1065,10 +1065,10 @@ const baseThemeOptions: ThemeOptions = {
           color: picker.nav,
         },
         ".dark .MuiMultiSectionDigitalClockSection-root": {
-          borderColor: dark.border.default,
+          borderColor: "var(--mui-palette-divider)",
         },
         ".light .MuiMultiSectionDigitalClockSection-root": {
-          borderColor: border.default,
+          borderColor: "var(--mui-palette-divider)",
         },
         // Selected day/time cell: a light primary tint with normal text in light mode,
         // a solid primary fill with contrast text in dark mode.
@@ -1080,7 +1080,7 @@ const baseThemeOptions: ThemeOptions = {
         ".light .MuiPickersDay-root.Mui-selected, .light .MuiPickerDay-root.Mui-selected, .light .MuiYearCalendar-button.Mui-selected, .light .MuiMonthCalendar-button.Mui-selected, .light .MuiMultiSectionDigitalClock-root .MuiMenuItem-root.Mui-selected":
           {
             backgroundColor: "rgba(var(--mui-palette-primary-mainChannel) / 0.14) !important",
-            color: `${text.primary} !important`,
+            color: `var(--mui-palette-text-primary) !important`,
           },
       },
     },

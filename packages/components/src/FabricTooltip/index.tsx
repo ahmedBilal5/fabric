@@ -20,16 +20,7 @@
  * ```
  */
 
-import {
-  brand,
-  dark,
-  radii,
-  shadows,
-  spacing,
-  surface,
-  text,
-  textVariant,
-} from "@fabric-kit/design-tokens";
+import { brand, dark, radii, shadows, spacing, text, textVariant } from "@fabric-kit/design-tokens";
 import { Tooltip, type TooltipProps } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { memo, type ReactNode, useMemo } from "react";
@@ -60,10 +51,10 @@ const tooltipSx =
     filter: `drop-shadow(${shadows.dropdown})`,
     ...(variant === "light"
       ? {
-          backgroundColor: surface.primary,
+          backgroundColor: "var(--mui-palette-background-paper)",
           color: text.medium,
           ...theme.applyStyles("dark", {
-            backgroundColor: dark.surface.primary,
+            backgroundColor: "var(--mui-palette-background-paper)",
             color: dark.text.medium,
           }),
         }
@@ -82,7 +73,10 @@ const arrowSx =
   (variant: FabricTooltipVariant) =>
   (theme: Theme): SxProps<Theme> =>
     variant === "light"
-      ? { color: surface.primary, ...theme.applyStyles("dark", { color: dark.surface.primary }) }
+      ? {
+          color: "var(--mui-palette-background-paper)",
+          ...theme.applyStyles("dark", { color: "var(--mui-palette-background-paper)" }),
+        }
       : { color: brand.navy, ...theme.applyStyles("dark", { color: dark.brand.navy }) };
 
 function FabricTooltipImpl({

@@ -11,10 +11,10 @@ import "@fontsource/geist-mono/400.css";
 
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useColorScheme } from "@mui/material/styles";
-import { GLOBALS_UPDATED, SET_GLOBALS } from "storybook/internal/core-events";
+import { UPDATE_GLOBALS } from "storybook/internal/core-events";
 import { addons } from "storybook/preview-api";
 import { useDarkMode } from "storybook-dark-mode";
-import { sbDarkTheme, sbLightTheme } from "./sb-themes";
+import { sbDarkTheme, sbLightTheme, sbTheme } from "./sb-themes";
 import { BRAND_THEMES, brandTheme, DEFAULT_BRAND } from "./themes";
 import "./docs.css";
 
@@ -49,33 +49,42 @@ function SyncColorScheme() {
   return null;
 }
 
-// Docs pages render outside the story decorators, so they follow the toolbar's brand
-// through the preview channel instead of `context.globals`. Storybook re-mounts the
-// docs container when globals change, so the latest brand lives at module scope:
-// a fresh mount starts from it instead of the default.
-let latestBrand: string = DEFAULT_BRAND;
+// Docs pages render outside the story decorators, so they can't read
+// `context.globals`. Instead they read the brand from the preview's store and
+// listen for UPDATE_GLOBALS, the event the toolbar sends to the preview.
+// (GLOBALS_UPDATED and SET_GLOBALS are sent *by* the preview, so its own
+// listeners never hear them.)
+type PreviewGlobals = {
+  __STORYBOOK_PREVIEW__?: {
+    storyStoreValue?: { userGlobals?: { get(): Record<string, unknown> } };
+  };
+};
+
+function storedBrand(): string {
+  const brand = (
+    globalThis as PreviewGlobals
+  ).__STORYBOOK_PREVIEW__?.storyStoreValue?.userGlobals?.get()?.brand;
+  return typeof brand === "string" ? brand : DEFAULT_BRAND;
+}
+
 const brandListeners = new Set<(brand: string) => void>();
 let brandChannelReady = false;
 
 function listenForBrand() {
   if (brandChannelReady) return;
   brandChannelReady = true;
-  const onGlobals = ({ globals }: { globals?: Record<string, unknown> }) => {
-    if (typeof globals?.brand !== "string" || globals.brand === latestBrand) return;
-    latestBrand = globals.brand;
-    for (const listener of brandListeners) listener(latestBrand);
-  };
-  const channel = addons.getChannel();
-  channel.on(GLOBALS_UPDATED, onGlobals);
-  channel.on(SET_GLOBALS, onGlobals);
+  addons.getChannel().on(UPDATE_GLOBALS, ({ globals }: { globals?: Record<string, unknown> }) => {
+    if (typeof globals?.brand !== "string") return;
+    for (const listener of brandListeners) listener(globals.brand);
+  });
 }
 
 function useBrandGlobal(): string {
   listenForBrand();
-  const [brand, setBrand] = React.useState<string>(latestBrand);
+  const [brand, setBrand] = React.useState<string>(storedBrand);
   React.useEffect(() => {
     brandListeners.add(setBrand);
-    setBrand(latestBrand);
+    setBrand(storedBrand());
     return () => {
       brandListeners.delete(setBrand);
     };
@@ -204,7 +213,7 @@ const preview: Preview = {
         const isDark = useDarkMode();
         const brand = useBrandGlobal();
         return (
-          <DocsContainer {...props} theme={isDark ? sbDarkTheme : sbLightTheme}>
+          <DocsContainer {...props} theme={sbTheme(brand, isDark ? "dark" : "light")}>
             <ThemeProvider theme={brandTheme(brand)}>
               <SyncColorScheme />
               {children}

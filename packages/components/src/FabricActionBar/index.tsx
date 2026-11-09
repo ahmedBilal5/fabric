@@ -22,7 +22,7 @@
  * ```
  */
 
-import { border, fontWeight, iconSize, spacing, textVariant } from "@fabric-kit/design-tokens";
+import { fontWeight, iconSize, spacing, textVariant } from "@fabric-kit/design-tokens";
 import EditOutlinedIcon from "@fabric-kit/icons/EditOutlined";
 import { Box, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
@@ -116,7 +116,7 @@ const FabricActionBarImpl = forwardRef<HTMLDivElement, FabricActionBarProps>(
       alignItems: "center",
       padding: `${spacing.md}px ${spacing.xl}px`,
       bgcolor: "var(--mui-palette-background-paper)",
-      borderBottom: bordered ? `1px solid ${border.default}` : "none",
+      borderBottom: bordered ? `1px solid var(--mui-palette-divider)` : "none",
       boxSizing: "border-box",
     };
     const mergedSx: SxProps<Theme> = Array.isArray(sx) ? [dsSx, ...sx] : sx ? [dsSx, sx] : dsSx;

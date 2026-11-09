@@ -28,7 +28,6 @@
  */
 
 import {
-  border,
   brand,
   dark,
   fontWeight,
@@ -116,7 +115,7 @@ const LIGHT: TabSchemeColors = {
   hoverBg: "rgba(var(--mui-palette-primary-mainChannel) / 0.1)",
   pressText: tab.pressText,
   inverse: text.inverse,
-  line: border.default,
+  line: "var(--mui-palette-divider)",
 };
 
 const DARK: TabSchemeColors = {
@@ -129,7 +128,7 @@ const DARK: TabSchemeColors = {
   hoverBg: "rgba(var(--mui-palette-primary-mainChannel) / 0.12)",
   pressText: dark.tab.pressText,
   inverse: dark.text.inverse,
-  line: dark.border.default,
+  line: "var(--mui-palette-divider)",
 };
 
 // Lines are borders on the tab's `::after` (bottom line) and `::before` (folder outline), so a
@@ -271,7 +270,7 @@ const FabricTabsImpl = forwardRef<HTMLDivElement, FabricTabsProps>(function Fabr
         onChange={onChange}
         sx={[
           tabsSx(appearance),
-          borderBottom ? { borderBottom: `1px solid ${border.default}` } : false,
+          borderBottom ? { borderBottom: `1px solid var(--mui-palette-divider)` } : false,
           ...(Array.isArray(sx) ? sx : sx ? [sx] : []),
         ]}
         {...tabsRest}

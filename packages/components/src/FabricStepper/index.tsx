@@ -38,7 +38,6 @@
  */
 
 import {
-  border,
   dark,
   fontWeight,
   iconSize,
@@ -122,7 +121,7 @@ const LIGHT: StepperSchemeColors = {
   check: status.success,
   disabledBg: stepper.disabledBg,
   label: stepper.label,
-  line: border.default,
+  line: "var(--mui-palette-divider)",
 };
 
 const DARK: StepperSchemeColors = {
@@ -132,7 +131,7 @@ const DARK: StepperSchemeColors = {
   check: dark.status.success,
   disabledBg: dark.stepper.disabledBg,
   label: dark.stepper.label,
-  line: dark.border.default,
+  line: "var(--mui-palette-divider)",
 };
 
 // Step icon: 32px circle with 4px padding around a 24px glyph.
