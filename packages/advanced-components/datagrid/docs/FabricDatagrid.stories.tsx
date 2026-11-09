@@ -1,6 +1,7 @@
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import type { GridActionsColDef, GridColDef } from "@mui/x-data-grid";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { fn } from "storybook/test";
 import DeleteIcon from "@fabric-kit/icons/Delete";
 import EditIcon from "@fabric-kit/icons/Edit";
 import { FabricDatagrid } from "../src";
@@ -14,22 +15,53 @@ export default meta;
 
 type Story = StoryObj<typeof FabricDatagrid>;
 
-// Sample data
-const sampleRows = Array.from({ length: 20 }, (_, i) => ({
-  id: i + 1,
-  name: `Item ${i + 1}`,
-  category: ["Electronics", "Clothing", "Food", "Furniture"][i % 4],
-  price: Math.round(Math.random() * 500 * 100) / 100,
-  status: ["Active", "Draft", "Archived"][i % 3],
+// Sample data: a small product catalog with fixed values, so screenshots are stable.
+const PRODUCTS: Array<[string, string, number, string]> = [
+  ["Ergonomic office chair", "Furniture", 249, "Active"],
+  ["Standing desk, oak", "Furniture", 529, "Active"],
+  ["Noise-cancelling headphones", "Electronics", 199.99, "Active"],
+  ["Merino crew sweater", "Clothing", 89, "Draft"],
+  ["Cold brew coffee, 12-pack", "Food", 34.5, "Active"],
+  ["27-inch 4K monitor", "Electronics", 379, "Active"],
+  ["Linen shirt", "Clothing", 64, "Archived"],
+  ["Bookshelf, walnut", "Furniture", 315, "Draft"],
+  ["Mechanical keyboard", "Electronics", 149, "Active"],
+  ["Organic granola", "Food", 7.25, "Active"],
+  ["Rain jacket", "Clothing", 129, "Active"],
+  ["Desk lamp, brass", "Furniture", 79, "Archived"],
+  ["USB-C dock", "Electronics", 189, "Draft"],
+  ["Dark chocolate bar", "Food", 4.5, "Active"],
+  ["Wool socks, 3-pack", "Clothing", 24, "Active"],
+  ["Filing cabinet", "Furniture", 210, "Active"],
+  ["Wireless mouse", "Electronics", 49, "Archived"],
+  ["Green tea, loose leaf", "Food", 12, "Draft"],
+  ["Canvas tote", "Clothing", 29, "Active"],
+  ["Lounge armchair", "Furniture", 640, "Active"],
+];
+
+const sampleRows = PRODUCTS.map(([name, category, price, status], i) => ({
+  id: 1001 + i,
+  name,
+  category,
+  price,
+  status,
 }));
 
 const baseColumns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "name", headerName: "Name", flex: 1 },
-  { field: "category", headerName: "Category", width: 140 },
-  { field: "price", headerName: "Price", width: 100, type: "number" },
-  { field: "status", headerName: "Status", width: 100 },
+  { field: "id", headerName: "SKU", width: 80 },
+  { field: "name", headerName: "Product", flex: 1, minWidth: 180 },
+  { field: "category", headerName: "Category", width: 130 },
+  {
+    field: "price",
+    headerName: "Price",
+    width: 110,
+    type: "number",
+    valueFormatter: (value: number) => `$${value.toFixed(2)}`,
+  },
+  { field: "status", headerName: "Status", width: 110 },
 ];
+
+const onRowAction = fn();
 
 /**
  * Default usage with cell borders and standard header styling.
@@ -41,7 +73,7 @@ export const Default: Story = {
   },
 };
 
-// The design "Column - more action": a 40px column with a ⋮ menu per row.
+// A 40px column with a ⋮ menu per row.
 const moreCol: GridActionsColDef = {
   field: "more",
   type: "actions",
@@ -51,20 +83,20 @@ const moreCol: GridActionsColDef = {
     <GridActionsCellItem
       key="duplicate"
       label="Duplicate"
-      onClick={() => alert(`Duplicate ${params.row.name}`)}
+      onClick={() => onRowAction("Duplicate", params.row.name)}
       showInMenu
     />,
     <GridActionsCellItem
       key="archive"
       label="Archive"
-      onClick={() => alert(`Archive ${params.row.name}`)}
+      onClick={() => onRowAction("Archive", params.row.name)}
       showInMenu
     />,
   ],
 };
 
 /**
- * Action column using the `FabricActionColDef` pattern.
+ * Row actions with MUI X `GridActionsCellItem`: icon buttons inline, extra actions in a ⋮ menu.
  */
 export const WithActions: Story = {
   render: () => {
@@ -78,14 +110,14 @@ export const WithActions: Story = {
           key="edit"
           icon={<EditIcon fontSize="small" />}
           label="Edit"
-          onClick={() => alert(`Edit ${params.row.name}`)}
+          onClick={() => onRowAction("Edit", params.row.name)}
           showInMenu={false}
         />,
         <GridActionsCellItem
           key="delete"
           icon={<DeleteIcon fontSize="small" color="error" />}
           label="Delete"
-          onClick={() => alert(`Delete ${params.row.name}`)}
+          onClick={() => onRowAction("Delete", params.row.name)}
           showInMenu={false}
         />,
       ],

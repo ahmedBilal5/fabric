@@ -1,0 +1,81 @@
+import { Meta, Canvas, Source } from '@storybook/addon-docs/blocks';
+import * as SearchStories from '../src/FabricGlobalSearch/FabricGlobalSearch.stories';
+import * as ResultsStories from '../src/FabricViewAllSearchResults/FabricViewAllSearchResults.stories';
+
+<Meta title="Kits/Global Search/Overview" />
+
+# Global search kit
+
+`@fabric-kit/global-search` gives your app a search box that groups results by type (customers, orders, products) and a full results page with one tab per type. It works with any backend: you pass async functions, and Fabric handles debouncing, cancelling stale requests, grouping, highlighting and paging.
+
+<Source code={`pnpm add @fabric-kit/global-search @fabric-kit/components @fabric-kit/datagrid @mui/x-data-grid`} language="bash" />
+
+## The search box
+
+Type in the box below (try "north" or "harbor") to see grouped results. Arrow keys move through them, Enter opens one, and Escape clears the box.
+
+<Canvas of={SearchStories.Default} />
+
+`onSearch` receives the query and an `AbortSignal`. Pass the signal to `fetch`, so typing quickly never shows an older response. `config` says how to show each result type; its key order sets the group order.
+
+<Source
+  language="tsx"
+  code={`import { FabricGlobalSearch } from '@fabric-kit/global-search';
+
+<FabricGlobalSearch
+  onSearch={async (query, { signal }) => {
+    const res = await fetch(\`/api/search?q=\${encodeURIComponent(query)}\`, { signal });
+    return res.json(); // { groups: [{ type, results, totalCount }], totalCount }
+  }}
+  config={{
+    customer: {
+      displayLabel: 'Customers',
+      labelKey: 'name',
+      descriptionKey: 'city',
+      onClickResult: (row) => navigate(\`/customers/\${row.id}\`),
+    },
+  }}
+  onClickViewAll={(query) => navigate(\`/search?q=\${query}\`)}
+/>`}
+/>
+
+### Key props
+
+| Prop | What it does |
+| --- | --- |
+| `onSearch` | `(query, { signal }) => Promise<{ groups, totalCount }>`. Called after the user stops typing. |
+| `config` | Per result type: `displayLabel`, `labelKey`, `descriptionKey`, optional `icon` or `imageKey`, and `onClickResult`. |
+| `onClickViewAll` | Shows a "View all results" button. Omit it to hide the button. |
+| `context` | `{ label, type }` moves one type to the top, e.g. orders while you're on the orders page. |
+| `debounceMs` | Wait before searching. Default `300`. |
+| `onError` | Called when `onSearch` rejects. Aborted requests are ignored. |
+
+<Canvas of={SearchStories.WithContext} />
+
+## The results page
+
+`FabricViewAllSearchResults` shows every match in a [FabricDatagrid](?path=/docs/advanced-components-fabricdatagrid--overview), one tab per type. Sorting, filtering and paging run on your server through `onFetchPage`.
+
+<Canvas of={ResultsStories.Default} />
+
+<Source
+  language="tsx"
+  code={`import { FabricViewAllSearchResults } from '@fabric-kit/global-search';
+
+<FabricViewAllSearchResults
+  query={query}
+  config={{ customer: { tabLabel: 'Customers', columns } }}
+  onFetchPage={async ({ type, query, page, pageSize, sortModel, signal }) => {
+    const res = await fetch(\`/api/search/\${type}?q=\${query}&page=\${page}&size=\${pageSize}\`, { signal });
+    return res.json(); // { rows, totalCount }
+  }}
+/>`}
+/>
+
+Pass `counts` (for example the totals from the last `onSearch` response) to show counts on the tabs before each tab loads. A tab can render its own component instead of a grid with `component`.
+
+## Accessibility
+
+- The search box is an ARIA combobox: results are a listbox, and the active option is announced as you move through it.
+- Group headings label each group of options.
+- Errors leave the box usable; report them through `onError`, for example with a [FabricSnackbar](?path=/docs/components-fabricsnackbar--overview).

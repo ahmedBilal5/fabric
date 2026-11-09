@@ -30,6 +30,7 @@ const Box = ({ children, wide }: { children: React.ReactNode; wide?: boolean }) 
 
 const meta: Meta<typeof FabricFlex> = {
   title: "Primitives/FabricFlex",
+  tags: ["autodocs"],
   component: FabricFlex,
   parameters: { layout: "padded" },
 };

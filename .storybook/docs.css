@@ -1,0 +1,383 @@
+/*
+ * Docs page styling. Storybook's defaults are generic; this gives the docs Fabric's
+ * type, a proper code style and quieter tables. Scoped to #storybook-docs so the
+ * id outranks Storybook's own emotion classes without !important.
+ * Colors come from MUI's CSS variables, so pages follow light/dark mode and the
+ * selected brand.
+ */
+
+#storybook-docs {
+  --doc-ink: var(--mui-palette-text-primary, #2e2925);
+  --doc-muted: var(--mui-palette-text-secondary, #6e655d);
+  --doc-rule: var(--mui-palette-divider, #e6e1db);
+  --doc-accent: var(--mui-palette-primary-main, #b23e2a);
+  --doc-tint: color-mix(in srgb, var(--doc-ink) 5%, transparent);
+  --doc-code-bg: #1e1a17;
+  --doc-code-rule: transparent;
+  --doc-code-ink: #ede6df;
+  --doc-font: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --doc-mono: "Geist Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+.dark #storybook-docs {
+  --doc-code-bg: #0e0c0a;
+  --doc-code-rule: #3a332e;
+}
+
+/* ---------- Page and type ---------- */
+
+#storybook-docs .sbdocs-wrapper {
+  padding: 56px 48px 96px;
+}
+
+#storybook-docs .sbdocs-content {
+  max-width: 880px;
+  font-family: var(--doc-font);
+  color: var(--doc-ink);
+}
+
+#storybook-docs .sbdocs-content :is(p, li, td) {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--doc-ink);
+}
+
+#storybook-docs .sbdocs-content :is(h1, h2, h3, h4) {
+  font-family: var(--doc-font);
+  color: var(--doc-ink);
+  border: 0;
+  padding: 0;
+}
+
+#storybook-docs .sbdocs-content h1 {
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 650;
+  letter-spacing: -0.03em;
+  margin: 0 0 16px;
+}
+
+/* The paragraph right under the title reads as a lead. */
+#storybook-docs .sbdocs-content h1 + p {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--doc-muted);
+  margin-bottom: 32px;
+  max-width: 68ch;
+}
+
+#storybook-docs .sbdocs-content h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 56px 0 14px;
+}
+
+#storybook-docs .sbdocs-content hr + h2 {
+  margin-top: 0;
+}
+
+#storybook-docs .sbdocs-content h3 {
+  font-size: 18px;
+  line-height: 1.3;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 36px 0 10px;
+}
+
+#storybook-docs .sbdocs-content h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 28px 0 8px;
+}
+
+#storybook-docs .sbdocs-content p {
+  margin: 0 0 16px;
+}
+
+#storybook-docs .sbdocs-content :is(ul, ol) {
+  margin: 0 0 20px;
+  padding-left: 22px;
+}
+
+#storybook-docs .sbdocs-content li {
+  margin: 6px 0;
+}
+
+#storybook-docs .sbdocs-content li::marker {
+  color: var(--doc-muted);
+}
+
+#storybook-docs .sbdocs-content strong {
+  font-weight: 600;
+  color: var(--doc-ink);
+}
+
+#storybook-docs .sbdocs-content a {
+  color: var(--doc-accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--doc-accent) 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 120ms ease-out;
+}
+
+#storybook-docs .sbdocs-content a:hover {
+  text-decoration-color: var(--doc-accent);
+}
+
+#storybook-docs .sbdocs-content a:focus-visible {
+  outline: 2px solid var(--doc-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+#storybook-docs .sbdocs-content hr {
+  border: 0;
+  border-top: 1px solid var(--doc-rule);
+  margin: 48px 0;
+}
+
+#storybook-docs .sbdocs-content blockquote {
+  margin: 24px 0;
+  padding: 14px 18px;
+  border: 0;
+  border-left: 3px solid var(--doc-accent);
+  border-radius: 0 8px 8px 0;
+  background: var(--doc-tint);
+  color: var(--doc-ink);
+}
+
+#storybook-docs .sbdocs-content blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Inline code ---------- */
+
+#storybook-docs .sbdocs-content :not(pre) > code {
+  font-family: var(--doc-mono);
+  font-size: 0.86em;
+  line-height: 1.4;
+  color: var(--doc-ink);
+  background: color-mix(in srgb, var(--doc-ink) 7%, transparent);
+  border: 0;
+  border-radius: 5px;
+  padding: 0.15em 0.4em;
+  white-space: break-spaces;
+  overflow-wrap: anywhere;
+}
+
+#storybook-docs .sbdocs-content a > code {
+  color: inherit;
+}
+
+/* ---------- Code blocks ---------- */
+
+#storybook-docs .docblock-source {
+  position: relative;
+  margin: 20px 0 28px;
+  background: var(--doc-code-bg);
+  border: 1px solid var(--doc-code-rule);
+  border-radius: 12px;
+  box-shadow: none;
+  overflow: hidden;
+}
+
+/* Source panel under a story canvas ("Show code"). */
+#storybook-docs .docs-story + .docblock-source,
+#storybook-docs .sbdocs-preview .docblock-source {
+  margin: 0;
+  border-radius: 0 0 12px 12px;
+  border: 0;
+}
+
+#storybook-docs .docblock-source pre,
+#storybook-docs .docblock-source pre > div,
+#storybook-docs .docblock-source code {
+  font-family: var(--doc-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--doc-code-ink);
+  background: transparent;
+}
+
+#storybook-docs .docblock-source pre {
+  padding: 20px 24px;
+  margin: 0;
+}
+
+/* Copy button: a small ghost button pinned to the top-right corner. */
+#storybook-docs .docblock-source > div:last-child:has(> button) {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  bottom: auto;
+  background: none;
+  border: 0;
+}
+
+#storybook-docs .docblock-source > div:last-child > button {
+  font-family: var(--doc-font);
+  font-size: 12px;
+  font-weight: 500;
+  color: #cfc7bf;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: none;
+  opacity: 0;
+  transition:
+    opacity 120ms ease-out,
+    background 120ms ease-out;
+}
+
+#storybook-docs .docblock-source:hover > div:last-child > button,
+#storybook-docs .docblock-source > div:last-child > button:focus-visible {
+  opacity: 1;
+}
+
+#storybook-docs .docblock-source > div:last-child > button:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+
+@media (hover: none) {
+  #storybook-docs .docblock-source > div:last-child > button {
+    opacity: 1;
+  }
+}
+
+/* Syntax colors: warm, legible on the dark panel in both modes. */
+#storybook-docs .docblock-source .token.comment,
+#storybook-docs .docblock-source .token.prolog {
+  color: #8f847a;
+  font-style: italic;
+}
+
+#storybook-docs .docblock-source .token.keyword,
+#storybook-docs .docblock-source .token.module,
+#storybook-docs .docblock-source .token.control-flow,
+#storybook-docs .docblock-source .token.important {
+  color: #f2a285;
+}
+
+#storybook-docs .docblock-source .token.string,
+#storybook-docs .docblock-source .token.attr-value,
+#storybook-docs .docblock-source .token.template-string,
+#storybook-docs .docblock-source .token.char {
+  color: #b9d99c;
+}
+
+#storybook-docs .docblock-source .token.function,
+#storybook-docs .docblock-source .token.class-name,
+#storybook-docs .docblock-source .token.builtin {
+  color: #f2c46d;
+}
+
+#storybook-docs .docblock-source .token.tag,
+#storybook-docs .docblock-source .token.selector {
+  color: #f2a285;
+}
+
+#storybook-docs .docblock-source .token.attr-name,
+#storybook-docs .docblock-source .token.property,
+#storybook-docs .docblock-source .token.parameter {
+  color: #e8c9a0;
+}
+
+#storybook-docs .docblock-source .token.number,
+#storybook-docs .docblock-source .token.boolean,
+#storybook-docs .docblock-source .token.constant,
+#storybook-docs .docblock-source .token.unit {
+  color: #9cc7f0;
+}
+
+#storybook-docs .docblock-source .token.punctuation,
+#storybook-docs .docblock-source .token.operator,
+#storybook-docs .docblock-source .token.plain-text,
+#storybook-docs .docblock-source .token.script {
+  color: #c4bab0;
+}
+
+#storybook-docs .docblock-source .token.tag .token.punctuation {
+  color: #a3988e;
+}
+
+/* ---------- Markdown tables ---------- */
+
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 20px 0 28px;
+  border: 1px solid var(--doc-rule);
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) :is(th, td) {
+  border: 0;
+  border-bottom: 1px solid var(--doc-rule);
+  padding: 11px 16px;
+  text-align: left;
+  vertical-align: top;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) th {
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--doc-muted);
+  background: var(--doc-tint);
+}
+
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) tr {
+  background: transparent;
+  border: 0;
+}
+
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Keep the first column's names (props, components) on one line; elsewhere code wraps. */
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) td:first-child code {
+  white-space: nowrap;
+}
+
+/* ---------- Story canvases ---------- */
+
+#storybook-docs .sbdocs-preview {
+  border: 1px solid var(--doc-rule);
+  border-radius: 12px;
+  box-shadow: none;
+  margin: 24px 0 32px;
+  overflow: hidden;
+}
+
+@media (max-width: 760px) {
+  #storybook-docs .sbdocs-wrapper {
+    padding: 32px 16px 64px;
+  }
+  #storybook-docs .sbdocs-content h1 {
+    font-size: 32px;
+  }
+  #storybook-docs .sbdocs-content h2 {
+    font-size: 22px;
+    margin-top: 48px;
+  }
+  #storybook-docs .sbdocs-content table:not(.docblock-argstable) td code {
+    white-space: break-spaces;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #storybook-docs .sbdocs-content a,
+  #storybook-docs .docblock-source > div:last-child > button {
+    transition: none;
+  }
+}

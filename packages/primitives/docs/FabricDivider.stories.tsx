@@ -3,6 +3,7 @@ import { FabricDivider, FabricStack, FabricText } from "../src";
 
 const meta: Meta<typeof FabricDivider> = {
   title: "Primitives/FabricDivider",
+  tags: ["autodocs"],
   component: FabricDivider,
   parameters: { layout: "padded" },
 };

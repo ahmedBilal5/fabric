@@ -26,6 +26,7 @@ const Tag = ({ children, color }: { children: React.ReactNode; color: string }) 
 
 const meta: Meta = {
   title: "Primitives/FabricVisibility",
+  tags: ["autodocs"],
   parameters: { layout: "padded" },
 };
 export default meta;

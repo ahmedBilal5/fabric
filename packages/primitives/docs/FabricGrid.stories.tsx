@@ -29,6 +29,7 @@ const Cell = ({ children }: { children: React.ReactNode }) => {
 
 const meta: Meta<typeof FabricGrid> = {
   title: "Primitives/FabricGrid",
+  tags: ["autodocs"],
   component: FabricGrid,
   parameters: { layout: "padded" },
 };

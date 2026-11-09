@@ -7,7 +7,7 @@ import { FabricInformationBar, type FabricInformationBarProps } from ".";
 const meta: Meta<FabricInformationBarProps> = {
   title: "Components/FabricInformationBar",
   component: FabricInformationBar,
-  tags: ["test"],
+  tags: ["test", "autodocs"],
   argTypes: {
     variant: {
       control: "select",

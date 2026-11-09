@@ -9,6 +9,7 @@
       "!**/dist",
       "!**/*.svg",
       "!**/*.mdx",
+      "!.changeset",
       "!**/*.stories.*",
       "!**/*.story.*",
       "!_site",

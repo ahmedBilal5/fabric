@@ -3,6 +3,7 @@ import { FabricFlex, FabricStack, FabricSurface, FabricText } from "../src";
 
 const meta: Meta<typeof FabricSurface> = {
   title: "Primitives/FabricSurface",
+  tags: ["autodocs"],
   component: FabricSurface,
   parameters: { layout: "padded" },
 };

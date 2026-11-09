@@ -113,16 +113,33 @@ const chipTone = (scheme: "light" | "dark", color: string, disabled: boolean) =>
   } satisfies ChipTone;
 };
 
-/** Paints a chip variant with a tone; `filledAlt` is the solid fill with inverse text. */
-const chipVariantStyles = (variant: string, tone: ChipTone) => {
+/** A chip variant's colors for one scheme, as custom properties (see `chipColorStyles`). */
+const chipVariantVars = (variant: string, tone: ChipTone) => {
   if (variant === "outlined") {
-    return { backgroundColor: "transparent", color: tone.text, borderColor: tone.border };
+    return {
+      "--fabric-chip-bg": "transparent",
+      "--fabric-chip-fg": tone.text,
+      "--fabric-chip-border": tone.border,
+    };
   }
   if (variant === "filledAlt") {
-    return { backgroundColor: tone.solid, color: tone.onSolid, border: "none" };
+    return { "--fabric-chip-bg": tone.solid, "--fabric-chip-fg": tone.onSolid };
   }
-  return { backgroundColor: tone.bg, color: tone.text, border: "none" };
+  return { "--fabric-chip-bg": tone.bg, "--fabric-chip-fg": tone.text };
 };
+
+/**
+ * Paints a chip variant; `filledAlt` is the solid fill with inverse text. The dark
+ * scheme only swaps custom properties, so it never outranks an `sx` color: a
+ * `.dark &` rule setting `background-color` directly would beat `sx` in dark mode.
+ */
+const chipColorStyles = (theme: Theme, variant: string, light: ChipTone, night: ChipTone) => ({
+  ...chipVariantVars(variant, light),
+  ...theme.applyStyles("dark", chipVariantVars(variant, night)),
+  backgroundColor: "var(--fabric-chip-bg)",
+  color: "var(--fabric-chip-fg)",
+  ...(variant === "outlined" ? { borderColor: "var(--fabric-chip-border)" } : { border: "none" }),
+});
 
 const lightPalette = {
   // Auto-picked contrast text (e.g. on success or warning fills) must meet WCAG AA.
@@ -554,8 +571,7 @@ const baseThemeOptions: ThemeOptions = {
               paddingLeft: isSmall ? 2 : spacing.xs,
               ...(isSmall && { height: 20, paddingTop: 2, paddingBottom: 2 }),
             },
-            ...(light && chipVariantStyles(variant, light)),
-            ...(night && theme.applyStyles("dark", chipVariantStyles(variant, night))),
+            ...(light && night && chipColorStyles(theme, variant, light, night)),
           };
         },
       },
@@ -622,7 +638,9 @@ const baseThemeOptions: ThemeOptions = {
               fontSize: 8,
               fontWeight: fontWeight.semiBold,
               letterSpacing: "0.5px",
-              "& > span": { paddingLeft: spacing.xs, paddingRight: spacing.xs },
+              // Unlabelled fields render a zero-width `span.notranslate`; padding it
+              // would cut an empty notch into the top border.
+              "& > span:not(.notranslate)": { paddingLeft: spacing.xs, paddingRight: spacing.xs },
             },
           },
           "&:hover .MuiOutlinedInput-notchedOutline": {

@@ -1,7 +1,6 @@
 import { DocsContainer } from "@storybook/addon-docs/blocks";
 import type { Preview } from "@storybook/react-vite";
 import React from "react";
-import { create, themes } from "storybook/theming";
 import { INITIAL_VIEWPORTS } from "storybook/viewport";
 
 import "@fontsource/geist/400.css";
@@ -10,34 +9,31 @@ import "@fontsource/geist/600.css";
 import "@fontsource/geist/700.css";
 import "@fontsource/geist-mono/400.css";
 
-import { dark } from "@fabric-kit/design-tokens";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useColorScheme } from "@mui/material/styles";
 import { GLOBALS_UPDATED, SET_GLOBALS } from "storybook/internal/core-events";
 import { addons } from "storybook/preview-api";
 import { useDarkMode } from "storybook-dark-mode";
+import { sbDarkTheme, sbLightTheme } from "./sb-themes";
 import { BRAND_THEMES, brandTheme, DEFAULT_BRAND } from "./themes";
+import "./docs.css";
 
-const sbDarkTheme = {
-  ...themes.dark,
-  brandTitle: "Fabric",
-  brandUrl: "../",
-  appBg: dark.surface.secondary,
-  appContentBg: dark.surface.primary,
-  appBorderColor: dark.border.default,
-  textColor: dark.text.primary,
-  barBg: dark.surface.primary,
-  barTextColor: dark.text.secondary,
-  barSelectedColor: dark.brand.primaryLight,
-  colorPrimary: dark.brand.primary,
-  colorSecondary: dark.brand.primaryLight,
-};
-
-const sbLightTheme = create({
-  base: "light",
-  brandTitle: "Fabric",
-  brandUrl: "../",
-});
+// storybook-dark-mode tags the preview <body> with `light` before it reads our
+// `classTarget: "html"` setting, and never removes it. MUI's color-scheme selector
+// is the `.light` / `.dark` class, so a stale `body.light` pins everything inside
+// it to light colors when you switch to dark. Only <html> should carry the class.
+if (typeof document !== "undefined" && document.body) {
+  const stripBodyScheme = () => {
+    if (document.body.classList.contains("light") || document.body.classList.contains("dark")) {
+      document.body.classList.remove("light", "dark");
+    }
+  };
+  stripBodyScheme();
+  new MutationObserver(stripBodyScheme).observe(document.body, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+}
 
 // Bridges Storybook's `useDarkMode()` state to MUI's `useColorScheme()` so the
 // dark-mode addon's toggle actually swaps the MUI CSS variables. Without this,
@@ -54,19 +50,34 @@ function SyncColorScheme() {
 }
 
 // Docs pages render outside the story decorators, so they follow the toolbar's brand
-// through the preview channel instead of `context.globals`.
+// through the preview channel instead of `context.globals`. Storybook re-mounts the
+// docs container when globals change, so the latest brand lives at module scope:
+// a fresh mount starts from it instead of the default.
+let latestBrand: string = DEFAULT_BRAND;
+const brandListeners = new Set<(brand: string) => void>();
+let brandChannelReady = false;
+
+function listenForBrand() {
+  if (brandChannelReady) return;
+  brandChannelReady = true;
+  const onGlobals = ({ globals }: { globals?: Record<string, unknown> }) => {
+    if (typeof globals?.brand !== "string" || globals.brand === latestBrand) return;
+    latestBrand = globals.brand;
+    for (const listener of brandListeners) listener(latestBrand);
+  };
+  const channel = addons.getChannel();
+  channel.on(GLOBALS_UPDATED, onGlobals);
+  channel.on(SET_GLOBALS, onGlobals);
+}
+
 function useBrandGlobal(): string {
-  const [brand, setBrand] = React.useState<string>(DEFAULT_BRAND);
+  listenForBrand();
+  const [brand, setBrand] = React.useState<string>(latestBrand);
   React.useEffect(() => {
-    const channel = addons.getChannel();
-    const onGlobals = ({ globals }: { globals?: Record<string, unknown> }) => {
-      if (typeof globals?.brand === "string") setBrand(globals.brand);
-    };
-    channel.on(GLOBALS_UPDATED, onGlobals);
-    channel.on(SET_GLOBALS, onGlobals);
+    brandListeners.add(setBrand);
+    setBrand(latestBrand);
     return () => {
-      channel.off(GLOBALS_UPDATED, onGlobals);
-      channel.off(SET_GLOBALS, onGlobals);
+      brandListeners.delete(setBrand);
     };
   }, []);
   return brand;
@@ -137,6 +148,7 @@ const preview: Preview = {
           "*",
           "Kits",
           [
+            "Overview",
             "Layout",
             [
               "Overview",
@@ -147,6 +159,14 @@ const preview: Preview = {
               "FabricNotificationDrawer",
               "*",
             ],
+            "Global Search",
+            ["Overview", "*"],
+            "Chatbot",
+            ["Overview", "*"],
+            "Versioning",
+            ["Overview", "*"],
+            "Canvas Builder",
+            ["FabricCanvasBuilder", ["Overview", "*"], "*"],
             "*",
           ],
         ],
@@ -176,12 +196,19 @@ const preview: Preview = {
       },
     },
     docs: {
+      // Component descriptions come from JSDoc. Keep the summary and drop tag blocks
+      // such as @example, whose JSX would otherwise render as stray text.
+      extractComponentDescription: (component: { __docgenInfo?: { description?: string } }) =>
+        (component?.__docgenInfo?.description ?? "").split(/\n\s*@\w+/)[0].trim() || null,
       container: ({ children, ...props }: React.ComponentProps<typeof DocsContainer>) => {
         const isDark = useDarkMode();
         const brand = useBrandGlobal();
         return (
           <DocsContainer {...props} theme={isDark ? sbDarkTheme : sbLightTheme}>
-            <ThemeProvider theme={brandTheme(brand)}>{children}</ThemeProvider>
+            <ThemeProvider theme={brandTheme(brand)}>
+              <SyncColorScheme />
+              {children}
+            </ThemeProvider>
           </DocsContainer>
         );
       },

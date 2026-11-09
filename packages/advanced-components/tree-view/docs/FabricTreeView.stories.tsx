@@ -101,7 +101,17 @@ const meta = {
     // React element tree; TreeItem's recursive children explode Array.join
     // into "RangeError: Invalid string length" on any non-trivial tree.
     // Force static source pulled from the story file itself instead.
-    docs: { source: { type: "code" } },
+    docs: {
+      source: { type: "code" },
+      description: {
+        component:
+          "A tree for nested data such as folders, categories or org charts. `FabricTreeView` " +
+          "wraps the free MUI X `SimpleTreeView` with Fabric's styling. Pass `nodes` to render " +
+          "a tree from data, or `TreeItem` children for full control. Add `columns` for a " +
+          "file-browser layout with extra cells beside each name. Arrow keys move through the " +
+          "tree, Right and Left expand and collapse, and Enter selects.",
+      },
+    },
   },
 } satisfies Meta<typeof FabricTreeView>;
 

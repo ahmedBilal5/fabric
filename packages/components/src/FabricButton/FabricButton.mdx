@@ -68,7 +68,7 @@ Every variant has default, hover, press and disabled states. A button with a `me
 
 ## Color
 
-Passing a `color` value routes through MUI's palette so brand colors, dark-mode, and theme overrides work automatically. `primary` and the four semantic colors (`error`, `info`, `success`, `warning`) have tuned styles; filled semantic buttons are the color at partial opacity at rest and solid on hover. `color="error"` with `variant="outlined"` has a solid red border and label. `secondary` and `inherit` keep MUI defaults.
+Passing a `color` value routes through MUI's palette so brand colors, dark-mode, and theme overrides work automatically. `primary` and the four semantic colors (`error`, `info`, `success`, `warning`) have tuned styles; filled semantic buttons are solid and darken slightly on hover. `color="error"` with `variant="outlined"` has a solid red border and label. `secondary` and `inherit` keep MUI defaults.
 
 <Canvas of={ButtonStories.AllColors} />
 
@@ -187,13 +187,13 @@ The caret is decorative — the whole button opens the menu when `menu.length > 
 
 ### Icon-only buttons aren't supported
 
-`FabricButton` requires a text child for screen-reader accessibility. For icon-only actions (toolbar icons, close buttons), use MUI `IconButton` with an `aria-label`.
+`FabricButton` requires a text child for screen-reader accessibility. For icon-only actions (toolbar icons, close buttons), use [FabricIconButton](?path=/docs/components-fabriciconbutton--overview) with an `aria-label`.
 
 ---
 
 ## API
 
-Full prop reference is generated from the TypeScript types and JSDoc comments — see the **Controls** panel on any story below, and the **Docs → FabricButton → Default** page for the auto-generated props table.
+Every prop below comes from the TypeScript types and JSDoc. Change the controls to try them on the example; every other MUI `Button` prop also works.
 
 <Controls of={ButtonStories.Default} />
 

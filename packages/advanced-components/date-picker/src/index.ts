@@ -1,5 +1,5 @@
 export * from "@mui/x-date-pickers";
-export { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+export { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 export type { FabricDatePickerProps, FabricDatePickerValue } from "./FabricDatePicker";
 export { FabricDatePicker } from "./FabricDatePicker";
 export type {

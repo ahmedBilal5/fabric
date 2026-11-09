@@ -9,6 +9,7 @@ const useVars = () => {
 
 const meta: Meta<typeof FabricText> = {
   title: "Primitives/FabricText",
+  tags: ["autodocs"],
   component: FabricText,
   parameters: { layout: "padded" },
 };

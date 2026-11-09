@@ -28,6 +28,7 @@ const Tag = ({ children }: { children: React.ReactNode }) => {
 
 const meta: Meta<typeof FabricInline> = {
   title: "Primitives/FabricInline",
+  tags: ["autodocs"],
   component: FabricInline,
   parameters: { layout: "padded" },
 };

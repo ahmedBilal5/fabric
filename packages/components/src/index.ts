@@ -166,17 +166,13 @@ export type {
 export { FabricToggleButtonGroup } from "./FabricToggleButtonGroup";
 export type { FabricTooltipProps } from "./FabricTooltip";
 export { FabricTooltip } from "./FabricTooltip";
-// Explicit named re-exports for x-date-pickers so they shadow the older API
-// surface that @mui/lab used to expose under the same names.
+// Raw @mui/x-date-pickers pieces for custom date/time inputs.
 export {
-  AdapterMoment,
-  AdapterMoment as FabricAdapterMoment,
+  AdapterDayjs,
   DatePicker,
-  DatePicker as FabricMomentDatePicker,
   LocalizationProvider,
   LocalizationProvider as FabricLocalizationProvider,
   TimePicker,
-  TimePicker as FabricMomentTimePicker,
 } from "./mui/date-pickers";
 export * from "./mui/material";
 export * from "./mui/styles";

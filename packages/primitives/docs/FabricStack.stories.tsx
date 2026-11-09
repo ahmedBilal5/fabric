@@ -28,6 +28,7 @@ const Box = ({ children }: { children: React.ReactNode }) => {
 
 const meta: Meta<typeof FabricStack> = {
   title: "Primitives/FabricStack",
+  tags: ["autodocs"],
   component: FabricStack,
   parameters: { layout: "padded" },
 };

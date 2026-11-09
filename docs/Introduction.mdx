@@ -1,17 +1,24 @@
 import { Meta } from '@storybook/addon-docs/blocks';
+import { DocLink } from '../.storybook/blocks/DocLink';
 
 <Meta title="Foundations/Welcome" />
 
 <style>{`
-  .fw {
+  #storybook-docs .sbdocs-content:has(.fw) { max-width: 1040px; }
+  #storybook-docs .fw {
     --fw-ink: var(--mui-palette-text-primary, #2E2925);
     --fw-muted: var(--mui-palette-text-secondary, #6E655D);
     --fw-rule: var(--mui-palette-divider, #E6E1DB);
     --fw-paper: var(--mui-palette-background-paper, #FFFFFF);
-    --fw-desk: var(--mui-palette-background-default, #F8F6F3);
     --fw-accent: var(--mui-palette-primary-main, #B23E2A);
     --fw-board: #2A2420;
+    --fw-board-rule: transparent;
     --fw-board-type: #F3EEE9;
+    --fw-cmd-accent: #EB8E74;
+    --fw-cta-bg: #2A2420;
+    --fw-cta-ink: #F3EEE9;
+    --fw-warp: #2A2420;
+    --fw-weft: #B23E2A;
     --fw-font: 'Geist', ui-sans-serif, system-ui, sans-serif;
     --fw-mono: 'Geist Mono', ui-monospace, monospace;
     font-family: var(--fw-font);
@@ -19,39 +26,52 @@ import { Meta } from '@storybook/addon-docs/blocks';
     max-width: 1040px;
     margin: 0 auto;
   }
-  .fw h1, .fw h2, .fw h3 { font-family: var(--fw-font); color: var(--fw-ink); font-weight: 600; letter-spacing: -0.02em; border: 0; }
-  .fw-hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; padding: 40px 0 56px; }
-  .fw-hero h1 { font-size: 56px; line-height: 1.04; margin: 0 0 20px; }
-  .fw-hero p { font-size: 19px; line-height: 1.5; color: var(--fw-muted); margin: 0 0 28px; max-width: 34ch; }
-  .fw-cmd { display: flex; align-items: center; gap: 12px; background: var(--fw-board); color: var(--fw-board-type); border-radius: 8px; padding: 16px 20px; font: 15px/1.4 var(--fw-mono); overflow-x: auto; white-space: nowrap; }
-  .fw-cmd span { color: #EB8E74; }
-  .fw-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
-  .fw-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 8px; font: 500 15px var(--fw-font); text-decoration: none; transition: transform 120ms ease-out; }
-  .fw-btn:hover { transform: translateY(-1px); }
-  .fw-btn:focus-visible, .fw-row a:focus-visible { outline: 2px solid var(--fw-accent); outline-offset: 2px; }
-  .fw-btn--ink { background: var(--fw-board); color: var(--fw-board-type) !important; }
-  .fw-btn--line { border: 1px solid var(--fw-rule); color: var(--fw-ink) !important; background: var(--fw-paper); }
-  .fw-mark { aspect-ratio: 1; width: 100%; max-width: 320px; justify-self: end; }
-  .fw-section { padding: 48px 0; border-top: 1px solid var(--fw-rule); }
-  .fw-section h2 { font-size: 32px; margin: 0 0 8px; }
-  .fw-section > p { color: var(--fw-muted); font-size: 17px; margin: 0 0 28px; max-width: 60ch; }
-  .fw-layers { list-style: none; margin: 0; padding: 0; }
-  .fw-row { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 5fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--fw-rule); align-items: baseline; }
-  .fw-row strong { font-weight: 600; font-size: 17px; }
-  .fw-row code { font-family: var(--fw-mono); font-size: 13.5px; background: none; border: 0; padding: 0; color: var(--fw-ink); }
-  .fw-row span { color: var(--fw-muted); font-size: 15px; }
-  .fw-row a { color: var(--fw-ink); text-decoration-color: var(--fw-accent); text-underline-offset: 3px; }
-  .fw-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
-  .fw-card { background: var(--fw-paper); border: 1px solid var(--fw-rule); border-radius: 8px; padding: 24px; }
-  .fw-card h3 { font-size: 19px; margin: 0 0 8px; }
-  .fw-card p { color: var(--fw-muted); font-size: 15px; line-height: 1.55; margin: 0; }
-  @media (max-width: 760px) {
-    .fw-hero { grid-template-columns: 1fr; }
-    .fw-hero h1 { font-size: 40px; }
-    .fw-mark { display: none; }
-    .fw-row, .fw-cards { grid-template-columns: 1fr; gap: 6px; }
+  .dark #storybook-docs .fw {
+    --fw-board: #0E0C0A;
+    --fw-board-rule: #3A332E;
+    --fw-cta-bg: #F0ECE8;
+    --fw-cta-ink: #151210;
+    --fw-warp: #F0ECE8;
+    --fw-weft: #EB8E74;
   }
-  @media (prefers-reduced-motion: reduce) { .fw-btn { transition: none; } .fw-btn:hover { transform: none; } }
+  #storybook-docs .fw :is(h1, h2, h3) { font-family: var(--fw-font); color: var(--fw-ink); font-weight: 600; letter-spacing: -0.02em; border: 0; padding: 0; }
+  #storybook-docs .fw .fw-hero { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 48px; align-items: center; padding: 8px 0 56px; }
+  #storybook-docs .fw .fw-hero h1 { font-size: 56px; line-height: 1.04; letter-spacing: -0.035em; margin: 0 0 20px; }
+  #storybook-docs .fw .fw-hero p { font-size: 19px; line-height: 1.5; color: var(--fw-muted); margin: 0 0 28px; max-width: 34ch; }
+  #storybook-docs .fw .fw-cmd { display: flex; align-items: center; gap: 12px; background: var(--fw-board); border: 1px solid var(--fw-board-rule); color: var(--fw-board-type); border-radius: 10px; padding: 16px 20px; font: 14.5px/1.4 var(--fw-mono); overflow-x: auto; white-space: nowrap; }
+  #storybook-docs .fw .fw-cmd span { color: var(--fw-cmd-accent); }
+  #storybook-docs .fw .fw-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+  #storybook-docs .fw .fw-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 8px; font: 500 15px var(--fw-font); text-decoration: none; transition: transform 120ms ease-out; }
+  #storybook-docs .fw .fw-btn:hover { transform: translateY(-1px); }
+  #storybook-docs .fw :is(.fw-btn, .fw-row a, .fw-card a):focus-visible { outline: 2px solid var(--fw-accent); outline-offset: 2px; }
+  #storybook-docs .fw .fw-btn--ink { background: var(--fw-cta-bg); color: var(--fw-cta-ink); }
+  #storybook-docs .fw .fw-btn--line { border: 1px solid var(--fw-rule); color: var(--fw-ink); background: var(--fw-paper); }
+  #storybook-docs .fw .fw-mark { aspect-ratio: 1; width: 100%; max-width: 300px; justify-self: end; }
+  #storybook-docs .fw .fw-mark .warp { fill: var(--fw-warp); }
+  #storybook-docs .fw .fw-mark .weft { fill: var(--fw-weft); }
+  #storybook-docs .fw .fw-section { padding: 48px 0; border-top: 1px solid var(--fw-rule); }
+  #storybook-docs .fw .fw-section h2 { font-size: 32px; line-height: 1.15; margin: 0 0 8px; }
+  #storybook-docs .fw .fw-section > p { color: var(--fw-muted); font-size: 17px; line-height: 1.55; margin: 0 0 28px; max-width: 60ch; }
+  #storybook-docs .fw .fw-layers { list-style: none; margin: 0; padding: 0; }
+  #storybook-docs .fw .fw-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 4fr) minmax(0, 5fr); gap: 24px; margin: 0; padding: 18px 0; border-bottom: 1px solid var(--fw-rule); align-items: baseline; }
+  #storybook-docs .fw .fw-row:last-child { border-bottom: 0; }
+  #storybook-docs .fw .fw-row strong { font-weight: 600; font-size: 17px; }
+  #storybook-docs .fw .fw-pkgs { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+  #storybook-docs .fw .fw-pkgs code { font-family: var(--fw-mono); font-size: 13.5px; line-height: 1.6; background: none; border: 0; padding: 0; color: var(--fw-ink); white-space: nowrap; }
+  #storybook-docs .fw .fw-row > span:last-child { color: var(--fw-muted); font-size: 15px; line-height: 1.6; }
+  #storybook-docs .fw .fw-row a, #storybook-docs .fw .fw-card a { color: var(--fw-ink); text-decoration: underline; text-decoration-color: var(--fw-accent); text-underline-offset: 3px; white-space: nowrap; }
+  #storybook-docs .fw .fw-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  #storybook-docs .fw .fw-card { background: var(--fw-paper); border: 1px solid var(--fw-rule); border-radius: 10px; padding: 24px; }
+  #storybook-docs .fw .fw-card h3 { font-size: 19px; margin: 0 0 8px; }
+  #storybook-docs .fw .fw-card p { color: var(--fw-muted); font-size: 15px; line-height: 1.55; margin: 0; }
+  @media (max-width: 860px) {
+    #storybook-docs .fw .fw-hero { grid-template-columns: 1fr; }
+    #storybook-docs .fw .fw-hero h1 { font-size: 40px; }
+    #storybook-docs .fw .fw-mark { display: none; }
+    #storybook-docs .fw .fw-row, #storybook-docs .fw .fw-cards { grid-template-columns: 1fr; gap: 6px; }
+    #storybook-docs .fw .fw-cards { gap: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) { #storybook-docs .fw .fw-btn { transition: none; } #storybook-docs .fw .fw-btn:hover { transform: none; } }
 `}</style>
 
 <div className="fw">
@@ -62,22 +82,22 @@ import { Meta } from '@storybook/addon-docs/blocks';
     <p>Fabric is a free, open-source design system on top of MUI: a warm theme, polished components and ready-made kits for the screens every product needs.</p>
     <div className="fw-cmd" aria-label="Install command"><span>pnpm add</span> @fabric-kit/components @fabric-kit/theme</div>
     <div className="fw-actions">
-      <a className="fw-btn fw-btn--ink" href="?path=/docs/foundations-installation--docs">Installation guide</a>
-      <a className="fw-btn fw-btn--line" href="?path=/docs/kits-layout-overview--docs">See the kits</a>
+      <DocLink className="fw-btn fw-btn--ink" to="/docs/foundations-installation--docs">Installation guide</DocLink>
+      <DocLink className="fw-btn fw-btn--line" to="/docs/kits-overview--docs">See the kits</DocLink>
     </div>
   </div>
   <svg className="fw-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-    <rect x="6" y="12" width="36" height="6" rx="3" fill="#B23E2A"/>
-    <rect x="6" y="21" width="36" height="6" rx="3" fill="#B23E2A"/>
-    <rect x="6" y="30" width="36" height="6" rx="3" fill="#B23E2A"/>
-    <rect x="12" y="6" width="6" height="36" rx="3" fill="#2A2420"/>
-    <rect x="21" y="6" width="6" height="36" rx="3" fill="#2A2420"/>
-    <rect x="30" y="6" width="6" height="36" rx="3" fill="#2A2420"/>
-    <rect x="10" y="12" width="10" height="6" fill="#B23E2A"/>
-    <rect x="28" y="12" width="10" height="6" fill="#B23E2A"/>
-    <rect x="19" y="21" width="10" height="6" fill="#B23E2A"/>
-    <rect x="10" y="30" width="10" height="6" fill="#B23E2A"/>
-    <rect x="28" y="30" width="10" height="6" fill="#B23E2A"/>
+    <rect x="6" y="12" width="36" height="6" rx="3" className="weft"/>
+    <rect x="6" y="21" width="36" height="6" rx="3" className="weft"/>
+    <rect x="6" y="30" width="36" height="6" rx="3" className="weft"/>
+    <rect x="12" y="6" width="6" height="36" rx="3" className="warp"/>
+    <rect x="21" y="6" width="6" height="36" rx="3" className="warp"/>
+    <rect x="30" y="6" width="6" height="36" rx="3" className="warp"/>
+    <rect x="10" y="12" width="10" height="6" className="weft"/>
+    <rect x="28" y="12" width="10" height="6" className="weft"/>
+    <rect x="19" y="21" width="10" height="6" className="weft"/>
+    <rect x="10" y="30" width="10" height="6" className="weft"/>
+    <rect x="28" y="30" width="10" height="6" className="weft"/>
   </svg>
 </div>
 
@@ -85,13 +105,13 @@ import { Meta } from '@storybook/addon-docs/blocks';
   <h2>Woven in layers</h2>
   <p>Each layer builds only on the ones above it. Install what you need; everything is tree-shakeable.</p>
   <ul className="fw-layers">
-    <li className="fw-row"><strong>Tokens</strong><code>@fabric-kit/design-tokens</code><span>Color, type, spacing, radii, shadows and motion as plain values. <a href="?path=/docs/foundations-design-tokens-overview--docs">Tokens</a></span></li>
-    <li className="fw-row"><strong>Theme</strong><code>@fabric-kit/theme</code><span>An MUI theme with light and dark modes, plus <code>createFabricTheme</code> for your brand. <a href="?path=/docs/foundations-theming--docs">Theming</a></span></li>
-    <li className="fw-row"><strong>Primitives</strong><code>@fabric-kit/primitives</code><span>Flex, Stack, Inline, Grid, Text and Surface for layout without one-off CSS.</span></li>
-    <li className="fw-row"><strong>Components</strong><code>@fabric-kit/components</code><span>MUI components with better defaults and extra props: loading buttons, data-driven selects, menus, dialogs.</span></li>
-    <li className="fw-row"><strong>Data controls</strong><code>datagrid · date-picker · tree-view</code><span>The free, MIT-licensed MUI X controls, styled to match.</span></li>
-    <li className="fw-row"><strong>Kits</strong><code>layout · global-search · chatbot · versioning · canvas-builder</code><span>Whole features: an app shell, a search palette, an AI assistant, version history and a workflow canvas.</span></li>
-    <li className="fw-row"><strong>Icons</strong><code>@fabric-kit/icons</code><span>3,300+ Material Symbols, plus every <code>@mui/icons-material</code> name. <a href="?path=/docs/foundations-icons-overview--docs">Icons</a></span></li>
+    <li className="fw-row"><strong>Tokens</strong><span className="fw-pkgs"><code>@fabric-kit/design-tokens</code></span><span>Color, type, spacing, radii, shadows and motion as plain values. <DocLink to="/docs/foundations-design-tokens-overview--docs">Tokens</DocLink></span></li>
+    <li className="fw-row"><strong>Theme</strong><span className="fw-pkgs"><code>@fabric-kit/theme</code></span><span>An MUI theme with light and dark modes, plus <code>createFabricTheme</code> for your brand. <DocLink to="/docs/foundations-theming--docs">Theming</DocLink></span></li>
+    <li className="fw-row"><strong>Primitives</strong><span className="fw-pkgs"><code>@fabric-kit/primitives</code></span><span>Flex, Stack, Inline, Grid, Text and Surface for layout without one-off CSS. <DocLink to="/docs/primitives--index">Primitives</DocLink></span></li>
+    <li className="fw-row"><strong>Components</strong><span className="fw-pkgs"><code>@fabric-kit/components</code></span><span>MUI components with better defaults and extra props: loading buttons, data-driven selects, menus, dialogs. <DocLink to="/docs/components-fabricbutton--overview">Components</DocLink></span></li>
+    <li className="fw-row"><strong>Data controls</strong><span className="fw-pkgs"><code>datagrid</code><code>date-picker</code><code>tree-view</code></span><span>The free, MIT-licensed MUI X controls, styled to match. <DocLink to="/docs/advanced-components-fabricdatagrid--docs">Data grid</DocLink></span></li>
+    <li className="fw-row"><strong>Kits</strong><span className="fw-pkgs"><code>layout</code><code>global-search</code><code>chatbot</code><code>versioning</code><code>canvas-builder</code></span><span>Whole features: an app shell, a search palette, an AI assistant, version history and a workflow canvas. <DocLink to="/docs/kits-overview--docs">Kits</DocLink></span></li>
+    <li className="fw-row"><strong>Icons</strong><span className="fw-pkgs"><code>@fabric-kit/icons</code></span><span>3,300+ Material Symbols, plus every <code>@mui/icons-material</code> name. <DocLink to="/docs/foundations-icons-overview--docs">Icons</DocLink></span></li>
   </ul>
 </div>
 

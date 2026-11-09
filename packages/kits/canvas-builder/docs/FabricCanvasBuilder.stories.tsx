@@ -324,7 +324,6 @@ const selectedStateEdges: Edge<FabricCanvasEdgeData>[] = baseEdges.map((edge) =>
 const meta = {
   title: 'Kits/Canvas Builder/FabricCanvasBuilder',
   component: FabricCanvasBuilder,
-  tags: ['autodocs'],
   argTypes: {
     mode: {
       control: 'inline-radio',

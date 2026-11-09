@@ -1,0 +1,94 @@
+import { Meta, Canvas, Controls, Source } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricDatagrid.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricDatagrid
+
+A data table for lists people scan, sort and act on: orders, users, products, audit logs. `FabricDatagrid` is the free, MIT-licensed MUI X `DataGrid` with Fabric's styling and denser defaults. Every `DataGrid` prop works, and colors come from the theme, so it follows dark mode and your brand.
+
+<Source code={`pnpm add @fabric-kit/datagrid @mui/x-data-grid`} language="bash" />
+
+<Canvas of={Stories.Default} />
+
+## Basic usage
+
+Pass `rows` and `columns` as you would to MUI X. Each row needs a unique `id` (or set `getRowId`).
+
+<Source
+  language="tsx"
+  code={`import { FabricDatagrid } from '@fabric-kit/datagrid';
+import type { GridColDef } from '@mui/x-data-grid';
+
+const columns: GridColDef[] = [
+  { field: 'name', headerName: 'Product', flex: 1 },
+  { field: 'category', headerName: 'Category', width: 130 },
+  { field: 'price', headerName: 'Price', type: 'number', width: 110 },
+];
+
+<FabricDatagrid rows={products} columns={columns} onRowClick={(p) => open(p.row.id)} />`}
+/>
+
+## What Fabric changes
+
+| | MUI `DataGrid` | `FabricDatagrid` |
+| --- | --- | --- |
+| Row height | 52px | 40px (36px below 600px wide) |
+| Header height | 56px | 36px (32px below 600px wide) |
+| Cell borders | Off | On (`showCellBorders`) |
+| Header | Plain | Tinted with the brand color (`headerColor`) |
+| Row checkboxes | Always visible | Shown on hover or when checked |
+| Colors | MUI defaults | Fabric theme variables, dark-mode ready |
+
+Pass `rowHeight` or `columnHeaderHeight` to override the sizes, and `responsiveDensity={false}` to keep them fixed on small screens.
+
+## Row actions
+
+Use MUI X's `actions` column type. Inline icon buttons suit one or two frequent actions; put the rest in a ⋮ menu with `showInMenu`.
+
+<Canvas of={Stories.WithActions} />
+
+<Source
+  language="tsx"
+  code={`const actions: GridActionsColDef = {
+  field: 'actions',
+  type: 'actions',
+  width: 80,
+  getActions: ({ row }) => [
+    <GridActionsCellItem icon={<EditIcon />} label="Edit" onClick={() => edit(row)} />,
+    <GridActionsCellItem label="Archive" onClick={() => archive(row)} showInMenu />,
+  ],
+};`}
+/>
+
+## Selection
+
+`checkboxSelection` adds a checkbox column. Fabric hides unchecked boxes until you hover a row, which keeps dense tables calm; the story below shows how to keep them visible.
+
+<Canvas of={Stories.Multiselect} />
+
+## Density and borders
+
+<Canvas of={Stories.Compact} />
+
+## Footer
+
+The footer shows the row count and pagination. Hide it with `hideFooter` for short, fixed lists. Keep it for anything longer: the free grid shows up to 100 rows per page.
+
+<Canvas of={Stories.WithoutFooter} />
+
+## Props
+
+Fabric adds three props. Everything else is MUI X [`DataGridProps`](https://mui.com/x/api/data-grid/data-grid/).
+
+<Controls of={Stories.Default} include={['showCellBorders', 'headerColor', 'responsiveDensity']} />
+
+## Accessibility
+
+- The grid uses the ARIA `grid` pattern: arrow keys move between cells, Enter starts editing, and Space toggles row selection.
+- Give icon-only actions a `label`; MUI X uses it as the accessible name and the tooltip.
+- Sort state is announced through `aria-sort` on column headers.
+
+## Limits of the free grid
+
+Column pinning, row grouping, tree data, Excel export and more than 100 rows per page are MUI X Pro or Premium features. Fabric never uses them. For hierarchies, see [FabricTreeView](?path=/docs/advanced-components-fabrictreeview--docs).

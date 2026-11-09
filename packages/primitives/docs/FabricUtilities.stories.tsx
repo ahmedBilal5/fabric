@@ -17,6 +17,7 @@ const useVars = () => {
 
 const meta: Meta = {
   title: "Primitives/Utilities",
+  tags: ["autodocs"],
   parameters: { layout: "padded" },
 };
 export default meta;

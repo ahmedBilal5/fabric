@@ -11,7 +11,7 @@ import ArrowMenuClose from "@fabric-kit/icons/ArrowMenuClose";
 import ArrowMenuOpen from "@fabric-kit/icons/ArrowMenuOpen";
 import { FabricFlex, FabricStack, FabricText } from "@fabric-kit/primitives";
 import { useBreakpoint } from "@fabric-kit/theme";
-import { type CSSObject, styled, type Theme } from "@mui/material";
+import { ButtonBase, type CSSObject, styled, type Theme } from "@mui/material";
 import React, { useState } from "react";
 import type { FabricSidebarProps, NavigationItem, WorkspaceItem } from "../types";
 import { SIDEBAR_WIDTH_COLLAPSED, SIDEBAR_WIDTH_OPEN } from "../types";
@@ -80,7 +80,8 @@ const StyledDrawer = styled(FabricDrawer, {
 
 /**
  * Dropdown in the sidebar header for switching between workspaces: the workspace icon
- * (36px) and name, with the drop-down arrow on its own row underneath.
+ * (36px) and name, with the drop-down arrow after the name. In the collapsed rail
+ * there is no room beside the icon, so the arrow moves to its own row underneath.
  */
 function WorkspaceDropdown({
   items,
@@ -97,52 +98,80 @@ function WorkspaceDropdown({
   const current = items[0];
   if (!current) return null;
 
-  return (
+  const arrow = (
+    <ArrowDropDown
+      aria-hidden
+      sx={{
+        fontSize: iconSize.xl,
+        flexShrink: 0,
+        transition: "transform 0.3s ease",
+        transform: anchorEl ? "rotate(180deg)" : "rotate(0deg)",
+        color: anchorEl ? appShellColor("press") : appShellColor("text"),
+      }}
+    />
+  );
+
+  const content = (
     <>
-      <FabricStack
-        onClick={enabled ? (e) => setAnchorEl(e.currentTarget as HTMLElement) : undefined}
-        sx={{ cursor: enabled ? "pointer" : "default", width: "100%" }}
+      <FabricFlex
+        align="center"
+        gap="lg"
+        sx={{ px: `${spacing.md}px`, py: "2px", overflow: "hidden", width: "100%" }}
       >
+        {/* 36px logo / workspace mark. */}
         <FabricFlex
           align="center"
-          gap="lg"
-          sx={{ px: `${spacing.md}px`, py: "2px", overflow: "hidden" }}
+          justify="center"
+          sx={{ width: controlHeight.sm, height: controlHeight.sm, flexShrink: 0 }}
         >
-          {/* 36px logo / workspace mark. */}
-          <FabricFlex
-            align="center"
-            justify="center"
-            sx={{ width: controlHeight.sm, height: controlHeight.sm, flexShrink: 0 }}
-          >
-            {current.icon}
-          </FabricFlex>
-          {sidebarOpen && (
-            <FabricText
-              textVariant="uiMd"
-              truncate
-              sx={{ flex: 1, color: "var(--mui-palette-text-primary)" }}
-            >
-              {current.name}
-            </FabricText>
-          )}
+          {current.icon}
         </FabricFlex>
-        {enabled && (
-          // Arrow row sits a little closer to the name row, with a small gap left between them.
-          <FabricFlex
-            align="center"
-            sx={{ height: iconSize.xl, mt: "-2px", px: `${spacing.lg}px` }}
+        {sidebarOpen && (
+          <FabricText
+            textVariant="uiMd"
+            truncate
+            sx={{ flex: 1, minWidth: 0, color: "var(--mui-palette-text-primary)" }}
           >
-            <ArrowDropDown
-              sx={{
-                fontSize: iconSize.xl,
-                transition: "transform 0.3s ease",
-                transform: anchorEl ? "rotate(180deg)" : "rotate(0deg)",
-                color: anchorEl ? appShellColor("press") : appShellColor("text"),
-              }}
-            />
-          </FabricFlex>
+            {current.name}
+          </FabricText>
         )}
-      </FabricStack>
+        {enabled && sidebarOpen && arrow}
+      </FabricFlex>
+      {enabled && !sidebarOpen && (
+        <FabricFlex align="center" sx={{ height: iconSize.xl, mt: "-2px", px: `${spacing.lg}px` }}>
+          {arrow}
+        </FabricFlex>
+      )}
+    </>
+  );
+
+  return (
+    <>
+      {enabled ? (
+        <ButtonBase
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+          aria-haspopup="menu"
+          aria-expanded={Boolean(anchorEl)}
+          aria-label={`Workspace: ${current.name}`}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "stretch",
+            width: "100%",
+            textAlign: "left",
+            borderRadius: `${radii.md}px`,
+            "&:hover": { bgcolor: "var(--mui-palette-action-hover)" },
+            "&.Mui-focusVisible": {
+              outline: "2px solid var(--mui-palette-primary-main)",
+              outlineOffset: -2,
+            },
+          }}
+        >
+          {content}
+        </ButtonBase>
+      ) : (
+        <FabricStack sx={{ width: "100%" }}>{content}</FabricStack>
+      )}
 
       <FabricMenu
         anchorEl={anchorEl}
@@ -366,6 +395,8 @@ export const FabricSidebar = React.forwardRef<HTMLDivElement, FabricSidebarProps
               aria-expanded
               sx={{
                 alignSelf: "flex-start",
+                // FabricIconButton is a fixed square; this one also has a label.
+                width: "auto",
                 gap: `${spacing.lg}px`,
                 height: 40,
                 px: "20px",
