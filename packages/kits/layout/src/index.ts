@@ -2,6 +2,8 @@ export { FabricAppShell } from "./FabricAppShell";
 export { FabricBanner } from "./FabricBanner";
 export { FabricFooter } from "./FabricFooter";
 export { FabricNotificationDrawer } from "./FabricNotificationDrawer";
+export type { FabricPageHeaderProps, FabricPageHeaderTabs } from "./FabricPageHeader";
+export { FabricPageHeader } from "./FabricPageHeader";
 export { FabricSidebar } from "./FabricSidebar";
 export { FabricAppSwitcher, FabricTopBar, FabricUserMenu } from "./FabricTopBar";
 

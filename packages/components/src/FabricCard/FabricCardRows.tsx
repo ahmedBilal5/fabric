@@ -1,6 +1,4 @@
 import {
-  dark,
-  field,
   fontFamily,
   fontSize,
   fontWeight,
@@ -60,7 +58,7 @@ const FabricCardRowsImpl = forwardRef<HTMLDListElement, FabricCardRowsProps>(
         ref={ref}
         component="dl"
         sx={[
-          (theme) => ({
+          (_theme) => ({
             display: "flex",
             flexDirection: "column",
             gap: `${spacing.sm}px`,
@@ -76,8 +74,7 @@ const FabricCardRowsImpl = forwardRef<HTMLDListElement, FabricCardRowsProps>(
               fontWeight: compact ? fontWeight.regular : fontWeight.semiBold,
               lineHeight: compact ? "14px" : "20px",
               letterSpacing: compact ? "normal" : letterSpacing.wide,
-              color: field.label,
-              ...theme.applyStyles("dark", { color: dark.field.label }),
+              color: "var(--mui-palette-control-label)",
             },
             "& .FabricCardRows-row--emphasized": {
               fontFamily: fontFamily.heading,

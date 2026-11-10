@@ -128,7 +128,9 @@ const FabricSnackbarImpl = forwardRef<HTMLDivElement, FabricSnackbarProps>(funct
         variant="standardAlt"
         subVariant={SEVERITY_SUB_VARIANT[resolvedSeverity]}
         icon={iconMapping?.[severity ?? "success"]}
-        onClose={onClose ? (event) => onClose(event, "clickaway") : undefined}
+        // MUI has no close-button reason. Report Escape's, a deliberate dismissal, so handlers
+        // that ignore "clickaway" (as the docs suggest) still close on the X.
+        onClose={onClose ? (event) => onClose(event, "escapeKeyDown") : undefined}
         {...fabricAlertProps}
         title={title}
         sx={mergedAlertSx}

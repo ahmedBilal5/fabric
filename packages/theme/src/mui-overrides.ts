@@ -52,14 +52,34 @@ declare module "@mui/material/styles" {
     emptyText: string;
   }
 
+  /**
+   * Neutral colors for form and navigation controls: field labels, tab text, input
+   * underlines and disabled tabs. `createFabricTheme` derives them from your
+   * `text` and `divider` colors when you change those, so a brand's neutrals reach
+   * every control.
+   */
+  interface ControlPalette {
+    /** Field labels, unselected tab text, picker navigation and other quiet control text. */
+    label: string;
+    /** Label and tab text on hover: between `text.secondary` and `text.primary`. */
+    labelHover: string;
+    /** Resting underline of standard and filled inputs. */
+    underline: string;
+    /** Fill of a disabled tab, and its text on outline tab styles. */
+    disabled: string;
+  }
+
   interface Palette {
     semantic: SemanticPalette;
+    control: ControlPalette;
     appShell: AppShellPalette;
     datagrid: DatagridPalette;
   }
 
   interface PaletteOptions {
     semantic?: SemanticPalette;
+    /** Merged onto Fabric's control colors by `createFabricTheme`, so set only what you change. */
+    control?: Partial<ControlPalette>;
     /** Merged onto Fabric's app-shell colors by `createFabricTheme`, so set only what you change. */
     appShell?: Partial<AppShellPalette>;
     /** Merged onto Fabric's data grid colors by `createFabricTheme`, so set only what you change. */

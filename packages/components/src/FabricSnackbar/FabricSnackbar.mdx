@@ -98,7 +98,9 @@ MUI Snackbar renders into a portal at `document.body` with `position: fixed`. Ev
 
 ### `onClose(event, reason)` — `clickaway` fires on every backdrop click
 
-By default the snackbar auto-dismisses when the user clicks anywhere outside. If undesired, wrap the handler: `(_event, reason) => { if (reason !== 'clickaway') hideSnackbar(); }`.
+By default the snackbar auto-dismisses when the user clicks anywhere outside. If undesired, wrap the handler: `(_event, reason) => { if (reason !== 'clickaway') hideSnackbar(); }`. The toast's own close button reports `escapeKeyDown`, so it still closes with that handler.
+
+For most apps, [useToast](?path=/docs/components-usetoast--overview) handles the open state, queueing and an Undo action for you.
 
 ### `autoHideDuration` is user-controlled — no minimum
 

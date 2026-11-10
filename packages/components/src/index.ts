@@ -93,12 +93,24 @@ export type { FabricChipProps } from "./FabricChip";
 export { FabricChip } from "./FabricChip";
 export type { FabricCircularProgressProps } from "./FabricCircularProgress";
 export { FabricCircularProgress } from "./FabricCircularProgress";
+export type {
+  FabricConfirmFn,
+  FabricConfirmOptions,
+  FabricConfirmProviderProps,
+} from "./FabricConfirm";
+export { FabricConfirmProvider, useConfirm } from "./FabricConfirm";
 export type { FabricDialogAction, FabricDialogProps } from "./FabricDialog/FabricDialog";
 export { FabricDialog } from "./FabricDialog/FabricDialog";
 export type { FabricDividerProps } from "./FabricDivider";
 export { FabricDivider } from "./FabricDivider";
 export type { FabricDrawerProps } from "./FabricDrawer";
 export { FabricDrawer } from "./FabricDrawer";
+export type {
+  FabricEmptyStateProps,
+  FabricEmptyStateSize,
+  FabricEmptyStateVariant,
+} from "./FabricEmptyState";
+export { FabricEmptyState } from "./FabricEmptyState";
 export type {
   FabricGridDirection,
   FabricGridOffset,
@@ -159,6 +171,13 @@ export type { FabricTagColor, FabricTagProps, FabricTagVariant } from "./FabricT
 export { FabricTag } from "./FabricTag";
 export type { FabricTextFieldProps } from "./FabricTextField/FabricTextField";
 export { FabricTextField } from "./FabricTextField/FabricTextField";
+export type {
+  FabricToastAction,
+  FabricToastFn,
+  FabricToastOptions,
+  FabricToastProviderProps,
+} from "./FabricToast";
+export { FabricToastProvider, useToast } from "./FabricToast";
 export type {
   FabricToggleButtonGroupProps,
   FabricToggleItem,

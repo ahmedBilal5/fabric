@@ -63,6 +63,7 @@ The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/f
 | [`@fabric-kit/theme`](packages/theme)                                 | The MUI theme, `DesignSystemProvider` and `createFabricTheme`.   |
 | [`@fabric-kit/primitives`](packages/primitives)                       | Flex, Stack, Inline, Grid, Text and Surface.                     |
 | [`@fabric-kit/icons`](packages/icons)                                 | Tree-shakeable Material Symbols icons.                           |
+| [`@fabric-kit/hooks`](packages/hooks)                                 | React hooks and locale-aware formatting helpers.                 |
 | [`@fabric-kit/components`](packages/components)                       | MUI components with Fabric defaults and extra props.             |
 | [`@fabric-kit/datagrid`](packages/advanced-components/datagrid)       | The free MUI X data grid, styled.                                |
 | [`@fabric-kit/date-picker`](packages/advanced-components/date-picker) | Date, time and date-range pickers.                               |
@@ -72,6 +73,7 @@ The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/f
 | [`@fabric-kit/chatbot`](packages/kits/chatbot)                        | A streaming assistant panel for any backend.                     |
 | [`@fabric-kit/versioning`](packages/kits/versioning)                  | A version history drawer.                                        |
 | [`@fabric-kit/canvas-builder`](packages/kits/canvas-builder)          | A node-based workflow canvas on React Flow.                      |
+| [`@fabric-kit/patterns`](packages/patterns)                           | Whole pages: system pages now; list, detail and form pages next. |
 
 ## Development
 

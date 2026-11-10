@@ -36,15 +36,7 @@
  * ```
  */
 
-import {
-  accordion,
-  dark,
-  duration,
-  easing,
-  field,
-  spacing,
-  surface,
-} from "@fabric-kit/design-tokens";
+import { accordion, dark, duration, easing, spacing, surface } from "@fabric-kit/design-tokens";
 import CloseIcon from "@fabric-kit/icons/Close";
 import DragIndicatorIcon from "@fabric-kit/icons/DragIndicator";
 import KeyboardArrowRightIcon from "@fabric-kit/icons/KeyboardArrowRight";
@@ -172,8 +164,8 @@ interface RowColors {
 }
 
 const LIGHT: RowColors = {
-  text: field.label,
-  textHover: field.labelHover,
+  text: "var(--mui-palette-control-label)",
+  textHover: "var(--mui-palette-control-labelHover)",
   textActive: "var(--mui-palette-text-primary)",
   hoverBg: accordion.hoverBg,
   activeBg: surface.tertiary,
@@ -182,8 +174,8 @@ const LIGHT: RowColors = {
 };
 
 const DARK: RowColors = {
-  text: dark.field.label,
-  textHover: dark.field.labelHover,
+  text: "var(--mui-palette-control-label)",
+  textHover: "var(--mui-palette-control-labelHover)",
   textActive: "var(--mui-palette-text-primary)",
   hoverBg: dark.accordion.hoverBg,
   activeBg: dark.surface.tertiary,

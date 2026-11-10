@@ -27,6 +27,7 @@ import {
   status,
   statusText,
   surface,
+  tab,
   text,
   textVariant,
   zIndex,
@@ -35,7 +36,9 @@ import {
   alpha,
   createTheme,
   darken,
+  decomposeColor,
   lighten,
+  recomposeColor,
   type Theme,
   type ThemeOptions,
   ThemeProvider,
@@ -174,6 +177,12 @@ const lightPalette = {
     footerLine: border.default,
     emptyText: chip.disabled.text,
   },
+  control: {
+    label: field.label,
+    labelHover: field.labelHover,
+    underline: field.underline,
+    disabled: tab.disabled,
+  },
   text: { primary: text.primary, secondary: text.secondary, disabled: text.disabled },
   background: { default: surface.secondary, paper: surface.primary, warning: surface.warning },
   divider: border.default,
@@ -216,6 +225,12 @@ const darkPalette = {
     rowLine: dark.border.light,
     footerLine: dark.border.default,
     emptyText: dark.chip.disabled.text,
+  },
+  control: {
+    label: dark.field.label,
+    labelHover: dark.field.labelHover,
+    underline: dark.field.underline,
+    disabled: dark.tab.disabled,
   },
   text: {
     primary: dark.text.primary,
@@ -657,9 +672,9 @@ const baseThemeOptions: ThemeOptions = {
             color: "var(--mui-palette-text-disabled)",
             "& .MuiOutlinedInput-notchedOutline": { borderColor: "var(--mui-palette-divider)" },
           },
-          "& .MuiInputAdornment-root": { color: field.label },
+          "& .MuiInputAdornment-root": { color: "var(--mui-palette-control-label)" },
           "&:hover:not(.Mui-focused, .Mui-disabled) .MuiInputAdornment-root": {
-            color: field.labelHover,
+            color: "var(--mui-palette-control-labelHover)",
           },
           "& .MuiInputAdornment-root .MuiIconButton-root, &.Mui-focused .MuiInputAdornment-root": {
             color: "var(--mui-palette-text-primary)",
@@ -667,9 +682,9 @@ const baseThemeOptions: ThemeOptions = {
           "&.Mui-disabled .MuiInputAdornment-root, &.Mui-disabled .MuiInputAdornment-root .MuiIconButton-root":
             { color: "var(--mui-palette-text-disabled)" },
           ...theme.applyStyles("dark", {
-            "& .MuiInputAdornment-root": { color: dark.field.label },
+            "& .MuiInputAdornment-root": { color: "var(--mui-palette-control-label)" },
             "&:hover:not(.Mui-focused, .Mui-disabled) .MuiInputAdornment-root": {
-              color: dark.field.labelHover,
+              color: "var(--mui-palette-control-labelHover)",
             },
           }),
         }),
@@ -721,14 +736,14 @@ const baseThemeOptions: ThemeOptions = {
           lineHeight: "24px",
           minHeight: 36,
           "label + &, .MuiInputLabel-root + &": { marginTop: 0 },
-          "&::before": { borderBottomColor: field.underline },
+          "&::before": { borderBottomColor: "var(--mui-palette-control-underline)" },
           "&:hover:not(.Mui-disabled, .Mui-error)::before": {
-            borderBottomColor: field.underline,
+            borderBottomColor: "var(--mui-palette-control-underline)",
           },
           "&::after": { borderBottomColor: "var(--mui-palette-primary-main)" },
           "&.Mui-error::before": { borderBottomColor: "var(--mui-palette-error-main)" },
           ...theme.applyStyles("dark", {
-            "&::before": { borderBottomColor: dark.field.underline },
+            "&::before": { borderBottomColor: "var(--mui-palette-control-underline)" },
           }),
         }),
         input: {
@@ -746,14 +761,14 @@ const baseThemeOptions: ThemeOptions = {
     },
     MuiInputLabel: {
       styleOverrides: {
-        root: ({ ownerState, theme }) =>
+        root: ({ ownerState }) =>
           ownerState.variant === "standard"
             ? {
                 fontSize: fontSize.md,
                 lineHeight: "20px",
                 fontWeight: fontWeight.semiBold,
                 letterSpacing: "0.5px",
-                color: field.label,
+                color: "var(--mui-palette-control-label)",
                 transform: "translate(12px, 8px) scale(1)",
                 zIndex: 1,
                 "&.MuiInputLabel-shrink": {
@@ -765,7 +780,6 @@ const baseThemeOptions: ThemeOptions = {
                 },
                 "&.Mui-focused, &.Mui-error": { color: "var(--mui-palette-text-primary)" },
                 "&.Mui-disabled": { color: "var(--mui-palette-text-disabled)" },
-                ...theme.applyStyles("dark", { color: dark.field.label }),
               }
             : ownerState.variant === "outlined"
               ? {
@@ -773,7 +787,7 @@ const baseThemeOptions: ThemeOptions = {
                   lineHeight: "20px",
                   fontWeight: fontWeight.semiBold,
                   letterSpacing: "0.5px",
-                  color: field.label,
+                  color: "var(--mui-palette-control-label)",
                   maxWidth: "calc(100% - 24px)",
                   transform: `translate(12px, ${ownerState.size === "small" ? 6 : 10}px) scale(1)`,
                   // Floated label: 8px (14 * 0.5714) centered on the top border.
@@ -784,7 +798,6 @@ const baseThemeOptions: ThemeOptions = {
                   },
                   "&.Mui-focused, &.Mui-error": { color: "var(--mui-palette-text-primary)" },
                   "&.Mui-disabled": { color: "var(--mui-palette-text-disabled)" },
-                  ...theme.applyStyles("dark", { color: dark.field.label }),
                 }
               : {},
       },
@@ -794,18 +807,17 @@ const baseThemeOptions: ThemeOptions = {
     },
     MuiFormControl: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: {
           "&:hover .MuiInputLabel-outlined:not(.MuiInputLabel-shrink, .Mui-disabled, .Mui-error), &:hover .MuiInputLabel-standard:not(.MuiInputLabel-shrink, .Mui-disabled, .Mui-error)":
             {
-              color: field.labelHover,
-              ...theme.applyStyles("dark", { color: dark.field.labelHover }),
+              color: "var(--mui-palette-control-labelHover)",
             },
           // Resting label sits after a leading icon (8 padding + 24 icon + 4 gap + 4 inset).
           "&:has(.MuiInputBase-adornedStart) .MuiInputLabel-outlined:not(.MuiInputLabel-shrink)": {
             transform: "translate(40px, 10px) scale(1)",
             "&.MuiInputLabel-sizeSmall": { transform: "translate(40px, 6px) scale(1)" },
           },
-        }),
+        },
       },
     },
     MuiFormHelperText: {
@@ -851,11 +863,11 @@ const baseThemeOptions: ThemeOptions = {
         // Icons inside the pickers should also invert.
         ".dark .MuiPickersInputBase-root .MuiSvgIcon-root, .dark .MuiPickersTextField-root .MuiSvgIcon-root":
           {
-            color: dark.field.label,
+            color: "var(--mui-palette-control-label)",
           },
         ".light .MuiPickersInputBase-root .MuiSvgIcon-root, .light .MuiPickersTextField-root .MuiSvgIcon-root":
           {
-            color: field.label,
+            color: "var(--mui-palette-control-label)",
           },
         // Picker floating labels use the MuiInputLabel / MuiFormControl overrides.
         // Placeholder text inside the section list (before user selects a
@@ -1025,10 +1037,10 @@ const baseThemeOptions: ThemeOptions = {
             color: "var(--mui-palette-text-primary)",
           },
         // The design date-dropdown: arrows and weekday labels are muted, Sundays are red.
-        ".light .MuiPickersArrowSwitcher-button": { color: picker.nav },
-        ".dark .MuiPickersArrowSwitcher-button": { color: dark.picker.nav },
-        ".light .MuiDayCalendar-weekDayLabel": { color: picker.weekday },
-        ".dark .MuiDayCalendar-weekDayLabel": { color: dark.picker.weekday },
+        ".light .MuiPickersArrowSwitcher-button": { color: "var(--mui-palette-control-label)" },
+        ".dark .MuiPickersArrowSwitcher-button": { color: "var(--mui-palette-control-label)" },
+        ".light .MuiDayCalendar-weekDayLabel": { color: "var(--mui-palette-control-labelHover)" },
+        ".dark .MuiDayCalendar-weekDayLabel": { color: "var(--mui-palette-control-label)" },
         // Sunday is the first column (default week start).
         ".light .MuiDayCalendar-header > .MuiDayCalendar-weekDayLabel:nth-child(7n+1), .light .MuiDayCalendar-weekContainer > .MuiPickerDay-root:nth-child(7n+1)":
           { color: `${picker.sunday} !important` },
@@ -1059,10 +1071,10 @@ const baseThemeOptions: ThemeOptions = {
         // Digital clock section (hours / minutes / AM-PM columns): text +
         // divider between columns.
         ".dark .MuiMultiSectionDigitalClock-root .MuiMenuItem-root:not(.Mui-selected)": {
-          color: dark.picker.nav,
+          color: "var(--mui-palette-control-label)",
         },
         ".light .MuiMultiSectionDigitalClock-root .MuiMenuItem-root:not(.Mui-selected)": {
-          color: picker.nav,
+          color: "var(--mui-palette-control-label)",
         },
         ".dark .MuiMultiSectionDigitalClockSection-root": {
           borderColor: "var(--mui-palette-divider)",
@@ -1292,7 +1304,7 @@ const baseThemeOptions: ThemeOptions = {
             width: "auto",
             border: 0,
             "& .MuiMenuItem-root": { fontSize: fontSize.lg },
-            "& .MuiMenuItem-root:not(.Mui-selected)": { color: picker.nav },
+            "& .MuiMenuItem-root:not(.Mui-selected)": { color: "var(--mui-palette-control-label)" },
           },
         },
       },
@@ -1389,6 +1401,21 @@ export function createFabricTheme(overrides: ThemeOptions = {}, ...args: object[
           (scheme === "light" ? lighten(main, 0.88) : darken(main, 0.72)),
       };
     }
+
+    // Control neutrals follow your text and divider colors. The mix ratios reproduce
+    // Fabric's own control colors from Fabric's text and divider colors.
+    if (user.text || user.divider) {
+      const t = palette.text as { primary: string; secondary: string; disabled: string };
+      const line = palette.divider as string;
+      const light = scheme === "light";
+      palette.control = {
+        ...palette.control,
+        label: user.control?.label ?? t.secondary,
+        labelHover: user.control?.labelHover ?? mix(t.primary, t.secondary, light ? 0.55 : 0.8),
+        underline: user.control?.underline ?? mix(t.disabled, line, light ? 0.6 : 0.45),
+        disabled: user.control?.disabled ?? (light ? mix(t.disabled, line, 0.4) : t.disabled),
+      };
+    }
   }
 
   return createTheme(merged, ...args);
@@ -1401,7 +1428,30 @@ interface PaletteLike {
   action?: { active?: string; hover?: string; selected?: string; [key: string]: unknown };
   appShell?: { hover?: string; [key: string]: unknown };
   datagrid?: { headerBg?: string; [key: string]: unknown };
+  control?: { label?: string; labelHover?: string; underline?: string; disabled?: string };
+  text?: { primary?: string; secondary?: string; disabled?: string };
+  divider?: string;
   [key: string]: unknown;
+}
+
+/** Mixes two colors: `weight` of `a` and the rest of `b`. Alpha is mixed too. */
+function mix(a: string, b: string, weight: number): string {
+  const ca = decomposeColor(a);
+  const cb = decomposeColor(b);
+  if (ca.type.startsWith("hsl") || cb.type.startsWith("hsl")) return a;
+  const values = [0, 1, 2].map((i) =>
+    Math.round(Number(ca.values[i]) * weight + Number(cb.values[i]) * (1 - weight)),
+  );
+  const alphaA = ca.values[3] ?? 1;
+  const alphaB = cb.values[3] ?? 1;
+  const alphaMix = Number(alphaA) * weight + Number(alphaB) * (1 - weight);
+  return recomposeColor({
+    type: alphaMix < 1 ? "rgba" : "rgb",
+    values:
+      alphaMix < 1
+        ? [values[0], values[1], values[2], alphaMix]
+        : [values[0], values[1], values[2]],
+  } as Parameters<typeof recomposeColor>[0]);
 }
 
 export { baseThemeOptions, ThemeProvider };

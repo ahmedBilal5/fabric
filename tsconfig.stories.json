@@ -17,6 +17,9 @@
       "@fabric-kit/primitives": [
         "./packages/primitives/src"
       ],
+      "@fabric-kit/hooks": [
+        "./packages/hooks/src"
+      ],
       "@fabric-kit/components": [
         "./packages/components/src"
       ],
@@ -43,6 +46,9 @@
       ],
       "@fabric-kit/canvas-builder": [
         "./packages/kits/canvas-builder/src"
+      ],
+      "@fabric-kit/patterns": [
+        "./packages/patterns/src"
       ],
       "@fabric-kit/icons/*": [
         "./packages/icons/dist/icon.d.ts"

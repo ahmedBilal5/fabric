@@ -1,0 +1,80 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as EmptyStories from './FabricEmptyState.stories';
+
+<Meta of={EmptyStories} name="Overview" />
+
+# FabricEmptyState
+
+What to show where content would be: a list with nothing in it yet, a search with no results, or a section that failed to load. A good empty state says what happened and offers the next step, instead of leaving a blank area.
+
+**Use it for:** empty lists and tables, searches and filters that match nothing, first-run screens, failed loads inside a page section, and "nothing selected" panels.
+
+**Don't use it for:** loading (use `FabricSkeleton`), whole-page errors such as 404 (use [`FabricSystemPage`](?path=/docs/patterns-system-pages--docs) from `@fabric-kit/patterns`), or messages next to content (use `FabricAlert`).
+
+## First run
+
+The user hasn't created anything yet. Lead with the action that creates the first item.
+
+<Canvas of={EmptyStories.FirstRun} />
+
+```tsx
+<FabricEmptyState
+  title="No invoices yet"
+  description="Invoices you create or import show up here."
+  actions={
+    <>
+      <FabricButton variant="contained" startIcon={<Add />}>New invoice</FabricButton>
+      <FabricButton variant="outlined">Import CSV</FabricButton>
+    </>
+  }
+/>
+```
+
+## No results
+
+A search or filter matched nothing. Repeat what they searched for, and offer a way back.
+
+<Canvas of={EmptyStories.NoResults} />
+
+## Load error
+
+Say what failed in plain words and offer a retry. The icon takes the error color.
+
+<Canvas of={EmptyStories.LoadError} />
+
+## Sizes
+
+`size="md"` (default) suits a page or a large section. `size="sm"` fits a card, a table body or a side panel.
+
+<Canvas of={EmptyStories.InACard} />
+
+## Your own illustration
+
+`illustration` replaces the variant's icon. Use theme colors (`var(--mui-palette-*)`) in SVG art so it follows the brand and dark mode. `illustration={null}` shows no image.
+
+<Canvas of={EmptyStories.CustomIllustration} />
+<Canvas of={EmptyStories.NoImage} />
+
+## Long content
+
+Title and description wrap within a readable width.
+
+<Canvas of={EmptyStories.LongContent} />
+
+## Writing tips
+
+- Title: what the user sees, in their words: "No invoices yet", not "Empty".
+- Description: why, and what to do. One or two sentences.
+- Actions: at most two. Put the primary action first.
+
+## Accessibility
+
+- The title is a heading (`h2` by default). Set `titleComponent` so it fits the page's heading outline, for example `h3` inside a card under an `h2`.
+- The icon or illustration is decorative and hidden from screen readers; the title carries the meaning.
+- When an empty state replaces content after a search, consider announcing the result count in a live region so screen-reader users notice the change.
+
+## Relation to MUI
+
+MUI has no empty-state component. `FabricEmptyState` is built from Fabric primitives and theme variables, so it follows the brand and dark mode.
+
+<Controls of={EmptyStories.FirstRun} />
