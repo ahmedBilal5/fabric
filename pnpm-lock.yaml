@@ -395,6 +395,18 @@ importers:
         specifier: ^5.5.0
         version: 5.9.3
 
+  packages/hooks:
+    devDependencies:
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.31
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+
   packages/icons:
     devDependencies:
       '@emotion/react':
@@ -639,6 +651,49 @@ importers:
       '@mui/lab':
         specifier: ^9.0.0-beta.0
         version: 9.0.0-beta.7(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@mui/material@9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/material':
+        specifier: ^9.0.0
+        version: 9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react':
+        specifier: ^18.2.0
+        version: 18.3.31
+      '@types/react-dom':
+        specifier: ^18.2.0
+        version: 18.3.7(@types/react@18.3.31)
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      typescript:
+        specifier: ^5.5.0
+        version: 5.9.3
+
+  packages/patterns:
+    dependencies:
+      '@fabric-kit/components':
+        specifier: workspace:^
+        version: link:../components
+      '@fabric-kit/design-tokens':
+        specifier: workspace:^
+        version: link:../design-tokens
+      '@fabric-kit/icons':
+        specifier: workspace:^
+        version: link:../icons
+      '@fabric-kit/primitives':
+        specifier: workspace:^
+        version: link:../primitives
+      '@fabric-kit/theme':
+        specifier: workspace:^
+        version: link:../theme
+    devDependencies:
+      '@emotion/react':
+        specifier: ^11.0.0
+        version: 11.14.0(@types/react@18.3.31)(react@18.3.1)
+      '@emotion/styled':
+        specifier: ^11.0.0
+        version: 11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1)
       '@mui/material':
         specifier: ^9.0.0
         version: 9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)

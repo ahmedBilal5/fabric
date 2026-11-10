@@ -27,7 +27,6 @@ import {
   dark,
   duration,
   easing,
-  field,
   iconSize,
   opacity,
   radii,
@@ -75,7 +74,7 @@ const lightColors: StateColors = {
   subtle: "var(--mui-palette-text-secondary)",
   onMain: "var(--mui-palette-primary-contrastText)",
   stroke: "var(--mui-palette-divider)",
-  strokeActive: field.underline,
+  strokeActive: "var(--mui-palette-control-underline)",
   selectedBg: "var(--mui-palette-action-selected)",
   disabledFill: stepper.disabledBg,
 };

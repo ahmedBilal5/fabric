@@ -1,0 +1,91 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ToastStories from './FabricToast.stories';
+
+<Meta of={ToastStories} name="Overview" />
+
+# useToast
+
+Show a toast with one call. `useToast()` returns `toast(options)` with `success`, `info`, `warning` and `error` shortcuts, and `dismiss`. Toasts queue and show one at a time. Each is a [FabricSnackbar](?path=/docs/components-fabricsnackbar--overview), so it matches the alerts in light and dark mode.
+
+**Use it for:** confirming that something happened ("Invoice sent"), background events ("Import finished"), and undo after a destructive action.
+
+**Don't use it for:** questions (use [useConfirm](?path=/docs/components-useconfirm--overview)), errors the user must fix before going on (show them inline), or anything they need to read later.
+
+## Setup
+
+Mount the provider once, inside the theme provider:
+
+```tsx
+import { FabricToastProvider } from '@fabric-kit/components';
+
+<DesignSystemProvider>
+  <FabricToastProvider>
+    <App />
+  </FabricToastProvider>
+</DesignSystemProvider>
+```
+
+## Basic usage
+
+```tsx
+const toast = useToast();
+
+toast.success('Invoice sent');
+toast.error("Couldn't save", { message: 'Check your connection and try again.' });
+```
+
+<Canvas of={ToastStories.Severities} />
+
+## Undo
+
+Give a toast one `action`. Clicking it runs `onClick` and closes the toast. A toast with an action stays at least 10 seconds, so there is time to use it.
+
+```tsx
+toast({
+  title: '3 invoices deleted',
+  action: { label: 'Undo', onClick: restoreInvoices },
+});
+```
+
+<Canvas of={ToastStories.WithUndo} />
+
+## Queue
+
+Toasts show one after another. Beyond `maxQueue` waiting toasts (5 by default), the oldest waiting one is dropped.
+
+<Canvas of={ToastStories.Queued} />
+
+## Persistent toasts
+
+`duration: null` keeps a toast until the user closes it or you call `toast.dismiss(id)` with the id `toast` returned.
+
+<Canvas of={ToastStories.Persistent} />
+
+## Position
+
+The provider places toasts at the bottom center by default. Set `vertical` and `horizontal` to move them, and `topOffset` to clear a fixed app bar.
+
+<Canvas of={ToastStories.TopRight} />
+
+## Options
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `ReactNode` | | Bold first line. |
+| `message` | `ReactNode` | | Detail under the title. |
+| `severity` | `"success" \| "info" \| "warning" \| "error"` | `"success"` | Color and icon. |
+| `duration` | `number \| null` | provider `duration` (5000) | Milliseconds on screen; `null` keeps it open. |
+| `action` | `{ label, onClick }` | | One button, such as Undo. |
+| `onClose` | `() => void` | | Runs when the toast has closed. |
+
+## Accessibility
+
+- The alert inside the toast has `role="alert"`, so screen readers announce it.
+- Every toast has a Close button, and clicking elsewhere on the page doesn't dismiss it.
+- Give people time to read: 5 seconds by default, 10 with an action. Use `duration: null` for long messages ([WCAG 2.2.1 Timing Adjustable](https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html)).
+
+## Relation to MUI
+
+MUI's `Snackbar` shows one message whose open state you manage. `useToast` adds the state, the queue, the action button and the close button on top of `FabricSnackbar`.
+
+<Controls of={ToastStories.Severities} />

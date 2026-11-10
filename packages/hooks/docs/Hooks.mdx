@@ -1,0 +1,97 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as HookStories from './Hooks.stories';
+
+<Meta of={HookStories} name="Docs" />
+
+# Hooks and formatting
+
+`@fabric-kit/hooks` holds the small pieces every app rewrites: open/close state, debouncing, keyboard shortcuts, copying, saved preferences, and locale-aware dates, numbers and file sizes. It depends only on React; the formatters use the browser's built-in `Intl` APIs, so there is no date or number library to add.
+
+```bash
+pnpm add @fabric-kit/hooks
+```
+
+## useDisclosure
+
+Open state with stable `onOpen`, `onClose` and `onToggle` handlers, for dialogs, drawers and menus.
+
+```tsx
+const dialog = useDisclosure();
+<FabricButton onClick={dialog.onOpen}>Open details</FabricButton>
+<FabricDialog open={dialog.open} onClose={dialog.onClose} />
+```
+
+<Canvas of={HookStories.Disclosure} />
+
+## useDebounce and useDebouncedCallback
+
+`useDebounce(value, delay)` returns the value once it stops changing, so a search runs when typing pauses rather than on every key. `useDebouncedCallback(fn, delay)` returns a debounced function with `cancel()` and `flush()`, for autosave and similar side effects.
+
+```tsx
+const debounced = useDebounce(query, 300);
+useEffect(() => { search(debounced); }, [debounced]);
+
+const saveDraft = useDebouncedCallback((text: string) => api.saveDraft(text), 800);
+```
+
+<Canvas of={HookStories.Debounce} />
+
+## useHotkeys
+
+Runs a handler for a key combination. `mod` is ⌘ on macOS and Ctrl elsewhere. Plain-key shortcuts such as `?` don't fire while the user types in a field; shortcuts with Ctrl, ⌘ or Alt do. `formatHotkey` turns a combination into display text ("⌘K" or "Ctrl+K").
+
+```tsx
+useHotkeys('mod+k', palette.onOpen);
+useHotkeys(['shift+?', 'f1'], help.onOpen, { enabled: !help.open });
+
+<kbd>{formatHotkey('mod+k')}</kbd>
+```
+
+<Canvas of={HookStories.Hotkeys} />
+
+Options: `enabled`, `preventDefault` (default `true`), `enableInInputs`, and `target` to listen on an element instead of the window.
+
+## useClipboard
+
+`copy(text)` writes to the clipboard and resolves to `true` on success; `copied` stays true for two seconds for "Copied" feedback. It falls back to the older copy command where the Clipboard API isn't available.
+
+<Canvas of={HookStories.Clipboard} />
+
+## useLocalStorage
+
+`useState` that persists in `localStorage`, stays in sync across components and tabs, and falls back to memory when storage is blocked. Use it for preferences, not data that must not be lost.
+
+```tsx
+const [compact, setCompact, reset] = useLocalStorage('grid-compact', false);
+```
+
+<Canvas of={HookStories.LocalStorage} />
+
+## useRelativeTime
+
+"3 minutes ago" text that keeps itself current: every 10 seconds for the first minute, then less often. Wrap it in `<time dateTime=…>` so the exact moment is in the markup.
+
+<Canvas of={HookStories.RelativeTime} />
+
+## Formatting
+
+Each formatter takes an optional `locale`; without one it uses the browser's. Formatters are cached, so they are cheap in table cells.
+
+| Function | Example | Output (en-US) |
+| --- | --- | --- |
+| `formatDate(date, style?)` | `formatDate(d, 'datetime')` | Mar 12, 2026, 2:05 PM |
+| `formatRelativeTime(date)` | `formatRelativeTime(threeHoursAgo)` | 3 hours ago |
+| `formatNumber(n, options?)` | `formatNumber(1234567, { notation: 'compact' })` | 1.2M |
+| `formatCurrency(n, code)` | `formatCurrency(1499.5, 'EUR')` | €1,499.50 |
+| `formatPercent(ratio)` | `formatPercent(0.256)` | 26% |
+| `formatFileSize(bytes)` | `formatFileSize(1536000)` | 1.5 MB |
+
+Date styles: `date`, `short`, `long`, `full`, `time`, `datetime` and `monthYear`, or any `Intl.DateTimeFormat` options. Pass `timeZone` to show a fixed zone. `formatFileSize` uses decimal units (kB, MB) by default and binary units (KiB, MiB) with `base: 1024`.
+
+Switch locales to see the separators, symbols and scripts change:
+
+<Canvas of={HookStories.Formatting} />
+
+## Server rendering
+
+Every hook is safe to render on the server: browser APIs are only touched in effects and event handlers. Relative times depend on the current moment, so render them on the client, or pass a fixed `now` to `formatRelativeTime`, to avoid a hydration mismatch.

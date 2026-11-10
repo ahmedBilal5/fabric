@@ -1,12 +1,4 @@
-import {
-  dark,
-  field,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  spacing,
-  text,
-} from "@fabric-kit/design-tokens";
+import { dark, fontFamily, fontSize, fontWeight, spacing, text } from "@fabric-kit/design-tokens";
 import { CardHeader, type CardHeaderProps } from "@mui/material";
 import type { Theme } from "@mui/material/styles";
 import { forwardRef, memo } from "react";
@@ -40,8 +32,7 @@ const baseSx = (theme: Theme) => ({
     fontSize: fontSize.sm,
     fontWeight: fontWeight.regular,
     lineHeight: "14px",
-    color: field.label,
-    ...theme.applyStyles("dark", { color: dark.field.label }),
+    color: "var(--mui-palette-control-label)",
   },
 });
 

@@ -31,6 +31,27 @@ Set both color schemes when you change a palette color, so dark mode stays legib
 
 An overridden color replaces Fabric's whole color, so MUI derives matching `light` and `dark` shades. Fabric also re-derives the colors it builds from the brand: icon buttons and active icons, app-shell hovers, the data-grid header tint, and the dark-mode hover and selection tints.
 
+### Change the neutrals too
+
+A brand is more than its primary color. Set `text`, `background` and `divider` to move every surface, line and label to your neutrals:
+
+```ts
+const theme = createFabricTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: { main: '#1D5FBF' },
+        text: { primary: '#1B2430', secondary: '#4F5B6B', disabled: '#97A3B3' },
+        background: { default: '#F3F6FA', paper: '#FFFFFF' },
+        divider: '#D9E1EB',
+      },
+    },
+  },
+});
+```
+
+Fabric derives its control colors from those: field labels, tab text, input underlines and disabled tabs live in `palette.control` and follow your `text` and `divider` colors. Set a `control` key yourself only when you want a different value; Fabric merges it with the derived ones. App-shell and data-grid colors (`palette.appShell`, `palette.datagrid`) also take partial overrides.
+
 ### Try it in this Storybook
 
 Use the **Theme** menu (paintbrush icon) in the toolbar to switch every story and docs page between three brands, each in light and dark mode:

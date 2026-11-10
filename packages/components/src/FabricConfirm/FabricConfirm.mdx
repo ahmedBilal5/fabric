@@ -1,0 +1,95 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ConfirmStories from './FabricConfirm.stories';
+
+<Meta of={ConfirmStories} name="Overview" />
+
+# useConfirm
+
+Ask the user to confirm an action with one `await`. `useConfirm()` returns `confirm(options)`, which opens a [FabricDialog](?path=/docs/components-fabricdialog--overview) and resolves to `true` when the user confirms, or `false` when they cancel, press Escape, click the backdrop or close the dialog.
+
+**Use it for:** deleting, archiving, publishing, discarding changes, and anything else the user should pause on.
+
+**Don't use it for:** forms or anything with more than one input (render a `FabricDialog` yourself), or messages that need no decision (use [useToast](?path=/docs/components-usetoast--overview)).
+
+## Setup
+
+Mount the provider once, inside the theme provider:
+
+```tsx
+import { FabricConfirmProvider } from '@fabric-kit/components';
+
+<DesignSystemProvider>
+  <FabricConfirmProvider>
+    <App />
+  </FabricConfirmProvider>
+</DesignSystemProvider>
+```
+
+## Basic usage
+
+```tsx
+const confirm = useConfirm();
+
+async function publish() {
+  const ok = await confirm({
+    title: 'Publish 12 changes?',
+    description: 'Everyone in the workspace will see them right away.',
+    confirmLabel: 'Publish',
+  });
+  if (ok) await api.publish();
+}
+```
+
+<Canvas of={ConfirmStories.Basic} />
+
+Write the title as the question and name the action on the confirm button ("Publish", not "OK"), so the user can answer without reading the description.
+
+## Destructive actions
+
+`danger` turns the confirm button red and puts focus on Cancel, so pressing Enter by accident doesn't destroy anything.
+
+<Canvas of={ConfirmStories.Danger} />
+
+For actions that can't be undone, `typeToConfirm` also requires typing "DELETE" before the button enables.
+
+<Canvas of={ConfirmStories.TypeToConfirm} />
+
+## Acknowledge only
+
+`hideCancel` leaves a single button, for a notice the user must read before continuing.
+
+<Canvas of={ConfirmStories.Acknowledge} />
+
+## Several requests
+
+Requests made while a dialog is open wait their turn and resolve in order.
+
+<Canvas of={ConfirmStories.Queued} />
+
+## Options
+
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `ReactNode` | required | The question. |
+| `description` | `ReactNode` | | The consequence of confirming. |
+| `confirmLabel` | `ReactNode` | `"Confirm"` | Confirm button label. |
+| `cancelLabel` | `ReactNode` | `"Cancel"` | Cancel button label. |
+| `danger` | `boolean` | `false` | Red confirm button, focus on Cancel. |
+| `typeToConfirm` | `boolean` | `false` | Require typing "DELETE". Implies `danger`. |
+| `icon` | `ReactNode` | | Icon before the title. |
+| `hideCancel` | `boolean` | `false` | Show only the confirm button. |
+
+`FabricConfirmProvider` takes `defaultOptions`, merged under every request, for example to translate the button labels once.
+
+## Accessibility
+
+- The dialog has `role="alertdialog"`, its title labels it and its description describes it.
+- Focus moves into the dialog and returns to the button that opened it when it closes.
+- Escape cancels.
+- Focus starts on the safe choice: the confirm button for ordinary actions, Cancel for destructive ones.
+
+## Relation to MUI
+
+There is no MUI equivalent. The dialog is a `FabricDialog`, so it inherits its look, full-screen layout on small screens and the theme's `MuiDialog` overrides.
+
+<Controls of={ConfirmStories.Basic} />

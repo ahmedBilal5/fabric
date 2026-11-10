@@ -1,0 +1,85 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as SystemStories from './FabricSystemPage.stories';
+
+<Meta of={SystemStories} name="Docs" />
+
+# System pages
+
+`FabricSystemPage` covers the pages an app shows when it can't show what was asked for. Each `kind` comes with a status code or icon, plain-language copy and the actions people need next. Override any of them.
+
+```bash
+pnpm add @fabric-kit/patterns
+```
+
+| `kind` | When | Default actions |
+| --- | --- | --- |
+| `not-found` | 404: the address doesn't match a page. | Go to home, Go back |
+| `forbidden` | 403: the page exists, but this user may not see it. | Request access (with `onRequestAccess`), Go to home |
+| `no-access` | The user isn't a member of this workspace or project. | Request access (with `onRequestAccess`), Go to home |
+| `server-error` | 500: something failed on the server. | Try again, Go to home |
+| `maintenance` | Planned downtime. | None; add a status-page link |
+
+## Not found
+
+Use it for your router's catch-all route. Pass `onHome` to navigate with your router instead of a full page load.
+
+```tsx
+<Route path="*" element={<FabricSystemPage kind="not-found" onHome={() => navigate('/')} />} />
+```
+
+<Canvas of={SystemStories.NotFound} />
+
+## Forbidden and no access
+
+`forbidden` is for a page this user may not see; `no-access` is for a workspace they don't belong to yet. Pass `onRequestAccess` to add a "Request access" button.
+
+<Canvas of={SystemStories.NoAccess} />
+
+## Server error
+
+Use it in an error boundary. `onRetry` runs for "Try again" (the default reloads the page). `reference` shows an error or request ID that people can quote to support.
+
+```tsx
+<ErrorBoundary
+  fallbackRender={({ resetErrorBoundary }) => (
+    <FabricSystemPage kind="server-error" onRetry={resetErrorBoundary} reference={requestId} />
+  )}
+>
+  <App />
+</ErrorBoundary>
+```
+
+<Canvas of={SystemStories.ServerError} />
+
+## Maintenance
+
+`meta` adds a line such as when you expect to be back. Link to your status page in `actions`.
+
+<Canvas of={SystemStories.Maintenance} />
+
+## Inside the app shell
+
+Without `fullHeight`, the page centers in its container, so it can fill the content area of `FabricAppShell` while the sidebar and top bar stay usable.
+
+<Canvas of={SystemStories.InsideContent} />
+
+## Your own copy
+
+`title`, `description`, `actions` and `illustration` replace the defaults. Name the missing thing when you know it.
+
+<Canvas of={SystemStories.CustomCopy} />
+
+## Writing tips
+
+- Say what happened in plain words; keep codes small. "Page not found" helps more than "Error 404".
+- Don't blame the user: "The link may be broken", not "You entered a wrong address".
+- Always offer a way forward.
+- Translate the default text by passing `title`, `description` and `actions`.
+
+## Accessibility
+
+- The title is an `h1` by default; use `titleComponent="h2"` when the page renders below another `h1`.
+- The status code or icon is decorative and hidden from screen readers; the title carries the meaning.
+- The root is not a landmark, so place it inside your own `<main>` (the app shell already provides one).
+
+<Controls of={SystemStories.NotFound} />

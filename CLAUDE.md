@@ -9,19 +9,20 @@ Think like a design-system maintainer: the goal is stable, well-documented packa
 Fabric is built bottom-up. Each layer may use any layer below it, never above.
 
 ```
-design-tokens → theme → primitives → components → advanced-components → kits/*
+design-tokens → theme → primitives → components → advanced-components → kits/* → patterns
 ```
 
-| Layer | Package(s)                                                                       | Rules                                                         |
-| ----- | -------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| 1     | `@fabric-kit/design-tokens`                                                      | Plain TS values. No React, no MUI.                            |
-| 2     | `@fabric-kit/theme`                                                              | MUI theme built from tokens.                                  |
-| 3     | `@fabric-kit/primitives`                                                         | Layout and text: Flex, Stack, Inline, Grid, Text, Surface.    |
-| 4     | `@fabric-kit/components`                                                         | Fabric wrappers around MUI components.                        |
-| 5     | `@fabric-kit/datagrid`, `date-picker`, `tree-view`                               | Styled MUI X controls. Free (MIT) MUI X packages only.        |
-| 6     | `@fabric-kit/layout`, `global-search`, `chatbot`, `versioning`, `canvas-builder` | Composed, app-level kits. Kits must not depend on each other. |
+| Layer | Package(s)                                                                       | Rules                                                                               |
+| ----- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| 1     | `@fabric-kit/design-tokens`                                                      | Plain TS values. No React, no MUI.                                                  |
+| 2     | `@fabric-kit/theme`                                                              | MUI theme built from tokens.                                                        |
+| 3     | `@fabric-kit/primitives`                                                         | Layout and text: Flex, Stack, Inline, Grid, Text, Surface.                          |
+| 4     | `@fabric-kit/components`                                                         | Fabric wrappers around MUI components.                                              |
+| 5     | `@fabric-kit/datagrid`, `date-picker`, `tree-view`                               | Styled MUI X controls. Free (MIT) MUI X packages only.                              |
+| 6     | `@fabric-kit/layout`, `global-search`, `chatbot`, `versioning`, `canvas-builder` | Composed, app-level kits. Kits must not depend on each other.                       |
+| 7     | `@fabric-kit/patterns`                                                           | Whole pages (system, list, detail, form) built from any layer above, kits included. |
 
-`@fabric-kit/icons` sits beside the stack and can be used by any layer from 3 up.
+`@fabric-kit/icons` sits beside the stack and can be used by any layer from 3 up. `@fabric-kit/hooks` (React hooks and `Intl` formatting helpers, no MUI) also sits beside it and can be used by any layer from 3 up.
 
 `apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`.
 

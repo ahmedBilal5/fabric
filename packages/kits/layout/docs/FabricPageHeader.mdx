@@ -1,0 +1,83 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as HeaderStories from './FabricPageHeader.stories';
+
+<Meta of={HeaderStories} name="Docs" />
+
+# FabricPageHeader
+
+The top of a page: where you are, what the page is, its status and what you can do here. Nearly every screen in a business app starts with one, so using the same header everywhere makes pages feel related.
+
+**Use it for:** list pages, record pages, settings pages and forms, at the top of `FabricAppShell`'s content area.
+
+**Don't use it for:** the app-wide bar with the logo and user menu (that's `FabricTopBar`), or headings inside a page (use `FabricText`).
+
+## List page
+
+Title, a one-line description and the page's main actions. Put the primary action last, where the eye ends.
+
+<Canvas of={HeaderStories.ListPage} />
+
+```tsx
+<FabricPageHeader
+  title="Invoices"
+  description="Every invoice sent from Acme Workspace."
+  divider
+  actions={
+    <>
+      <FabricButton variant="outlined" startIcon={<Download />}>Export</FabricButton>
+      <FabricButton variant="contained" startIcon={<Add />}>New invoice</FabricButton>
+    </>
+  }
+/>
+```
+
+## Record page
+
+Breadcrumbs show the way back, `status` sits next to the title, and `meta` holds the record's key facts. Less common actions go in the `moreActions` menu, so the header keeps one or two visible buttons.
+
+<Canvas of={HeaderStories.DetailPage} />
+
+```tsx
+<FabricPageHeader
+  breadcrumbs={[{ label: 'Invoices', href: '/invoices' }, { label: 'INV-1042', current: true }]}
+  title="INV-1042"
+  status={<FabricTag variant="color" color="warning" label="Overdue" />}
+  meta="Acme · $12,400.00 · Due 12 March 2026"
+  actions={<FabricButton variant="contained">Record payment</FabricButton>}
+  moreActions={[{ label: 'Duplicate', onClick: duplicate }, { label: 'Void invoice' }]}
+/>
+```
+
+## Tabs
+
+`tabs` adds `FabricTabs` under the header for records split into sections. `icon` shows an avatar or logo before the title.
+
+<Canvas of={HeaderStories.WithTabs} />
+
+## Back button
+
+`onBack` adds a back button before the title. Use it in a flow with one obvious way back; use breadcrumbs when the page sits in a hierarchy.
+
+<Canvas of={HeaderStories.WithBackButton} />
+
+## Long content and small screens
+
+Long titles wrap. When the row is too narrow, the actions move under the title.
+
+<Canvas of={HeaderStories.LongContent} />
+
+## Sticky
+
+`sticky` keeps the header at the top of the scroll container with the page background behind it, so actions stay in reach on long pages.
+
+## Accessibility
+
+- The root is a `<header>` element and the title an `h1`. Set `titleComponent` when the header sits below another `h1`.
+- The back button and the overflow menu have accessible names (`backLabel`, `moreActionsLabel`); change them when you translate the app.
+- Breadcrumbs render as a `nav` landmark with the current page marked.
+
+## Relation to MUI
+
+MUI has no page header. `FabricPageHeader` composes `FabricBreadcrumbs`, `FabricMenuButton` and `FabricTabs`, so each part behaves as it does on its own.
+
+<Controls of={HeaderStories.ListPage} />

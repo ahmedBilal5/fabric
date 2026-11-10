@@ -36,7 +36,7 @@
  * ```
  */
 
-import { dark, field, radii, spacing } from "@fabric-kit/design-tokens";
+import { radii, spacing } from "@fabric-kit/design-tokens";
 import CancelIcon from "@fabric-kit/icons/Cancel";
 import SearchIcon from "@fabric-kit/icons/Search";
 import UnfoldMoreIcon from "@fabric-kit/icons/UnfoldMore";
@@ -108,12 +108,12 @@ const searchSx = (height: string, filled: boolean) => (theme: Theme) => ({
   borderRadius: `${radii.md}px`,
   borderColor: "divider",
   backgroundColor: "background.paper",
-  color: filled ? "text.primary" : field.label,
-  "&:hover": { color: filled ? "text.primary" : field.labelHover },
+  color: filled ? "text.primary" : "var(--mui-palette-control-label)",
+  "&:hover": { color: filled ? "text.primary" : "var(--mui-palette-control-labelHover)" },
   "&:focus-within": { color: "text.primary", borderColor: "primary.main" },
   ...theme.applyStyles("dark", {
-    color: filled ? "text.primary" : dark.field.label,
-    "&:hover": { color: filled ? "text.primary" : dark.field.labelHover },
+    color: filled ? "text.primary" : "var(--mui-palette-control-label)",
+    "&:hover": { color: filled ? "text.primary" : "var(--mui-palette-control-labelHover)" },
   }),
 });
 

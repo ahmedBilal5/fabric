@@ -27,16 +27,7 @@
  * ```
  */
 
-import {
-  brand,
-  dark,
-  fontWeight,
-  radii,
-  spacing,
-  tab,
-  text,
-  textVariant,
-} from "@fabric-kit/design-tokens";
+import { dark, fontWeight, radii, spacing, text, textVariant } from "@fabric-kit/design-tokens";
 import MuiBox from "@mui/material/Box";
 import type { SxProps, Theme } from "@mui/material/styles";
 import MuiTab, { type TabProps } from "@mui/material/Tab";
@@ -107,26 +98,26 @@ interface TabSchemeColors {
 
 const LIGHT: TabSchemeColors = {
   primary: "var(--mui-palette-primary-main)",
-  navy: brand.navy,
+  navy: "var(--mui-palette-text-primary)",
   hover: "var(--mui-palette-primary-dark)",
-  disabled: tab.disabled,
-  text: tab.text,
-  textHover: tab.textHover,
+  disabled: "var(--mui-palette-control-disabled)",
+  text: "var(--mui-palette-control-label)",
+  textHover: "var(--mui-palette-control-labelHover)",
   hoverBg: "rgba(var(--mui-palette-primary-mainChannel) / 0.1)",
-  pressText: tab.pressText,
+  pressText: "var(--mui-palette-text-primary)",
   inverse: text.inverse,
   line: "var(--mui-palette-divider)",
 };
 
 const DARK: TabSchemeColors = {
   primary: "var(--mui-palette-primary-main)",
-  navy: dark.brand.navy,
+  navy: "var(--mui-palette-text-primary)",
   hover: "var(--mui-palette-primary-light)",
-  disabled: dark.tab.disabled,
-  text: dark.tab.text,
-  textHover: dark.tab.textHover,
+  disabled: "var(--mui-palette-control-disabled)",
+  text: "var(--mui-palette-control-label)",
+  textHover: "var(--mui-palette-control-labelHover)",
   hoverBg: "rgba(var(--mui-palette-primary-mainChannel) / 0.12)",
-  pressText: dark.tab.pressText,
+  pressText: "var(--mui-palette-text-primary)",
   inverse: dark.text.inverse,
   line: "var(--mui-palette-divider)",
 };

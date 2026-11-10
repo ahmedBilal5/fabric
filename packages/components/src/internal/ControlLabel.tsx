@@ -1,12 +1,4 @@
-import {
-  dark,
-  type FontSize,
-  field,
-  fontSize,
-  iconSize,
-  spacing,
-  textVariant,
-} from "@fabric-kit/design-tokens";
+import { type FontSize, fontSize, iconSize, spacing, textVariant } from "@fabric-kit/design-tokens";
 import Info from "@fabric-kit/icons/Info";
 import { FabricInline } from "@fabric-kit/primitives";
 import type { SxProps, Theme } from "@mui/material/styles";
@@ -19,11 +11,10 @@ export function controlLabel(label: ReactNode, showInfo?: boolean): ReactNode {
     <FabricInline component="span" gap="xs" sx={{ display: "inline-flex", flexWrap: "nowrap" }}>
       {label}
       <Info
-        sx={(theme) => ({
+        sx={(_theme) => ({
           fontSize: iconSize.sm,
           flexShrink: 0,
-          color: field.label,
-          ...theme.applyStyles("dark", { color: dark.field.label }),
+          color: "var(--mui-palette-control-label)",
         })}
       />
     </FabricInline>
@@ -33,14 +24,13 @@ export function controlLabel(label: ReactNode, showInfo?: boolean): ReactNode {
 /** Label text: pageTitleMd, capitalized, light when off and primary when checked. */
 export const controlLabelTextSx =
   (labelSize?: keyof FontSize) =>
-  (theme: Theme): SxProps<Theme> => ({
+  (_theme: Theme): SxProps<Theme> => ({
     // Rules only match when Typography wrapping is active; otherwise the consumer styles the label.
     "& .MuiFormControlLabel-label": {
       ...textVariant.pageTitleMd,
       textTransform: "capitalize",
-      color: field.label,
+      color: "var(--mui-palette-control-label)",
       ...(labelSize ? { fontSize: fontSize[labelSize] } : {}),
-      ...theme.applyStyles("dark", { color: dark.field.label }),
     },
     // FormControlLabel has no checked class, so the on-state color keys off the control inside it.
     "&:not(.Mui-disabled):has(.Mui-checked, .MuiCheckbox-indeterminate) .MuiFormControlLabel-label":
