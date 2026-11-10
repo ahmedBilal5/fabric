@@ -19,6 +19,9 @@
     },
     {
       "path": "../advanced-components/date-picker"
+    },
+    {
+      "path": "../hooks"
     }
   ]
 }

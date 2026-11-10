@@ -38,10 +38,13 @@
   "sideEffects": false,
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
+    "@fabric-kit/components": "workspace:^",
     "@fabric-kit/design-tokens": "workspace:^",
+    "@fabric-kit/icons": "workspace:^",
     "@fabric-kit/primitives": "workspace:^",
     "@fabric-kit/theme": "workspace:^"
   },

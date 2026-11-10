@@ -49,6 +49,12 @@ export type {
 } from "./FabricActionBar";
 export { FabricActionBar } from "./FabricActionBar";
 export type {
+  FabricActivityActor,
+  FabricActivityFeedProps,
+  FabricActivityItem,
+} from "./FabricActivityFeed";
+export { FabricActivityFeed } from "./FabricActivityFeed";
+export type {
   FabricAlertProps,
   FabricAlertSubVariant,
   FabricAlertVariant,
@@ -94,6 +100,22 @@ export { FabricChip } from "./FabricChip";
 export type { FabricCircularProgressProps } from "./FabricCircularProgress";
 export { FabricCircularProgress } from "./FabricCircularProgress";
 export type {
+  FabricComment,
+  FabricCommentAuthor,
+  FabricCommentComposerProps,
+  FabricCommentsProps,
+  FabricMentionUser,
+  MentionSegment,
+} from "./FabricComments";
+export {
+  displayToMentions,
+  FabricCommentComposer,
+  FabricComments,
+  getMentionedIds,
+  mentionsToDisplay,
+  parseMentions,
+} from "./FabricComments";
+export type {
   FabricConfirmFn,
   FabricConfirmOptions,
   FabricConfirmProviderProps,
@@ -128,6 +150,8 @@ export type {
   FabricIconButtonVariant,
 } from "./FabricIconButton";
 export { FabricIconButton } from "./FabricIconButton";
+export type { FabricKeyValueItem, FabricKeyValueListProps } from "./FabricKeyValueList";
+export { FabricKeyValueList } from "./FabricKeyValueList";
 export type {
   FabricListItem,
   FabricListItemSimpleProps,
@@ -152,6 +176,8 @@ export type {
   RadioOption,
 } from "./FabricRadioGroup";
 export { FabricRadioGroup } from "./FabricRadioGroup";
+export type { FabricRelativeTimeProps } from "./FabricRelativeTime";
+export { FabricRelativeTime } from "./FabricRelativeTime";
 export type { FabricSelectProps, SelectOption } from "./FabricSelect";
 export { FabricSelect } from "./FabricSelect";
 export type {
@@ -161,6 +187,8 @@ export type {
 export { FabricSkeleton } from "./FabricSkeleton";
 export type { FabricSnackbarProps } from "./FabricSnackbar";
 export { FabricSnackbar } from "./FabricSnackbar";
+export type { FabricStatusColor, FabricStatusProps, FabricStatusSize } from "./FabricStatus";
+export { FabricStatus } from "./FabricStatus";
 export type { FabricStepItem, FabricStepperProps } from "./FabricStepper";
 export { FabricStepper } from "./FabricStepper";
 export type { FabricSwitchProps } from "./FabricSwitch";
