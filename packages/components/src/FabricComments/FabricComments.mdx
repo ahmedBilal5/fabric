@@ -55,7 +55,7 @@ Replies are one level deep, which keeps threads readable. People can edit and de
 
 ## Accessibility
 
-- Comments and replies are lists; each reply list is named "Replies to {name}".
+- Comments and replies are lists; each reply list is named `Replies to {name}`.
 - The text box announces the mention list with `aria-expanded`, `aria-controls` and `aria-activedescendant`, and the list is a `listbox` of `option`s, so screen readers follow the highlighted person without focus leaving the box.
 - A hint under the box explains "@" and the post shortcut, linked with `aria-describedby`.
 - Times are `<time>` elements with the exact date on hover and focus.
