@@ -1,0 +1,79 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as FilterStories from './FabricFilterBar.stories';
+
+<Meta of={FilterStories} name="Docs" />
+
+# Filter bar
+
+`FabricFilterBar` sits above a list or grid: a search box, a button per filter, "Clear all" and the number of results.
+
+```tsx
+import { FabricFilterBar, useFilterParams } from '@fabric-kit/patterns';
+
+const FILTERS = [
+  { id: 'status', label: 'Status', multiple: true, options: [{ value: 'paid', label: 'Paid' }, …] },
+  { id: 'owner', label: 'Owner', options: [{ value: 'jane', label: 'Jane Doe' }, …] },
+];
+
+const filters = useFilterParams(FILTERS);
+
+<FabricFilterBar
+  filters={FILTERS}
+  values={filters.values}
+  onValuesChange={filters.setValues}
+  search={filters.search}
+  onSearchChange={filters.setSearch}
+  onClearAll={filters.clear}
+  resultCount={rows.length}
+/>
+```
+
+<Canvas of={FilterStories.Default} />
+
+## Filters
+
+Each filter is a button that opens a menu. With `multiple`, options are checkboxes and the menu stays open; otherwise picking an option closes it, and picking the selected option again clears it. An active filter is tinted and shows its choice: "Owner: Sam Lee", or "Status: 2 selected".
+
+<Canvas of={FilterStories.WithActiveFilters} />
+
+## Keep filters in the URL
+
+`useFilterParams` reads and writes the query string, so filtered lists can be bookmarked, shared and restored with the back button. Multiple values repeat the key (`status=paid&status=draft`), other params are kept, and values that aren't among a filter's options are ignored.
+
+It uses the browser's address bar by default. With a router, pass its search params:
+
+```tsx
+const [params, setParams] = useSearchParams(); // React Router
+const filters = useFilterParams(FILTERS, {
+  adapter: { params, setParams: (p) => setParams(p, { replace: true }) },
+});
+```
+
+`filtersToSearchParams` and `filtersFromSearchParams` do the conversion if you need it elsewhere, for example to build the API request.
+
+<Canvas of={FilterStories.SyncedToUrl} />
+
+## Search
+
+The search box calls `onSearchChange` on every keystroke. Debounce the fetch, not the box: `useDebounce(search, 300)` from `@fabric-kit/hooks`. Omit `search` and `onSearchChange` to hide it.
+
+<Canvas of={FilterStories.WithoutSearch} />
+
+## Narrow screens
+
+Filters wrap, and the search box takes the full width on phones.
+
+<Canvas of={FilterStories.Narrow} />
+
+## Accessibility
+
+- The bar is a `search` landmark named "Filters".
+- Filter menus use `menuitemcheckbox` (multiple) or `menuitemradio` (single) with `aria-checked`, so screen readers announce the state.
+- The result count is a polite live region: "3 results" is announced as filters change.
+- Buttons are named with their state, for example "Status: 2 selected".
+
+## Relation to MUI
+
+Built from `FabricTextField`, `FabricButton` and `FabricMenu`. The MUI X grid has its own filter panel; this bar is for the common filters people use all the time, and works for any list, not only grids.
+
+<Controls of={FilterStories.Default} />

@@ -121,7 +121,7 @@ export const Hotkeys: Story = {
 export const Clipboard: Story = {
   render: function Render() {
     const { copy, copied, error } = useClipboard();
-    const key = "sk_live_51Hx…9fQ2";
+    const key = "example-key-0000…3333";
     return (
       <FabricInline gap="sm">
         <FabricText variant="body2" sx={{ fontFamily: "monospace" }}>

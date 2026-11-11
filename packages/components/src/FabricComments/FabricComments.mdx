@@ -1,0 +1,67 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as CommentStories from './FabricComments.stories';
+
+<Meta of={CommentStories} name="Overview" />
+
+# FabricComments
+
+A comment thread: comments with one level of replies, @mentions, and edit and delete for your own comments.
+
+**Use it for:** discussion on a record, such as an invoice, a ticket or a document; usually in a detail page's tab or side panel.
+
+**Don't use it for:** chat (use the chat kit) or system events (use `FabricActivityFeed`).
+
+```tsx
+<FabricComments
+  comments={comments}
+  currentUserId={me.id}
+  users={teamMembers}
+  onAdd={(body, parentId) => api.addComment({ body, parentId })}
+  onEdit={(id, body) => api.editComment(id, body)}
+  onDelete={(id) => api.deleteComment(id)}
+/>
+```
+
+<Canvas of={CommentStories.Default} />
+
+## Mentions
+
+Type "@" and pick someone from the list: arrow keys move, Enter or Tab picks, Escape closes. Picked mentions are stored as `@[Jane Doe](u-jane)`: readable text that keeps the person's id. `getMentionedIds(body)` lists the ids so your server can notify them; `parseMentions(body)` splits the text if you render it elsewhere. Mentions of the current user are highlighted more strongly.
+
+⌘+Enter (Ctrl+Enter on Windows and Linux) posts.
+
+<Canvas of={CommentStories.MentionSomeone} />
+
+## Replies, editing and deleting
+
+Replies are one level deep, which keeps threads readable. People can edit and delete only their own comments (`currentUserId`); edited comments say "(edited)". Deleting calls `onDelete` straight away, so confirm or offer undo in your handler (`useConfirm` or `useToast`).
+
+`onAdd` and `onEdit` can return a promise. The button shows a spinner until it resolves, and the text stays if it rejects, so nothing is lost on a failed save.
+
+<Canvas of={CommentStories.ReplyAndEdit} />
+
+## States
+
+<Canvas of={CommentStories.Empty} />
+<Canvas of={CommentStories.Loading} />
+<Canvas of={CommentStories.ReadOnly} />
+<Canvas of={CommentStories.LongContent} />
+
+## Composer only
+
+`FabricCommentComposer` is exported for custom layouts, such as a comment box in a dialog.
+
+<Canvas of={CommentStories.ComposerOnly} />
+
+## Accessibility
+
+- Comments and replies are lists; each reply list is named `Replies to {name}`.
+- The text box announces the mention list with `aria-expanded`, `aria-controls` and `aria-activedescendant`, and the list is a `listbox` of `option`s, so screen readers follow the highlighted person without focus leaving the box.
+- A hint under the box explains "@" and the post shortcut, linked with `aria-describedby`.
+- Times are `<time>` elements with the exact date on hover and focus.
+
+## Relation to MUI
+
+Built from `FabricTextField`, `FabricAvatar`, `FabricMenuButton` and MUI `Popper`. MUI has no comments or mentions component.
+
+<Controls of={CommentStories.Default} />

@@ -41,11 +41,13 @@
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "typecheck:stories": "tsc --noEmit -p tsconfig.stories.json"
+    "typecheck:stories": "tsc --noEmit -p tsconfig.stories.json",
+    "test": "vitest run --config vitest.config.ts"
   },
   "dependencies": {
     "@fabric-kit/date-picker": "workspace:^",
     "@fabric-kit/design-tokens": "workspace:^",
+    "@fabric-kit/hooks": "workspace:^",
     "@fabric-kit/icons": "workspace:^",
     "@fabric-kit/primitives": "workspace:^",
     "@fabric-kit/theme": "workspace:^",

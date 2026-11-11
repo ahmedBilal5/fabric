@@ -1,0 +1,67 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as FeedStories from './FabricActivityFeed.stories';
+
+<Meta of={FeedStories} name="Overview" />
+
+# FabricActivityFeed
+
+A dated list of what happened to a record: who did what, to what, and when.
+
+**Use it for:** the history panel on a detail page, a project's recent activity, or a user's recent actions.
+
+**Don't use it for:** conversations people reply to (use comments), or a full audit log with filters and export (an audit-log pattern will build on this feed).
+
+```tsx
+<FabricActivityFeed
+  items={[
+    { id: 1, actor: { name: 'Jane Doe' }, action: 'changed the status to', target: 'Paid', date: paidAt },
+    { id: 2, actor: 'System', icon: <Sync />, action: 'synced with', target: 'Northwind ERP', date: syncedAt },
+  ]}
+/>
+```
+
+<Canvas of={FeedStories.Default} />
+
+## Events
+
+| Field | What it shows |
+| --- | --- |
+| `actor` | Who did it. A name or `{ name, avatarSrc }` shows an avatar; any other node is shown as is. |
+| `action` | What they did, in muted text: "changed the status to". |
+| `target` | What it was done to, emphasized: "Paid", "INV-2041", or a `FabricStatus`. |
+| `date` | When. Shown as "3 minutes ago", with the exact time on hover. |
+| `icon`, `color` | An icon marker instead of the avatar, for system events or kinds of change. |
+| `content` | A block under the line: a comment, a before/after value, an attachment. |
+
+Write the action so the line reads as a sentence: actor, action, target.
+
+## Day groups
+
+By default events are grouped under "Today", "Yesterday" and dated headings, in the order you pass them. `groupByDay={false}` shows one list.
+
+<Canvas of={FeedStories.Ungrouped} />
+
+## Dense
+
+<Canvas of={FeedStories.Dense} />
+
+## Loading, empty and paging
+
+`loading` shows placeholder rows. With no items, `emptyState` is shown. `hasMore` and `onLoadMore` add a "Show more" button; your code fetches the next page and passes the longer list.
+
+<Canvas of={FeedStories.Loading} />
+<Canvas of={FeedStories.Empty} />
+<Canvas of={FeedStories.LoadMore} />
+
+## Accessibility
+
+- Each day is a `<section>` named by its heading (`h3` by default; set `dayHeadingComponent` to fit your page), containing an ordered list.
+- Avatars and icon markers are decorative; the actor's name is in the text.
+- Times are `<time>` elements with the exact date in their accessible name.
+- The loading list is marked `aria-busy`.
+
+## Relation to MUI
+
+MUI Lab has a `Timeline`, but it is built for alternating, centered layouts. `FabricActivityFeed` is a plain list styled with theme variables, sized for side panels and detail pages.
+
+<Controls of={FeedStories.Default} />

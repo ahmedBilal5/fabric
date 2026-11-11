@@ -1,0 +1,61 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as StatusStories from './FabricStatus.stories';
+
+<Meta of={StatusStories} name="Overview" />
+
+# FabricStatus
+
+A colored dot with a short label for the state of a record, job or service: "Active", "Failed", "Deploying".
+
+**Use it for:** status columns in tables, list rows, page headers and detail panels, wherever several statuses sit side by side.
+
+**Use `FabricTag` instead** when the status needs more weight, for example a single status badge next to a page title.
+
+```tsx
+<FabricStatus status="success" label="Active" />
+<FabricStatus status="running" label="Deploying" pulse />
+```
+
+<Canvas of={StatusStories.Default} />
+
+## Statuses
+
+The colors are the theme's semantic palette, the same ones `FabricTag` and `FabricChip` use, so they follow dark mode and any brand overrides.
+
+<Canvas of={StatusStories.AllStatuses} />
+
+## Work in progress
+
+`pulse` adds a soft ripple. It stops for people who turn on reduced motion in their system settings.
+
+<Canvas of={StatusStories.Pulsing} />
+
+## Sizes
+
+`size="sm"` fits dense tables.
+
+<Canvas of={StatusStories.Small} />
+
+## Dot only
+
+Where space is tight, drop the label and pass `aria-label`; the dot is then announced as an image with that name. Consider a tooltip so sighted users can read it too.
+
+<Canvas of={StatusStories.DotOnly} />
+
+## Long labels
+
+Labels wrap; the dot stays aligned with the first line.
+
+<Canvas of={StatusStories.LongLabel} />
+
+## Accessibility
+
+- Color is never the only signal: always show a label, or give a dot-only status an `aria-label`.
+- The dot is hidden from screen readers when a label is present.
+- The pulse animation respects `prefers-reduced-motion`.
+
+## Relation to MUI
+
+MUI has no status component; `FabricStatus` is a plain `<span>` styled with theme variables. It accepts `sx`, `className`, a ref and any span attribute.
+
+<Controls of={StatusStories.Default} />

@@ -1,0 +1,67 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as KVStories from './FabricKeyValueList.stories';
+
+<Meta of={KVStories} name="Overview" />
+
+# FabricKeyValueList
+
+Label and value pairs that summarize a record: an invoice's customer, amount and due date, or a server's region and IP address.
+
+**Use it for:** summary panels on detail pages, side panels, "Details" cards and confirmation screens.
+
+**Don't use it for:** editable forms (use form fields) or data people compare across many records (use a table).
+
+```tsx
+<FabricKeyValueList
+  items={[
+    { label: 'Customer', value: 'Northwind Traders' },
+    { label: 'Invoice ID', value: 'INV-2041', copyable: true },
+    { label: 'Purchase order', value: null }, // shows "—"
+  ]}
+/>
+```
+
+<Canvas of={KVStories.Default} />
+
+## Two columns
+
+`columns={2}` fits more on wide pages; it drops to one column on phones. `fullWidth` on an item spans both columns, for notes and addresses.
+
+<Canvas of={KVStories.TwoColumns} />
+
+## Stacked
+
+`layout="stacked"` puts the label above the value. It suits narrow columns and long labels.
+
+<Canvas of={KVStories.Stacked} />
+
+## Dividers and dense rows
+
+<Canvas of={KVStories.WithDividers} />
+<Canvas of={KVStories.InACard} />
+
+## Copyable values
+
+`copyable` adds a copy button after the value, with a "Copied" confirmation. Pass a string to copy something other than what's shown, such as a full ID when the value is shortened.
+
+## Empty values and hints
+
+`null`, `undefined` and `""` show `emptyValue` ("—" by default) in a muted color. `hint` adds small text under a value.
+
+## Long content
+
+Labels and values wrap, including long unbroken strings such as keys and URLs.
+
+<Canvas of={KVStories.LongValues} />
+
+## Accessibility
+
+- Renders a description list (`<dl>`, `<dt>`, `<dd>`), so screen readers pair each label with its value.
+- Copy buttons are named `Copy {label}` and change to `{label} copied` after a copy.
+- Values can be any node, including `FabricStatus` and `FabricRelativeTime`.
+
+## Relation to MUI
+
+MUI has no description-list component. `FabricKeyValueList` is built with `Box` and theme variables; labels use the same color as field labels.
+
+<Controls of={KVStories.Default} />

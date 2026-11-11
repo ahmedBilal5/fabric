@@ -1,0 +1,61 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as DetailStories from './FabricDetailPage.stories';
+
+<Meta of={DetailStories} name="Docs" />
+
+# Detail page
+
+`FabricDetailPage` is a whole page for one record: a header with breadcrumbs, status and actions, a summary of key facts, tabbed sections, and a side panel, usually the record's activity.
+
+<Canvas of={DetailStories.Default} />
+
+## Usage
+
+```tsx
+import { FabricDetailPage } from '@fabric-kit/patterns';
+
+<FabricDetailPage
+  title="INV-2041"
+  status={<FabricStatus status="success" label="Paid" />}
+  meta="Northwind Traders · $12,480.00"
+  breadcrumbs={[{ label: 'Invoices', href: '/invoices' }, { label: 'INV-2041' }]}
+  actions={<FabricButton variant="contained">Send reminder</FabricButton>}
+  moreActions={[{ label: 'Duplicate' }, { label: 'Void invoice' }]}
+  summary={[
+    { label: 'Customer', value: 'Northwind Traders' },
+    { label: 'Invoice ID', value: 'INV-2041', copyable: true },
+  ]}
+  sections={[
+    { value: 'items', label: 'Line items', content: <LineItems /> },
+    { value: 'payments', label: 'Payments', content: <Payments /> },
+  ]}
+  aside={<FabricActivityFeed items={events} dense />}
+/>
+```
+
+## Key props
+
+| Prop | What it does |
+| --- | --- |
+| Header props | `title`, `status`, `meta`, `breadcrumbs` or `onBack`, `actions`, `moreActions`: as on `FabricPageHeader`. |
+| `summary`, `summaryProps` | Key facts in a card, as a two-column `FabricKeyValueList`. |
+| `sections` | Tabs in the header; only the selected tab's content renders. Control it with `section` and `onSectionChange`, for example to keep the tab in the URL. |
+| `children` | The body when there are no sections, or extra content under them. |
+| `aside`, `asideTitle`, `asideWidth` | The side panel. 360px wide from the `md` breakpoint; below it, the panel moves under the main content. |
+| `loading` | Placeholders while the record loads. The title and breadcrumbs stay, so the page doesn't jump. |
+
+## Variants
+
+<Canvas of={DetailStories.Loading} />
+<Canvas of={DetailStories.WithoutSections} />
+<Canvas of={DetailStories.WithoutSidePanel} />
+
+## When the record doesn't exist
+
+Render `FabricSystemPage kind="not-found"` with a title that names the record, such as "We couldn't find invoice INV-9999", instead of the detail page.
+
+## Accessibility
+
+- The title is the page's `h1`; the side panel is an `aside` named by its `h2`.
+- Tabs and panels are linked with `aria-controls` and `aria-labelledby`, so the panel is named after its tab.
+- The summary is a `section` named "Summary" containing a description list.

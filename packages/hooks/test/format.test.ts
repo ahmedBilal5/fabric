@@ -57,6 +57,19 @@ describe("formatRelativeTime", () => {
     expect(rel(2 * 7 * 24 * 3600)).toBe("in 2 weeks");
     expect(rel(-400 * 24 * 3600)).toBe("last year");
   });
+  it("counts days by the calendar", () => {
+    // Local times, so the test holds in any time zone.
+    const justAfterMidnight = new Date(2026, 2, 12, 0, 30).getTime();
+    const twoDatesBack = new Date(2026, 2, 10, 22, 30).getTime(); // 26 hours earlier
+    expect(formatRelativeTime(twoDatesBack, { now: justAfterMidnight, locale: "en" })).toBe(
+      "2 days ago",
+    );
+    const lateEvening = new Date(2026, 2, 12, 23, 0).getTime();
+    const earlyMorning = new Date(2026, 2, 12, 1, 0).getTime(); // 22 hours, same date
+    expect(formatRelativeTime(earlyMorning, { now: lateEvening, locale: "en" })).toBe(
+      "22 hours ago",
+    );
+  });
   it("supports numeric always", () => {
     expect(formatRelativeTime(at(-24 * 3600), { now, locale: "en", numeric: "always" })).toBe(
       "1 day ago",
