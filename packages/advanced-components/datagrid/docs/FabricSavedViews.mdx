@@ -1,0 +1,90 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as ViewStories from './FabricSavedViews.stories';
+
+<Meta of={ViewStories} name="Overview" />
+
+# FabricSavedViews
+
+Named grid views: "All invoices", "Overdue", and the ones people save themselves. Switch views, save changes, save as a new view, rename and delete.
+
+Two pieces work together:
+
+- **`useSavedViews`** holds the list of views and which one is active. It keeps them in memory, in `localStorage` (`storageKey`), or on your server (`initialViews` and `onViewsChange`). It never calls an API itself.
+- **`FabricSavedViews`** is the menu button. It shows the views and reports what the user picks.
+
+Your code connects them to the grid: read the grid's settings into a view, and apply a view's settings to the grid.
+
+<Canvas of={ViewStories.WithGrid} />
+
+## Connect it to the grid
+
+Decide what a view remembers. The example keeps the filter, sort and visible columns as controlled grid state:
+
+```tsx
+interface GridView {
+  filterModel: GridFilterModel;
+  sortModel: GridSortModel;
+  columnVisibilityModel: GridColumnVisibilityModel;
+}
+
+const views = useSavedViews<GridView>({
+  storageKey: 'invoices.views',
+  defaultViews: [
+    { id: 'all', name: 'All invoices', state: ALL },
+    { id: 'overdue', name: 'Overdue', state: OVERDUE },
+  ],
+});
+const [grid, setGrid] = useState(views.activeView.state);
+
+<FabricSavedViews
+  views={views.views}
+  activeId={views.activeView.id}
+  modified={views.isModified(grid)}
+  onSelect={(id) => {
+    views.select(id);
+    setGrid(views.views.find((v) => v.id === id)!.state);
+  }}
+  onSave={() => views.update(grid)}
+  onSaveAs={(name) => views.create(name, grid)}
+  onRename={views.rename}
+  onDelete={views.remove}
+  onDiscard={() => setGrid(views.activeView.state)}
+/>
+<FabricDatagrid
+  filterModel={grid.filterModel}
+  onFilterModelChange={(filterModel) => setGrid((g) => ({ ...g, filterModel }))}
+  …
+/>
+```
+
+To remember everything the grid knows instead (column widths, order, density), store `apiRef.current.exportState()` and apply views with `apiRef.current.restoreState(view.state)`. Both are in the free MUI X grid.
+
+## Edited views
+
+When the grid's settings differ from the active view, the button shows "Edited" and the menu offers "Save changes" and "Discard changes". `isModified` compares the settings and ignores key order.
+
+<Canvas of={ViewStories.Edited} />
+
+## Built-in views
+
+Views in `defaultViews` ship with the app. People can switch to them and copy them with "Save as new view", but can't rename, overwrite or delete them.
+
+<Canvas of={ViewStories.BuiltInActive} />
+
+## Naming
+
+The name dialog trims spaces and rejects empty names and names already in use, ignoring case.
+
+<Canvas of={ViewStories.SaveAsChecksNames} />
+
+## Accessibility
+
+- The trigger's accessible name includes the active view and "edited", for example "Views: Overdue, edited".
+- The menu is a standard MUI menu: arrow keys move, Enter picks, Escape closes. The active view is marked selected.
+- Deleting is immediate. Pair `onDelete` with an undo toast (`useToast` from `@fabric-kit/components`) or a confirm.
+
+## Relation to MUI
+
+Saved views are a paid feature in some grids. This is built only on the free MUI X `DataGrid` and works with any state your grid can export and restore.
+
+<Controls of={ViewStories.Default} />

@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as TimeStories from './FabricRelativeTime.stories';
+
+<Meta of={TimeStories} name="Overview" />
+
+# FabricRelativeTime
+
+"3 minutes ago" text that keeps itself current, inside a real `<time>` element. Hover or focus it to see the exact date and time.
+
+**Use it for:** when something was created, updated, sent or last seen, in feeds, comments, tables and headers.
+
+**Don't use it for:** dates people plan around, such as due dates and meetings. Show those as dates with `formatDate` from `@fabric-kit/hooks`.
+
+```tsx
+<FabricRelativeTime date={comment.createdAt} />
+```
+
+<Canvas of={TimeStories.Default} />
+
+## Ranges
+
+Seconds, minutes, hours, days, weeks, months and years, and future times too. With the default `numeric="auto"`, you get words such as "yesterday".
+
+<Canvas of={TimeStories.Ranges} />
+
+## Style and language
+
+`style="short"` or `"narrow"` saves space. `locale` sets the language; text comes from the browser's `Intl`, so there is nothing to translate.
+
+<Canvas of={TimeStories.ShortStyle} />
+<Canvas of={TimeStories.OtherLocale} />
+
+## Updating
+
+The text re-renders every 10 seconds for times under a minute, every 30 seconds under an hour, every 5 minutes under a day and hourly after that, so hundreds of timestamps on a page stay cheap. Each instance uses one timer.
+
+## Without the tooltip
+
+<Canvas of={TimeStories.WithoutTooltip} />
+
+## Accessibility
+
+- Renders `<time dateTime="…">` with the ISO date, which assistive tech and search engines understand.
+- With the tooltip on, the element is focusable and its accessible name includes the exact date, so keyboard and screen-reader users get it too.
+
+## Relation to the hooks package
+
+`FabricRelativeTime` is `useRelativeTime` from `@fabric-kit/hooks` plus a `<time>` element and a `FabricTooltip`. Use the hook directly when you need the string elsewhere.
+
+<Controls of={TimeStories.Default} />

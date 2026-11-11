@@ -65,7 +65,7 @@ The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/f
 | [`@fabric-kit/icons`](packages/icons)                                 | Tree-shakeable Material Symbols icons.                           |
 | [`@fabric-kit/hooks`](packages/hooks)                                 | React hooks and locale-aware formatting helpers.                 |
 | [`@fabric-kit/components`](packages/components)                       | MUI components with Fabric defaults and extra props.             |
-| [`@fabric-kit/datagrid`](packages/advanced-components/datagrid)       | The free MUI X data grid, styled.                                |
+| [`@fabric-kit/datagrid`](packages/advanced-components/datagrid)       | The data grid, styled, with bulk actions and saved views.        |
 | [`@fabric-kit/date-picker`](packages/advanced-components/date-picker) | Date, time and date-range pickers.                               |
 | [`@fabric-kit/tree-view`](packages/advanced-components/tree-view)     | The free MUI X tree view, styled.                                |
 | [`@fabric-kit/layout`](packages/kits/layout)                          | App shell, sidebar, top bar, banner, footer and notifications.   |
@@ -73,7 +73,7 @@ The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/f
 | [`@fabric-kit/chatbot`](packages/kits/chatbot)                        | A streaming assistant panel for any backend.                     |
 | [`@fabric-kit/versioning`](packages/kits/versioning)                  | A version history drawer.                                        |
 | [`@fabric-kit/canvas-builder`](packages/kits/canvas-builder)          | A node-based workflow canvas on React Flow.                      |
-| [`@fabric-kit/patterns`](packages/patterns)                           | Whole pages: system pages now; list, detail and form pages next. |
+| [`@fabric-kit/patterns`](packages/patterns)                           | Whole pages: list, detail and system pages, and a filter bar.    |
 
 ## Development
 

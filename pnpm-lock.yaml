@@ -210,9 +210,15 @@ importers:
 
   packages/advanced-components/datagrid:
     dependencies:
+      '@fabric-kit/components':
+        specifier: workspace:^
+        version: link:../../components
       '@fabric-kit/design-tokens':
         specifier: workspace:^
         version: link:../../design-tokens
+      '@fabric-kit/icons':
+        specifier: workspace:^
+        version: link:../../icons
       '@fabric-kit/primitives':
         specifier: workspace:^
         version: link:../../primitives
@@ -226,9 +232,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.0.0
         version: 11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1)
-      '@fabric-kit/icons':
-        specifier: workspace:^
-        version: link:../../icons
       '@mui/material':
         specifier: ^9.0.0
         version: 9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -345,6 +348,9 @@ importers:
       '@fabric-kit/design-tokens':
         specifier: workspace:^
         version: link:../design-tokens
+      '@fabric-kit/hooks':
+        specifier: workspace:^
+        version: link:../hooks
       '@fabric-kit/icons':
         specifier: workspace:^
         version: link:../icons
@@ -675,12 +681,18 @@ importers:
       '@fabric-kit/components':
         specifier: workspace:^
         version: link:../components
+      '@fabric-kit/datagrid':
+        specifier: workspace:^
+        version: link:../advanced-components/datagrid
       '@fabric-kit/design-tokens':
         specifier: workspace:^
         version: link:../design-tokens
       '@fabric-kit/icons':
         specifier: workspace:^
         version: link:../icons
+      '@fabric-kit/layout':
+        specifier: workspace:^
+        version: link:../kits/layout
       '@fabric-kit/primitives':
         specifier: workspace:^
         version: link:../primitives
@@ -697,6 +709,9 @@ importers:
       '@mui/material':
         specifier: ^9.0.0
         version: 9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/x-data-grid':
+        specifier: ^9.0.0
+        version: 9.17.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@mui/material@9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mui/system@9.5.0(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react@18.3.1))(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@types/react':
         specifier: ^18.2.0
         version: 18.3.31

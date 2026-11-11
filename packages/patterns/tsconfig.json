@@ -17,6 +17,12 @@
     },
     {
       "path": "../components"
+    },
+    {
+      "path": "../advanced-components/datagrid"
+    },
+    {
+      "path": "../kits/layout"
     }
   ],
   "include": ["src"],

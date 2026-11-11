@@ -96,9 +96,18 @@ export interface FormatRelativeTimeOptions {
   style?: Intl.RelativeTimeFormatStyle;
 }
 
+/** Whole local calendar days from `now` to `date` (negative in the past). */
+function calendarDayDiff(date: Date, now: Date): number {
+  const a = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+  const b = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+  // Rounding absorbs the hour lost or gained at daylight-saving changes.
+  return Math.round((a - b) / 86_400_000);
+}
+
 /**
  * Formats a date relative to now: "just now", "3 minutes ago", "yesterday",
- * "in 2 weeks". Anything under 45 seconds reads as "now".
+ * "in 2 weeks". Anything under 45 seconds reads as "now". Days follow the calendar:
+ * anything on the previous date is "yesterday".
  *
  * @example
  * formatRelativeTime(Date.now() - 5 * 60_000) // "5 minutes ago"
@@ -114,6 +123,14 @@ export function formatRelativeTime(
   if (abs < 45) return rtf.format(0, "second");
   for (const [unit, size] of UNITS) {
     if (abs >= size * 0.9 || unit === "second") {
+      // Count days by the calendar, so 26 hours ago just after midnight reads
+      // "2 days ago", matching the date people see, not "yesterday".
+      if (unit === "day") {
+        const days = calendarDayDiff(toDate(date), toDate(now));
+        return days === 0
+          ? rtf.format(Math.round(seconds / 3600), "hour")
+          : rtf.format(days, "day");
+      }
       return rtf.format(Math.round(seconds / size), unit);
     }
   }

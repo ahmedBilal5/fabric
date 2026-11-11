@@ -1,0 +1,81 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as ListStories from './FabricListPage.stories';
+
+<Meta of={ListStories} name="Docs" />
+
+# List page
+
+`FabricListPage` is a whole list page: a page header, a filter bar, a data grid, a bulk action bar, and the empty, no-results, loading and error states in between. It wires them together the way most admin lists need:
+
+- The filter bar shows the result count.
+- Selecting rows swaps the filter bar for the bulk action bar. Changing the filters clears the selection, so actions never apply to rows the user can't see.
+- When filters leave nothing, "No invoices match" offers to clear them.
+- With no data at all, the first-run state offers your primary action.
+- Export downloads the visible rows as CSV, or calls your function for a server-side export.
+
+<Canvas of={ListStories.Default} />
+
+## Usage
+
+The page doesn't fetch or filter. Pass the rows to show and handle the callbacks, so it works with client-side filtering and with server-side search and paging alike.
+
+```tsx
+import { FabricListPage, useFilterParams } from '@fabric-kit/patterns';
+
+const filters = useFilterParams(FILTERS); // search and filters live in the URL
+const rows = useInvoices(filters.values, filters.search); // your data hook
+
+<FabricListPage
+  title="Invoices"
+  primaryAction={<FabricButton variant="contained" startIcon={<Add />}>New invoice</FabricButton>}
+  filterBar={{
+    filters: FILTERS,
+    values: filters.values,
+    onValuesChange: filters.setValues,
+    search: filters.search,
+    onSearchChange: filters.setSearch,
+    onClearAll: filters.clear,
+  }}
+  rows={rows.data ?? []}
+  loading={rows.isLoading}
+  error={rows.error && 'The invoices service didn't respond.'}
+  onRetry={rows.refetch}
+  columns={columns}
+  noun={['invoice', 'invoices']}
+  exportable
+  bulkActions={(ids, clear) => (
+    <FabricButton onClick={() => archive(ids).then(clear)}>Archive</FabricButton>
+  )}
+/>
+```
+
+## Key props
+
+| Prop | What it does |
+| --- | --- |
+| `title`, `description`, `primaryAction`, `headerProps` | The page header. `headerProps` takes any other `FabricPageHeader` prop. |
+| `filterBar` | `FabricFilterBar` props, minus the count, which the page adds. |
+| `rows`, `columns`, `loading`, `gridProps` | The grid. `gridProps` takes any other `FabricDatagrid` prop: paging, `onRowClick`, row height. |
+| `noun` | Words for one and several rows, used in counts and empty states. |
+| `bulkActions`, `bulkMoreActions` | Actions for selected rows. Each receives the selected ids and a `clear` function. Adds row checkboxes. |
+| `totalCount`, `onSelectAll` | For server-side paging: the full count, and "Select all N". |
+| `exportable`, `exportFileName` | Adds an Export button. `true` uses the grid's CSV export; a function handles it yourself. |
+| `emptyState`, `noResultsState`, `error`, `onRetry` | Replace the default states. |
+
+## States
+
+<Canvas of={ListStories.NoResults} />
+<Canvas of={ListStories.FirstRun} />
+<Canvas of={ListStories.Loading} />
+<Canvas of={ListStories.LoadError} />
+
+## Accessibility
+
+- The title is the page's `h1`. Place the page inside your app shell's `<main>`.
+- The filter bar is a `search` landmark and announces the result count.
+- The bulk action bar is a `toolbar` and announces the selection count.
+- Empty and error states use headings, so screen-reader users can find them.
+
+## Building your own
+
+Every piece is exported on its own: `FabricPageHeader` (`@fabric-kit/layout`), `FabricFilterBar` and `useFilterParams` (`@fabric-kit/patterns`), `FabricDatagrid`, `FabricBulkActionBar` and `FabricSavedViews` (`@fabric-kit/datagrid`), and `FabricEmptyState` (`@fabric-kit/components`). Compose them directly when the page needs a different layout.

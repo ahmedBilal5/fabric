@@ -1,0 +1,73 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as BarStories from './FabricBulkActionBar.stories';
+
+<Meta of={BarStories} name="Overview" />
+
+# FabricBulkActionBar
+
+The bar that appears when rows are selected: how many are selected, what you can do with them, "Select all N" and a way to clear the selection.
+
+**Use it for:** acting on several rows at once (export, archive, delete, change owner).
+
+**Don't use it for:** actions on a single row (put those in the row's menu) or page-level actions such as "New invoice" (put those in `FabricPageHeader`).
+
+```tsx
+import { emptySelection, FabricBulkActionBar, FabricDatagrid, getSelectedCount } from '@fabric-kit/datagrid';
+
+const [selection, setSelection] = useState(emptySelection);
+const count = getSelectedCount(selection, rows.length);
+
+<FabricBulkActionBar
+  selectedCount={count}
+  noun={['invoice', 'invoices']}
+  onClearSelection={() => setSelection(emptySelection())}
+  actions={<FabricButton startIcon={<Archive />}>Archive</FabricButton>}
+/>
+<FabricDatagrid
+  checkboxSelection
+  rowSelectionModel={selection}
+  onRowSelectionModelChange={setSelection}
+  …
+/>
+```
+
+<Canvas of={BarStories.WithGrid} />
+
+The bar doesn't read the grid. You pass the count and the handlers, so it works with client-side rows, server-side paging, or any other list. `getSelectedCount` turns a MUI X selection model into a count. MUI X stores "select all" as "every row except these", which is why it needs the row total.
+
+## Select all across pages
+
+When the grid shows one page of a larger result, pass `totalCount` and `onSelectAll`. The bar offers "Select all 1,284"; what "all" means for your actions (for example, sending the current filter to the server instead of IDs) is up to your code.
+
+<Canvas of={BarStories.SelectAllAcrossPages} />
+
+## More actions
+
+Keep two or three common actions as buttons and put the rest in `moreActions`.
+
+<Canvas of={BarStories.WithMoreActions} />
+
+## Floating
+
+`variant="floating"` hovers at the bottom of the viewport, for long pages where the grid's top scrolls out of view. It slides in when the selection starts.
+
+<Canvas of={BarStories.Floating} />
+
+## Narrow containers
+
+Actions wrap under the count.
+
+<Canvas of={BarStories.Narrow} />
+
+## Accessibility
+
+- The bar is a `toolbar` named "Bulk actions" and described by the count.
+- A polite live region announces "3 invoices selected" as the selection changes, so screen-reader users hear it without moving focus.
+- Escape inside the bar clears the selection. The clear button is named "Clear selection".
+- With `variant="inline"`, reserve the bar's height above the grid (or swap it with your grid toolbar) so the page doesn't jump when the bar appears.
+
+## Relation to MUI
+
+MUI X has no bulk action bar in its free tier. This is a Fabric component that sits next to `FabricDatagrid` and uses Fabric buttons and menus.
+
+<Controls of={BarStories.Default} />
