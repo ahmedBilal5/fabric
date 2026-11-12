@@ -21,14 +21,13 @@ export function controlLabel(label: ReactNode, showInfo?: boolean): ReactNode {
   );
 }
 
-/** Label text: pageTitleMd, capitalized, light when off and primary when checked. */
+/** Label text: pageTitleMd as written (labels are often sentences), light when off and primary when checked. */
 export const controlLabelTextSx =
   (labelSize?: keyof FontSize) =>
   (_theme: Theme): SxProps<Theme> => ({
     // Rules only match when Typography wrapping is active; otherwise the consumer styles the label.
     "& .MuiFormControlLabel-label": {
       ...textVariant.pageTitleMd,
-      textTransform: "capitalize",
       color: "var(--mui-palette-control-label)",
       ...(labelSize ? { fontSize: fontSize[labelSize] } : {}),
     },

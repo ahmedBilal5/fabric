@@ -10,7 +10,7 @@ Think like a design-system maintainer: the goal is stable, well-documented packa
 
 - **Scope:** [`docs/ROADMAP.md`](docs/ROADMAP.md) lists every phase and item, with its issue number.
 - **Progress:** the pinned [Roadmap issue #42](https://github.com/ahmedBilal5/fabric/issues/42) and the issues it links. An item is done when its issue is closed.
-- **Done:** Phase 0 (#1–#8) and Phase 1 (#9–#17). **Next:** Phase 2, forms (#18–#26).
+- **Done:** Phase 0 (#1–#8), Phase 1 (#9–#17) and Phase 2 (#18–#26). **Next:** Phase 3, dashboards (#27–#30).
 - One branch per phase (or per item), cut from `main`, e.g. `phase-2-forms`. Open the PR against `main` with `Closes #n` for each item, so the issues close on merge. Don't stack a PR on another unmerged branch: Phase 1 was once merged into its base branch instead of `main` by mistake.
 - When issues close, tick their boxes in #42.
 
@@ -22,15 +22,17 @@ Fabric is built bottom-up. Each layer may use any layer below it, never above.
 design-tokens → theme → primitives → components → advanced-components → kits/* → patterns
 ```
 
-| Layer | Package(s)                                                                       | Rules                                                                               |
-| ----- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| 1     | `@fabric-kit/design-tokens`                                                      | Plain TS values. No React, no MUI.                                                  |
-| 2     | `@fabric-kit/theme`                                                              | MUI theme built from tokens.                                                        |
-| 3     | `@fabric-kit/primitives`                                                         | Layout and text: Flex, Stack, Inline, Grid, Text, Surface.                          |
-| 4     | `@fabric-kit/components`                                                         | Fabric wrappers around MUI components.                                              |
-| 5     | `@fabric-kit/datagrid`, `date-picker`, `tree-view`                               | Styled MUI X controls. Free (MIT) MUI X packages only.                              |
-| 6     | `@fabric-kit/layout`, `global-search`, `chatbot`, `versioning`, `canvas-builder` | Composed, app-level kits. Kits must not depend on each other.                       |
-| 7     | `@fabric-kit/patterns`                                                           | Whole pages (system, list, detail, form) built from any layer above, kits included. |
+| Layer | Package(s)                                                                       | Rules                                                                              |
+| ----- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| 1     | `@fabric-kit/design-tokens`                                                      | Plain TS values. No React, no MUI.                                                 |
+| 2     | `@fabric-kit/theme`                                                              | MUI theme built from tokens.                                                       |
+| 3     | `@fabric-kit/primitives`                                                         | Layout and text: Flex, Stack, Inline, Grid, Text, Surface.                         |
+| 4     | `@fabric-kit/components`                                                         | Fabric wrappers around MUI components.                                             |
+| 5     | `@fabric-kit/datagrid`, `date-picker`, `tree-view`, `forms`                      | Styled MUI X controls (free MIT tier only), and form bindings and layout.          |
+| 6     | `@fabric-kit/layout`, `global-search`, `chatbot`, `versioning`, `canvas-builder` | Composed, app-level kits. Kits must not depend on each other.                      |
+| 7     | `@fabric-kit/patterns`                                                           | Whole pages (system, list, detail, form, settings) built from any layer, kits too. |
+
+`@fabric-kit/forms` binds the inputs from `components` and `date-picker` to React Hook Form, so it may use other layer-5 packages; nothing below it may use it.
 
 `@fabric-kit/icons` sits beside the stack and can be used by any layer from 3 up. `@fabric-kit/hooks` (React hooks and `Intl` formatting helpers, no MUI) also sits beside it and can be used by any layer from 3 up.
 
@@ -79,7 +81,7 @@ Stories cover the default, common variants, disabled/loading/error/empty states,
 Phases 0 and 1 set these conventions. Follow them so new work looks the same.
 
 - **Files:** a component lives in `packages/<pkg>/src/FabricX/index.tsx` (extra files in the same folder) and is exported from `src/index.ts`. In `components`, the `FabricX.stories.tsx` and `FabricX.mdx` sit beside the source. In `datagrid` and `patterns` they live in the package's `docs/` folder, with shared sample data (`docs/sampleData.ts`, `docs/invoices.tsx`).
-- **Stories:** titles are `Components/FabricX`, `Advanced Components/FabricX` or `Patterns/<Name>`. Add `tags: ["test"]` so the stories run as browser tests (`pnpm test-storybook`), and use `play` functions for interactions. Each MDX page opens with `<Meta of={Stories} name="Overview" />`.
+- **Stories:** titles are `Components/FabricX`, `Advanced Components/FabricX`, `Forms/<Topic>` (form layout, bindings, wizard) or `Patterns/<Name>`. Add `tags: ["test"]` so the stories run as browser tests (`pnpm test-storybook`), and use `play` functions for interactions. Each MDX page opens with `<Meta of={Stories} name="Overview" />`.
 - **Unit tests:** put pure logic (parsing, URL sync, selection maths) in plain `.ts` files and test it in Node. Each package with tests has a `vitest.config.ts` (`environment: "node"`, `include: ["test/**/*.test.ts"]`) and a `test` script.
 - **Dependencies between packages:** add `workspace:*` to `package.json` and a reference in `tsconfig.json`. Keep to the layer order.
 - **Data stays with the app:** patterns take rows, values and callbacks. They never fetch.
@@ -94,7 +96,9 @@ Phases 0 and 1 set these conventions. Follow them so new work looks the same.
 - **Storybook on WSL:** with the repo on `/mnt/c`, the dev server (port 6007) doesn't see edited or new files. Restart it.
 - **Grid checkboxes:** Fabric's data grid hides row checkboxes until hover. `FabricListPage` forces them visible when there are bulk actions.
 - **Selection model:** in MUI X v9 it is `{ type: "include" | "exclude", ids: Set }`, not an array. Use `getSelectedCount` and `emptySelection` from `@fabric-kit/datagrid`.
-- **Fading elements in tests:** wrap visibility checks in `waitFor`.
+- **Fading elements in tests:** wrap visibility checks in `waitFor`. While a dialog closes the page is still `aria-hidden`, so role queries after it need `waitFor` too.
+- **Confirm dialogs** (`useConfirm`) have `role="alertdialog"`, not `dialog`.
+- **Flag emoji** don't render on Windows or Linux. Show country codes as text.
 - **Slow stories:** under a full run the `Scales` story can time out. Rerun it alone before treating it as a failure.
 - **Semantic elements:** `FabricText` has no `component` prop typing. Use `styled("time")` (or similar) when you need a specific element.
 

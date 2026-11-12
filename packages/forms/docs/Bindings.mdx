@@ -1,0 +1,80 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Bindings.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Bindings
+
+A binding is a Fabric input connected to React Hook Form: it reads and writes the field's value, marks it touched on blur, shows its validation message in place of the hint, and can be focused by `form.setFocus(name)` or a failed submit. Each one looks and behaves exactly like the input it wraps.
+
+<Canvas of={Stories.AllInputs} />
+
+## Bindings and their values
+
+Give every field a default of the right shape in `useForm({ defaultValues })`.
+
+| Binding | Wraps | Form value | Empty value |
+| --- | --- | --- | --- |
+| `FabricFormTextField` | `FabricTextField` | `string` (also `multiline`) | `""` |
+| `FabricFormPasswordField` | `FabricPasswordField` | `string` | `""` |
+| `FabricFormNumberField` | `FabricNumberField` | `number` | `null` |
+| `FabricFormPhoneField` | `FabricPhoneField` | E.164 `string` ("+442071234567") | `""` |
+| `FabricFormOtpField` | `FabricOtpField` | `string` | `""` |
+| `FabricFormTagInput` | `FabricTagInput` | `string[]` | `[]` |
+| `FabricFormSelect` | `FabricSelect` | `string` | `""` |
+| `FabricFormAutocomplete` | `FabricAutocomplete` | an option; an array with `multiple` | `null` / `[]` |
+| `FabricFormRadioGroup` | `FabricRadioGroup` | `string` | `""` |
+| `FabricFormRadio` | `FabricRadio` | `string` shared by the radios | `""` |
+| `FabricFormCheckbox`, `FabricFormSwitch` | `FabricCheckbox`, `FabricSwitch` | `boolean` | `false` |
+| `FabricFormCheckboxGroup` | `FabricCheckboxGroup` | `string[]` | `[]` |
+| `FabricFormToggleButtonGroup` | `FabricToggleButtonGroup` | `string`; `string[]` with `exclusive={false}` | `null` / `[]` |
+| `FabricFormDatePicker`, `FabricFormTimePicker`, `FabricFormDateTimePicker` | the date pickers | `Date` | `null` |
+| `FabricFormDateRangePicker` | `FabricDateRangePicker` | `{ start: Date \| null, end: Date \| null }` | both `null` |
+| `FabricFormFileUpload` | `FabricFileUpload` | `FabricUploadFile[]` | `[]` |
+| `FabricFormField` | anything | anything | — |
+
+## Props every binding takes
+
+- `name`: the field path, checked against your form's type (`<FabricFormTextField<Values> name="billing.email" />`).
+- `control`: the form's control. Leave it out inside `FabricForm` or a `FormProvider`.
+- `rules`, `defaultValue`, `shouldUnregister`: React Hook Form's controller options.
+- `disabled`: disables the input and leaves the field out of the submitted values. Use the input's `readOnly` to keep it in.
+- `helperText`: the hint shown while there's no message.
+
+Everything else goes to the input: `label`, `placeholder`, `options`, `format`, `strength`…
+
+## Errors and disabled
+
+<Canvas of={Stories.Errors} />
+<Canvas of={Stories.Disabled} />
+
+## Numbers
+
+`FabricFormNumberField` stores a `number` (or `null`), so schemas check numbers directly: `z.number().min(1)`. Typed values are kept within `min` and `max` when the field loses focus.
+
+<Canvas of={Stories.NumberField} />
+
+## Uploads
+
+`FabricFormFileUpload` takes your `upload(file, { onProgress, signal })` function and keeps the file list in the form. Check that uploads finished before saving:
+
+```ts
+documents: z.array(z.custom<FabricUploadFile>())
+  .refine((files) => files.every((f) => f.status === "done"), "Wait for uploads to finish."),
+```
+
+## Custom inputs
+
+`FabricFormField` binds anything. Its child function gets `field` (value, onChange, onBlur, name, ref), `error`, `helperText` and `describedBy`:
+
+```tsx
+<FabricFormField name="color" helperText="Used for the customer's avatar.">
+  {({ field, error, helperText }) => (
+    <ColorPicker value={field.value} onChange={field.onChange} onBlur={field.onBlur} error={error} helperText={helperText} />
+  )}
+</FabricFormField>
+```
+
+## Accessibility
+
+Bindings keep each input's label, keyboard behavior and helper-text link. Checkbox, switch, radio and toggle bindings add `aria-invalid` and link their message. A failed submit focuses the first invalid input, including inside date pickers and groups.

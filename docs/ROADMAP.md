@@ -21,7 +21,7 @@ Small, high-use pieces that every later phase builds on.
 | #7    | `@fabric-kit/hooks`  | `useDisclosure`, `useDebounce`, `useHotkeys`, `useClipboard`, `useLocalStorage`                                        | new package | M    |
 | #8    | Formatting helpers   | Locale-aware dates, numbers, currency, relative time and file sizes on `Intl`                                          | hooks       | S    |
 
-## Phase 1: List and detail pages (done, PR #44 and the PR that lands it on main)
+## Phase 1: List and detail pages (done, PR #45)
 
 List and detail screens are most of a business app. This phase turns the data grid and page header into full page patterns, with a story for each assembled page.
 
@@ -37,7 +37,7 @@ List and detail screens are most of a business app. This phase turns the data gr
 | #16   | Detail page pattern                | Header with status and actions, key-value summary, tabbed sections, activity side panel       | patterns   | M    |
 | #17   | Comments and threads               | Comment list, reply box, @mentions                                                            | components | L    |
 
-## Phase 2: Forms (next)
+## Phase 2: Forms (done)
 
 Form library bindings come first, because every new input and the form page depend on them. File upload sits here because nearly every business app needs it.
 
@@ -55,7 +55,7 @@ Form library bindings come first, because every new input and the form page depe
 
 Suggested order: #18 first, then #19 and #20 (they need it). #21–#25 don't depend on forms and can go in any order. #26 needs #18.
 
-## Phase 3: Dashboards
+## Phase 3: Dashboards (next)
 
 A charts package unlocks dashboards. It builds on the free, MIT-licensed tier of MUI X Charts, which keeps the no-paid-dependencies rule.
 

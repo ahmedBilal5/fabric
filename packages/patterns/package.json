@@ -46,6 +46,7 @@
     "@fabric-kit/components": "workspace:^",
     "@fabric-kit/datagrid": "workspace:^",
     "@fabric-kit/design-tokens": "workspace:^",
+    "@fabric-kit/forms": "workspace:^",
     "@fabric-kit/icons": "workspace:^",
     "@fabric-kit/layout": "workspace:^",
     "@fabric-kit/primitives": "workspace:^",
@@ -57,7 +58,8 @@
     "@mui/material": "^9.0.0",
     "@mui/x-data-grid": "^9.0.0",
     "react": "^18.2.0 || ^19.0.0",
-    "react-dom": "^18.2.0 || ^19.0.0"
+    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-hook-form": "^7.55.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.0.0",
@@ -68,6 +70,7 @@
     "@types/react-dom": "^18.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.55.0",
     "typescript": "^5.5.0"
   },
   "publishConfig": {

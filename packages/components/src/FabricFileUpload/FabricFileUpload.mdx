@@ -1,0 +1,75 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricFileUpload.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricFileUpload
+
+A drop zone and a file list with progress, retry and remove.
+
+**Use it for** attachments, documents and imports. For a single profile picture with a preview, build on `useFileUpload` with your own trigger.
+
+<Canvas of={Stories.Default} />
+
+## Usage
+
+The component shows files and reports what people do. `useFileUpload` runs the uploads with your function, so any storage works: presigned S3 URLs, your own API, a CMS.
+
+```tsx
+const uploads = useFileUpload({
+  upload: async (file, { onProgress, signal }) => {
+    const { url, id } = await api.createUpload(file.name, file.type);
+    await putWithProgress(url, file, { onProgress, signal }); // e.g. XMLHttpRequest upload.onprogress
+    return { id }; // kept as the file's `result`
+  },
+});
+
+<FabricFileUpload
+  label="Attachments"
+  accept=".pdf,image/*"
+  maxSize={10_000_000}
+  maxFiles={5}
+  files={uploads.files}
+  onAdd={uploads.add}
+  onRemove={uploads.remove}
+  onRetry={uploads.retry}
+/>
+```
+
+`upload` receives `onProgress(0…1)` and an `AbortSignal` that fires when someone removes the file mid-upload. Throw to fail the file; the error's message is shown with a Retry button. In a form, use `FabricFormFileUpload` from `@fabric-kit/forms`.
+
+## Rules
+
+`accept`, `maxSize` and `maxFiles` are checked before anything uploads. Refused files get a reason ("photo.png isn't an allowed file type.") and never reach `onAdd`. The zone's hint is written from the rules ("PDF or images · up to 10 MB · 5 files max") unless you pass `helperText`. Check files again on your server.
+
+<Canvas of={Stories.RulesAndUpload} />
+
+## File states
+
+Each file shows its size and state: a progress bar while uploading, a check when done, or the error with Retry.
+
+<Canvas of={Stories.FileStates} />
+<Canvas of={Stories.RetryFailed} />
+
+## Variants
+
+`variant="button"` swaps the zone for a "Choose files" button; dropping onto it still works.
+
+<Canvas of={Stories.ButtonVariant} />
+
+## States and long content
+
+<Canvas of={Stories.States} />
+<Canvas of={Stories.LongContent} />
+
+## Accessibility
+
+- The zone is a button: Tab to it, then Enter or Space opens the file picker. It's named by the label and "Drag files here or browse", and described by the rules.
+- Finished and failed uploads are announced; progress isn't, to avoid noise. Refusals are announced as an alert.
+- Each file's buttons are named with the file: "Remove report.pdf", "Retry report.pdf", "Cancel upload of report.pdf".
+
+## Relation to MUI
+
+MUI has no upload component. This uses MUI `LinearProgress`, `IconButton` and theme variables, and a hidden native `<input type="file">`.
+
+<Controls of={Stories.Default} />

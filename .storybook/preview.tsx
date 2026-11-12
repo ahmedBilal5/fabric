@@ -154,6 +154,9 @@ const preview: Preview = {
             "*",
           ],
           "Components",
+          "Advanced Components",
+          "Forms",
+          ["Introduction", "Layout", "Bindings", "Wizard", "Recipes", "*"],
           "*",
           "Kits",
           [

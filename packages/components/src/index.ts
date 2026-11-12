@@ -120,7 +120,7 @@ export type {
   FabricConfirmOptions,
   FabricConfirmProviderProps,
 } from "./FabricConfirm";
-export { FabricConfirmProvider, useConfirm } from "./FabricConfirm";
+export { FabricConfirmProvider, useConfirm, useMaybeConfirm } from "./FabricConfirm";
 export type { FabricDialogAction, FabricDialogProps } from "./FabricDialog/FabricDialog";
 export { FabricDialog } from "./FabricDialog/FabricDialog";
 export type { FabricDividerProps } from "./FabricDivider";
@@ -133,6 +133,24 @@ export type {
   FabricEmptyStateVariant,
 } from "./FabricEmptyState";
 export { FabricEmptyState } from "./FabricEmptyState";
+// Icons are available via '@fabric-kit/icons'
+export type {
+  FabricFileRules,
+  FabricFileUploadProps,
+  FabricRejectedFile,
+  FabricUploadContext,
+  FabricUploadFile,
+  FabricUploadStatus,
+  UseFileUploadOptions,
+  UseFileUploadResult,
+} from "./FabricFileUpload";
+export {
+  describeAccept,
+  FabricFileUpload,
+  matchesAccept,
+  useFileUpload,
+  validateFiles,
+} from "./FabricFileUpload";
 export type {
   FabricGridDirection,
   FabricGridOffset,
@@ -161,8 +179,30 @@ export type { FabricMenuItem, FabricMenuProps } from "./FabricMenu";
 export { FabricMenu } from "./FabricMenu";
 export type { FabricMenuButtonProps } from "./FabricMenuButton";
 export { FabricMenuButton } from "./FabricMenuButton";
+export type { FabricNumberFieldProps, FabricNumberFormat } from "./FabricNumberField";
+export {
+  clampNumber,
+  FabricNumberField,
+  numberFormatter,
+  parseNumberInput,
+  stepNumber,
+} from "./FabricNumberField";
+export type { FabricOtpFieldHandle, FabricOtpFieldProps } from "./FabricOtpField";
+export { FabricOtpField } from "./FabricOtpField";
 export type { FabricPaginationProps } from "./FabricPagination";
 export { FabricPagination } from "./FabricPagination";
+export type { FabricPasswordFieldProps, FabricPasswordStrength } from "./FabricPasswordField";
+export { FabricPasswordField, scorePassword } from "./FabricPasswordField";
+export type { FabricPhoneCountry, FabricPhoneFieldProps } from "./FabricPhoneField";
+export {
+  countryFlag,
+  countryName,
+  FabricPhoneField,
+  isE164,
+  PHONE_COUNTRIES,
+  parsePhone,
+  toE164,
+} from "./FabricPhoneField";
 export type {
   FabricProgressChipProps,
   FabricProgressChipStatus,
@@ -197,6 +237,8 @@ export type { FabricTabItem, FabricTabsAppearance, FabricTabsProps } from "./Fab
 export { FabricTabs } from "./FabricTabs";
 export type { FabricTagColor, FabricTagProps, FabricTagVariant } from "./FabricTag";
 export { FabricTag } from "./FabricTag";
+export type { FabricTagInputProps } from "./FabricTagInput";
+export { addTags, FabricTagInput, splitTags } from "./FabricTagInput";
 export type { FabricTextFieldProps } from "./FabricTextField/FabricTextField";
 export { FabricTextField } from "./FabricTextField/FabricTextField";
 export type {
@@ -223,5 +265,3 @@ export {
 } from "./mui/date-pickers";
 export * from "./mui/material";
 export * from "./mui/styles";
-
-// Icons are available via '@fabric-kit/icons'

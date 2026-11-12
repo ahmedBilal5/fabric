@@ -1,0 +1,67 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricSettingsPage.stories';
+
+<Meta of={Stories} name="Docs" />
+
+# Settings page
+
+`FabricSettingsPage` is a settings screen: a page header, a list of sections on the left, and the chosen section on the right, built from `FabricSettingsGroup` cards of `FabricSettingsRow`s.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricSettingsPage
+  title="Settings"
+  sections={[
+    { id: "profile", label: "Profile", icon: <PersonIcon />, content: <ProfileSettings /> },
+    { id: "notifications", label: "Notifications", icon: <NotificationsIcon />, content: <NotificationSettings /> },
+  ]}
+  section={sectionFromUrl}
+  onSectionChange={setSectionInUrl}
+/>
+
+function NotificationSettings() {
+  return (
+    <FabricSettingsGroup title="Email" description="Changes save as you make them.">
+      <FabricSettingsRow label="Mentions" description="Someone mentions you in a comment." htmlFor="mentions">
+        <FabricSwitch id="mentions" checked={on} onChange={toggle} />
+      </FabricSettingsRow>
+    </FabricSettingsGroup>
+  );
+}
+```
+
+## Rows and groups
+
+A row is one setting: its name and a sentence on what it does on the left, the control on the right. Give the control an `id` and the row `htmlFor`, so clicking the name works too. Use `stacked` for wide controls. Group related rows in a `FabricSettingsGroup`; rows inside are separated by lines.
+
+<Canvas of={Stories.Notifications} />
+
+## Saving
+
+Two patterns, and a page can mix them:
+
+- **Save on change** for switches and selects: apply the change straight away and confirm with a toast if it isn't obvious. Say "Changes save as you make them" in the group description.
+- **Save button** for text fields and anything that's validated together: put a `FabricForm` inside the group with `FabricFormActions disableUntilDirty`, as Profile does.
+
+## Danger zone
+
+`danger` gives a group a red border and heading, for actions that can't be undone. Confirm them with `useConfirm`.
+
+<Canvas of={Stories.DangerZone} />
+
+## Navigation
+
+The section list is a `<nav>` of buttons; the current one has `aria-current="page"`. Clicking moves focus to the section's heading; arrow keys move through the list. Pass `section` and `onSectionChange` to keep the section in the URL.
+
+<Canvas of={Stories.Navigation} />
+
+## Mobile
+
+Below the `md` breakpoint the list becomes a row of buttons that scrolls sideways, and each row stacks its control under its text.
+
+<Canvas of={Stories.Mobile} />
+
+## Built from
+
+`FabricPageHeader` (layout) and Fabric inputs. Pair it with `@fabric-kit/forms` for groups with a Save button.

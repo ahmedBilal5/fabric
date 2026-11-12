@@ -1,0 +1,48 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricOtpField.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricOtpField
+
+Boxes for a one-time code: a 6-digit sign-in code, a verification code from a text or email, a PIN.
+
+**Use it** when the code has a fixed length. **Don't use it** for codes of varying length or passwords: use a text field.
+
+```tsx
+<FabricOtpField label="Verification code" value={code} onChange={setCode} onComplete={verify} />
+```
+
+<Canvas of={Stories.Default} />
+
+## Behavior
+
+- Typing a character moves to the next box. Backspace clears and moves back.
+- Pasting a whole code fills every box, wherever it's pasted.
+- `onComplete` fires once when the last box fills, so you can verify without a button.
+- The first box has `autoComplete="one-time-code"`, so phones offer codes from messages.
+- Only digits are accepted by default; `type="alphanumeric"` allows letters (uppercased).
+
+<Canvas of={Stories.TypingAndPaste} />
+
+## Variants
+
+<Canvas of={Stories.Grouped} />
+<Canvas of={Stories.Alphanumeric} />
+<Canvas of={Stories.Masked} />
+
+## States
+
+<Canvas of={Stories.States} />
+
+## Accessibility
+
+- The boxes are a `role="group"` named by `label` (or `aria-label`), described by the helper text.
+- Each box is named "Character 2 of 6". Arrow keys, Home and End move between boxes.
+- Errors set `aria-invalid` on every box.
+
+## Relation to MUI
+
+MUI has no one-time-code input. This is plain `<input>`s styled with theme variables, so it follows the brand and dark mode.
+
+<Controls of={Stories.Default} />

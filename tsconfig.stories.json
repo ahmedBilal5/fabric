@@ -52,6 +52,9 @@
       ],
       "@fabric-kit/icons/*": [
         "./packages/icons/dist/icon.d.ts"
+      ],
+      "@fabric-kit/forms": [
+        "./packages/forms/src"
       ]
     }
   },

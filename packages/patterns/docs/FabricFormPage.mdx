@@ -1,0 +1,65 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricFormPage.stories';
+
+<Meta of={Stories} name="Docs" />
+
+# Form page
+
+`FabricFormPage` is a whole page for creating or editing one record: the page header, the form in sections, a sticky Save bar, an error summary, and a warning before unsaved changes are lost.
+
+<Canvas of={Stories.ViewAndEdit} />
+
+```tsx
+const form = useForm<CustomerInput, unknown, Customer>({ resolver: zodResolver(schema), defaultValues: customer });
+
+<FabricFormPage
+  title={customer.company.name}
+  breadcrumbs={[{ label: "Customers", href: "/customers" }, { label: customer.company.name }]}
+  form={form}
+  view={<CustomerSummary customer={customer} />}
+  onSubmit={(values) => api.updateCustomer(id, values)}
+  onSaved={() => toast({ title: "Customer saved" })}
+>
+  <FabricFormSection title="Company">…</FabricFormSection>
+  <FabricFormSection title="Billing">…</FabricFormSection>
+</FabricFormPage>
+```
+
+## View and edit modes
+
+With `view`, the page opens read-only with an **Edit** button. Save (once it succeeds) or Cancel brings the view back. Without `view`, the page is always editable: use that for create pages. Control the mode with `mode` and `onModeChange`, e.g. to keep `?edit=1` in the URL.
+
+## Saving
+
+`onSubmit` gets the valid values. While it runs, Save shows a spinner. When it resolves, the form is reset to the saved values, so nothing counts as unsaved, and `onSaved` runs. If it throws, the message shows at the top and the edits stay.
+
+<Canvas of={Stories.SaveError} />
+
+## Unsaved changes
+
+While there are unsaved edits, the Save bar says so, closing or reloading the tab shows the browser's warning, and Cancel asks before discarding. The question uses `FabricConfirmProvider` when there's one above the page, or the browser's own dialog otherwise.
+
+<Canvas of={Stories.DiscardChanges} />
+
+In-app links are your router's: call `useUnsavedChanges(form.formState.isDirty).confirmLeave()` from `@fabric-kit/forms` in your router's navigation blocker, such as React Router's `useBlocker`.
+
+## Create pages and side panels
+
+`aside` adds a panel beside the form from the `lg` breakpoint, for help text, a preview or a checklist. On smaller screens it moves below.
+
+<Canvas of={Stories.Create} />
+
+## Loading and mobile
+
+<Canvas of={Stories.Loading} />
+<Canvas of={Stories.Mobile} />
+
+## Accessibility
+
+- The page title is the only `<h1>`; sections use `<h2>`.
+- After a failed save, focus moves to the first problem, and the summary is announced.
+- The Edit button and the Save bar keep their place, so keyboard users find them where they expect.
+
+## Built from
+
+`FabricPageHeader` (layout), and `FabricForm`, `FabricFormActions` and `useUnsavedChanges` from `@fabric-kit/forms`.

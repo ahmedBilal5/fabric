@@ -182,3 +182,11 @@ export function useConfirm(): FabricConfirmFn {
   }
   return confirm;
 }
+
+/**
+ * Like `useConfirm`, but returns `null` instead of throwing when there's no
+ * `FabricConfirmProvider`. For components that can fall back to `window.confirm`.
+ */
+export function useMaybeConfirm(): FabricConfirmFn | null {
+  return useContext(ConfirmContext);
+}

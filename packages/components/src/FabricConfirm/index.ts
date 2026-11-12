@@ -3,4 +3,4 @@ export type {
   FabricConfirmOptions,
   FabricConfirmProviderProps,
 } from "./FabricConfirmProvider";
-export { FabricConfirmProvider, useConfirm } from "./FabricConfirmProvider";
+export { FabricConfirmProvider, useConfirm, useMaybeConfirm } from "./FabricConfirmProvider";
