@@ -1,3 +1,15 @@
+export type {
+  FabricDashboardGridProps,
+  FabricDashboardItemProps,
+  FabricDashboardPageProps,
+  FabricDashboardSpan,
+} from "./FabricDashboardPage";
+export {
+  dashboardItemSizes,
+  FabricDashboardGrid,
+  FabricDashboardItem,
+  FabricDashboardPage,
+} from "./FabricDashboardPage";
 export type { FabricDetailPageProps, FabricDetailSection } from "./FabricDetailPage";
 export { FabricDetailPage } from "./FabricDetailPage";
 export type {

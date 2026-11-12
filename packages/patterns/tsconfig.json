@@ -26,6 +26,9 @@
     },
     {
       "path": "../forms"
+    },
+    {
+      "path": "../advanced-components/date-picker"
     }
   ],
   "include": ["src"],

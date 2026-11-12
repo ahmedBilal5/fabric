@@ -68,13 +68,14 @@ The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/f
 | [`@fabric-kit/forms`](packages/forms)                                 | Form bindings for every input, form layout and a wizard.         |
 | [`@fabric-kit/datagrid`](packages/advanced-components/datagrid)       | The data grid, styled, with bulk actions and saved views.        |
 | [`@fabric-kit/date-picker`](packages/advanced-components/date-picker) | Date, time and date-range pickers.                               |
+| [`@fabric-kit/charts`](packages/advanced-components/charts)           | Themed charts, sparklines, chart cards and stat cards.           |
 | [`@fabric-kit/tree-view`](packages/advanced-components/tree-view)     | The free MUI X tree view, styled.                                |
 | [`@fabric-kit/layout`](packages/kits/layout)                          | App shell, sidebar, top bar, banner, footer and notifications.   |
 | [`@fabric-kit/global-search`](packages/kits/global-search)            | A grouped search palette and a results page.                     |
 | [`@fabric-kit/chatbot`](packages/kits/chatbot)                        | A streaming assistant panel for any backend.                     |
 | [`@fabric-kit/versioning`](packages/kits/versioning)                  | A version history drawer.                                        |
 | [`@fabric-kit/canvas-builder`](packages/kits/canvas-builder)          | A node-based workflow canvas on React Flow.                      |
-| [`@fabric-kit/patterns`](packages/patterns)                           | Whole pages: list, detail, form, settings and system pages.      |
+| [`@fabric-kit/patterns`](packages/patterns)                           | Whole pages: list, detail, form, settings, dashboard and system. |
 
 ## Development
 

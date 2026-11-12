@@ -26,6 +26,9 @@
       "@fabric-kit/datagrid": [
         "./packages/advanced-components/datagrid/src"
       ],
+      "@fabric-kit/charts": [
+        "./packages/advanced-components/charts/src"
+      ],
       "@fabric-kit/date-picker": [
         "./packages/advanced-components/date-picker/src"
       ],

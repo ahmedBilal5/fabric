@@ -15,6 +15,7 @@ const config: StorybookConfig = {
     "../packages/icons/docs/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/forms/docs/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/hooks/docs/**/*.@(stories.ts|stories.tsx|mdx)",
+    "../packages/advanced-components/charts/docs/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/advanced-components/date-picker/{src,docs}/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/advanced-components/datagrid/{src,docs}/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/advanced-components/tree-view/{src,docs}/**/*.@(stories.ts|stories.tsx|mdx)",
@@ -62,6 +63,7 @@ const config: StorybookConfig = {
         "../packages/advanced-components/date-picker/src",
       ),
       "@fabric-kit/datagrid": resolve(__dirname, "../packages/advanced-components/datagrid/src"),
+      "@fabric-kit/charts": resolve(__dirname, "../packages/advanced-components/charts/src"),
       "@fabric-kit/tree-view": resolve(__dirname, "../packages/advanced-components/tree-view/src"),
       "@fabric-kit/layout": resolve(__dirname, "../packages/kits/layout/src"),
       "@fabric-kit/versioning": resolve(__dirname, "../packages/kits/versioning/src"),
@@ -126,6 +128,12 @@ const config: StorybookConfig = {
       "@mui/x-date-pickers/DateTimePicker",
       "@mui/x-date-pickers/dateViewRenderers",
       "@mui/x-date-pickers/timeViewRenderers",
+      "@mui/x-charts",
+      "@mui/x-charts/BarChart",
+      "@mui/x-charts/LineChart",
+      "@mui/x-charts/PieChart",
+      "@mui/x-charts/SparkLineChart",
+      "@mui/x-charts/hooks",
     ];
 
     return config;

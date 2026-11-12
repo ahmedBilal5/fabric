@@ -1,0 +1,44 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Sparkline.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Sparkline
+
+`FabricSparkline` is a small trend with no axes. Put it beside a number (a stat card does this for you) or in a table row, where the shape of the trend matters more than exact values.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricSparkline data={[12, 15, 14, 18, 21, 19, 24]} title="Signups, last 7 days" />
+```
+
+## Bars
+
+<Canvas of={Stories.Bars} />
+
+## In a table
+
+<Canvas of={Stories.InATable} />
+
+## Props
+
+| Prop | Default | |
+| --- | --- | --- |
+| `data` | | Values, oldest first. |
+| `labels` | | Labels for each value (e.g. dates), shown on hover. |
+| `title` | | What the values are. Starts the screen-reader summary. |
+| `plotType` | `"line"` | `"bar"` for one bar per value. |
+| `area` | `true` | Fill under the line. |
+| `color` | the primary color | Line or bar color. |
+| `height`, `width` | `40`, the container's | Size in px. |
+| `valueFormat`, `locale` | | Number format for the tooltip and summary. |
+| `showTooltip` | `true` | Show the value under the pointer. |
+
+## Accessibility
+
+A sparkline is an image with a written summary: the first and last values, the change and the range, e.g. "Signups: From 120 to 134, up 11.7%. Low 98, high 140."
+
+<Canvas of={Stories.ScreenReaderSummary} />
+
+It wraps MUI X `SparkLineChart`.

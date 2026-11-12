@@ -4,6 +4,8 @@
  * id outranks Storybook's own emotion classes without !important.
  * Colors come from MUI's CSS variables, so pages follow light/dark mode and the
  * selected brand.
+ * Prose rules skip `.docs-story` (the live examples), so they never restyle
+ * the components being shown.
  */
 
 #storybook-docs {
@@ -36,20 +38,20 @@
   color: var(--doc-ink);
 }
 
-#storybook-docs .sbdocs-content :is(p, li, td) {
+#storybook-docs .sbdocs-content :is(p, li, td):not(.docs-story *) {
   font-size: 15px;
   line-height: 1.7;
   color: var(--doc-ink);
 }
 
-#storybook-docs .sbdocs-content :is(h1, h2, h3, h4) {
+#storybook-docs .sbdocs-content :is(h1, h2, h3, h4):not(.docs-story *) {
   font-family: var(--doc-font);
   color: var(--doc-ink);
   border: 0;
   padding: 0;
 }
 
-#storybook-docs .sbdocs-content h1 {
+#storybook-docs .sbdocs-content h1:not(.docs-story *) {
   font-size: 40px;
   line-height: 1.1;
   font-weight: 650;
@@ -58,7 +60,7 @@
 }
 
 /* The paragraph right under the title reads as a lead. */
-#storybook-docs .sbdocs-content h1 + p {
+#storybook-docs .sbdocs-content h1 + p:not(.docs-story *) {
   font-size: 18px;
   line-height: 1.6;
   color: var(--doc-muted);
@@ -66,7 +68,7 @@
   max-width: 68ch;
 }
 
-#storybook-docs .sbdocs-content h2 {
+#storybook-docs .sbdocs-content h2:not(.docs-story *) {
   font-size: 26px;
   line-height: 1.2;
   font-weight: 600;
@@ -74,11 +76,11 @@
   margin: 56px 0 14px;
 }
 
-#storybook-docs .sbdocs-content hr + h2 {
+#storybook-docs .sbdocs-content hr + h2:not(.docs-story *) {
   margin-top: 0;
 }
 
-#storybook-docs .sbdocs-content h3 {
+#storybook-docs .sbdocs-content h3:not(.docs-story *) {
   font-size: 18px;
   line-height: 1.3;
   font-weight: 600;
@@ -86,35 +88,35 @@
   margin: 36px 0 10px;
 }
 
-#storybook-docs .sbdocs-content h4 {
+#storybook-docs .sbdocs-content h4:not(.docs-story *) {
   font-size: 15px;
   font-weight: 600;
   margin: 28px 0 8px;
 }
 
-#storybook-docs .sbdocs-content p {
+#storybook-docs .sbdocs-content p:not(.docs-story *) {
   margin: 0 0 16px;
 }
 
-#storybook-docs .sbdocs-content :is(ul, ol) {
+#storybook-docs .sbdocs-content :is(ul, ol):not(.docs-story *) {
   margin: 0 0 20px;
   padding-left: 22px;
 }
 
-#storybook-docs .sbdocs-content li {
+#storybook-docs .sbdocs-content li:not(.docs-story *) {
   margin: 6px 0;
 }
 
-#storybook-docs .sbdocs-content li::marker {
+#storybook-docs .sbdocs-content li:not(.docs-story *)::marker {
   color: var(--doc-muted);
 }
 
-#storybook-docs .sbdocs-content strong {
+#storybook-docs .sbdocs-content strong:not(.docs-story *) {
   font-weight: 600;
   color: var(--doc-ink);
 }
 
-#storybook-docs .sbdocs-content a {
+#storybook-docs .sbdocs-content a:not(.docs-story *) {
   color: var(--doc-accent);
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--doc-accent) 40%, transparent);
@@ -123,23 +125,23 @@
   transition: text-decoration-color 120ms ease-out;
 }
 
-#storybook-docs .sbdocs-content a:hover {
+#storybook-docs .sbdocs-content a:hover:not(.docs-story *) {
   text-decoration-color: var(--doc-accent);
 }
 
-#storybook-docs .sbdocs-content a:focus-visible {
+#storybook-docs .sbdocs-content a:focus-visible:not(.docs-story *) {
   outline: 2px solid var(--doc-accent);
   outline-offset: 2px;
   border-radius: 2px;
 }
 
-#storybook-docs .sbdocs-content hr {
+#storybook-docs .sbdocs-content hr:not(.docs-story *) {
   border: 0;
   border-top: 1px solid var(--doc-rule);
   margin: 48px 0;
 }
 
-#storybook-docs .sbdocs-content blockquote {
+#storybook-docs .sbdocs-content blockquote:not(.docs-story *) {
   margin: 24px 0;
   padding: 14px 18px;
   border: 0;
@@ -149,13 +151,13 @@
   color: var(--doc-ink);
 }
 
-#storybook-docs .sbdocs-content blockquote > :last-child {
+#storybook-docs .sbdocs-content blockquote > :last-child:not(.docs-story *) {
   margin-bottom: 0;
 }
 
 /* ---------- Inline code ---------- */
 
-#storybook-docs .sbdocs-content :not(pre) > code {
+#storybook-docs .sbdocs-content :not(pre) > code:not(.docs-story *) {
   font-family: var(--doc-mono);
   font-size: 0.86em;
   line-height: 1.4;
@@ -168,7 +170,7 @@
   overflow-wrap: anywhere;
 }
 
-#storybook-docs .sbdocs-content a > code {
+#storybook-docs .sbdocs-content a > code:not(.docs-story *) {
   color: inherit;
 }
 
@@ -307,7 +309,7 @@
 
 /* ---------- Markdown tables ---------- */
 
-#storybook-docs .sbdocs-content table:not(.docblock-argstable) {
+#storybook-docs .sbdocs-content table:not(.docblock-argstable):not(.docs-story *) {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
@@ -318,7 +320,7 @@
   font-size: 14px;
 }
 
-#storybook-docs .sbdocs-content table:not(.docblock-argstable) :is(th, td) {
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) :is(th, td):not(.docs-story *) {
   border: 0;
   border-bottom: 1px solid var(--doc-rule);
   padding: 11px 16px;
@@ -328,24 +330,33 @@
   line-height: 1.55;
 }
 
-#storybook-docs .sbdocs-content table:not(.docblock-argstable) th {
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) th:not(.docs-story *) {
   font-weight: 600;
   font-size: 13px;
   color: var(--doc-muted);
   background: var(--doc-tint);
 }
 
-#storybook-docs .sbdocs-content table:not(.docblock-argstable) tr {
+#storybook-docs .sbdocs-content table:not(.docblock-argstable) tr:not(.docs-story *) {
   background: transparent;
   border: 0;
 }
 
-#storybook-docs .sbdocs-content table:not(.docblock-argstable) tbody tr:last-child td {
+#storybook-docs
+  .sbdocs-content
+  table:not(.docblock-argstable)
+  tbody
+  tr:last-child
+  td:not(.docs-story *) {
   border-bottom: 0;
 }
 
 /* Keep the first column's names (props, components) on one line; elsewhere code wraps. */
-#storybook-docs .sbdocs-content table:not(.docblock-argstable) td:first-child code {
+#storybook-docs
+  .sbdocs-content
+  table:not(.docblock-argstable)
+  td:first-child
+  code:not(.docs-story *) {
   white-space: nowrap;
 }
 
@@ -363,20 +374,20 @@
   #storybook-docs .sbdocs-wrapper {
     padding: 32px 16px 64px;
   }
-  #storybook-docs .sbdocs-content h1 {
+  #storybook-docs .sbdocs-content h1:not(.docs-story *) {
     font-size: 32px;
   }
-  #storybook-docs .sbdocs-content h2 {
+  #storybook-docs .sbdocs-content h2:not(.docs-story *) {
     font-size: 22px;
     margin-top: 48px;
   }
-  #storybook-docs .sbdocs-content table:not(.docblock-argstable) td code {
+  #storybook-docs .sbdocs-content table:not(.docblock-argstable) td code:not(.docs-story *) {
     white-space: break-spaces;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #storybook-docs .sbdocs-content a,
+  #storybook-docs .sbdocs-content a:not(.docs-story *),
   #storybook-docs .docblock-source > div:last-child > button {
     transition: none;
   }

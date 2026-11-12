@@ -1,0 +1,60 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './LineChart.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Line and area charts
+
+`FabricLineChart` shows change over time. `FabricAreaChart` fills under each line: use it for a running total, or with `stacked` for parts that add up to a total. Both wrap MUI X `LineChart`.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricLineChart
+  title="Weekly active users"
+  xAxis={[{ data: weeks, valueFormatter: (d) => d.toLocaleDateString() }]}
+  series={[{ label: "Active users", data: users }]}
+/>
+```
+
+## What Fabric adds
+
+- **Lines:** 2px, smoothed without overshooting the data (`monotoneX`). Dots are off; hovering marks the nearest point. Turn them on with `showMarks`.
+- **x axis:** dates get a time scale, anything else evenly spaced points. Set `scaleType` yourself to override.
+- **Colors, legend, ticks, `valueFormat` and the table** work as in the [bar chart](?path=/docs/charts-bar-chart--overview).
+
+## Several series
+
+<Canvas of={Stories.MultipleSeries} />
+
+When lines cross a lot, past four or so series, split them into small charts side by side instead.
+
+## Area and stacked area
+
+<Canvas of={Stories.Area} />
+
+<Canvas of={Stories.StackedArea} />
+
+## Percentages and markers
+
+<Canvas of={Stories.Percentages} />
+
+## Compact ticks
+
+<Canvas of={Stories.CompactTicks} />
+
+## Props
+
+Every [MUI X `LineChart` prop](https://mui.com/x/api/charts/line-chart/) works, plus `title`, `view`, `valueFormat`, `locale`, `categoryLabel` and `height` (see the bar chart), and:
+
+| Prop | Default | |
+| --- | --- | --- |
+| `area` | `false` | Fill under every line. `FabricAreaChart` sets it. |
+| `stacked` | `false` | Stack every series on the last. |
+| `showMarks` | `false` | A dot at each point. |
+
+Settings on a series (`area`, `stack`, `curve`, `showMark`, `color`) win over these.
+
+## Accessibility
+
+As for the bar chart: a named `<figure>`, a table of the data, and arrow-key navigation between points.

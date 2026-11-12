@@ -186,6 +186,28 @@ export const labels = {
   pink: "#db2777",
 } as const;
 
+// --- Charts ---
+/**
+ * Series colors for charts, in a fixed order: the first series takes slot 1, the
+ * second slot 2, and so on. The order keeps neighbors apart for color-blind readers
+ * (checked with protanopia and deuteranopia simulation in light and dark mode), so
+ * don't reorder it, and don't add a ninth: fold extra series into "Other".
+ * Aqua, yellow and pink sit below 3:1 on white, so charts that use them always show
+ * a legend and offer a table view.
+ */
+export const chart = {
+  categorical: [
+    "#2a78d6", // blue
+    "#eb6834", // orange
+    "#1baf7a", // aqua
+    "#eda100", // yellow
+    "#e87ba4", // pink
+    "#008300", // green
+    "#6250d6", // violet
+    "#e34948", // red
+  ],
+} as const;
+
 /**Random colors that fall outside of all color groups */
 export const others = {
   blue: "#0a6fc4",
@@ -302,6 +324,19 @@ export const dark = {
     toggleBgPress: "rgba(150, 140, 130, 0.24)",
     badgeBg: "#4A423B",
   },
+  // The same eight hues, stepped for dark surfaces.
+  chart: {
+    categorical: [
+      "#3987e5",
+      "#d95926",
+      "#199e70",
+      "#c98500",
+      "#d55181",
+      "#008300",
+      "#9085e9",
+      "#e66767",
+    ],
+  },
   action: {
     primary: "#EB8E74",
     primaryHover: "rgba(235, 142, 116, 0.08)",
@@ -331,4 +366,5 @@ export type AccordionColors = typeof accordion;
 export type AppShellColors = typeof appShell;
 export type ActionColors = typeof action;
 export type LabelColors = typeof labels;
+export type ChartColors = typeof chart;
 export type DarkColors = typeof dark;

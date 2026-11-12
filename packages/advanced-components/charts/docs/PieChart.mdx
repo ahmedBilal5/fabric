@@ -1,0 +1,51 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './PieChart.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Pie chart
+
+`FabricPieChart` shows parts of a whole, as a donut by default. Use it when there are six parts or fewer and the differences are large. To compare close values, a bar chart reads better.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricPieChart
+  title="Customers by plan"
+  data={[
+    { label: "Starter", value: 612 },
+    { label: "Growth", value: 418 },
+    { label: "Enterprise", value: 64 },
+  ]}
+  centerLabel="Customers"
+/>
+```
+
+Unlike MUI X `PieChart`, it takes a plain `data` list instead of `series`; other props pass through.
+
+## Pie
+
+<Canvas of={Stories.Pie} />
+
+## More than six slices
+
+Past `maxSlices` (6), the largest slices stay in their order and the rest fold into one "Other" slice. The table view lists each slice's share of the total.
+
+<Canvas of={Stories.FoldedSlices} />
+
+## Props
+
+| Prop | Default | |
+| --- | --- | --- |
+| `data` | | Slices: `label`, `value`, optional `id` and `color`. |
+| `variant` | `"donut"` | `"pie"` fills the middle. |
+| `centerLabel` | | Text under the total in the middle of a donut. Setting it shows the total. |
+| `maxSlices` | `6` | Slices before the rest fold into "Other". |
+| `otherLabel` | `"Other"` | Name of the folded slice. |
+| `height` | `240` | Height in px. |
+
+Plus `title`, `view`, `valueFormat`, `locale` and `categoryLabel` (see the bar chart).
+
+## Accessibility
+
+Slices are separated by a gap in the surface color rather than relying on color alone; the legend names every slice, and the table gives each value and share.

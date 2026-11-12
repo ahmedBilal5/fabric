@@ -1,0 +1,69 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Overview.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Charts
+
+`@fabric-kit/charts` gives you bar, line, area, pie and sparkline charts, a card to frame them, and stat cards for key numbers. They're built on the free, MIT-licensed tier of [MUI X Charts](https://mui.com/x/react-charts/), and take their colors from the theme, so brand themes and dark mode apply.
+
+```sh
+pnpm add @fabric-kit/charts @mui/x-charts
+```
+
+<Canvas of={Stories.Showcase} />
+
+## The pieces
+
+| Piece | Use it for |
+| --- | --- |
+| [`FabricStatCard`](?path=/docs/charts-stat-card--overview) | One key number, its change versus last period, and an optional trend. |
+| [`FabricChartCard`](?path=/docs/charts-chart-card--overview) | A titled card around a chart, with a Chart/Table switch. |
+| [`FabricBarChart`](?path=/docs/charts-bar-chart--overview) | Comparing amounts across categories: months, plans, channels. |
+| [`FabricLineChart`, `FabricAreaChart`](?path=/docs/charts-line-and-area-charts--overview) | Change over time. Areas for totals and parts of a total. |
+| [`FabricPieChart`](?path=/docs/charts-pie-chart--overview) | Parts of a whole at a glance, six slices at most. |
+| [`FabricSparkline`](?path=/docs/charts-sparkline--overview) | The shape of a trend beside a number or in a table row. |
+
+For a whole page, see [Patterns › Dashboard page](?path=/docs/patterns-dashboard-page--docs). For usage against a limit ("8 of 10 seats"), use [`FabricMeter`](?path=/docs/components-fabricmeter--overview).
+
+## Choosing a chart
+
+- **Is the story one number?** Use a stat card, not a chart.
+- **Comparing categories?** Bars. Turn them sideways (`layout="horizontal"`) for long names.
+- **Change over time?** A line. Stack areas when the series add up to a meaningful total.
+- **Parts of a whole?** A donut, if there are six parts or fewer and the differences are large. For close values, bars read better.
+- **Two measures with different scales?** Use two charts. Fabric charts don't do two value axes, because the way the scales line up is arbitrary and suggests links that aren't in the data.
+
+## Colors
+
+A chart with one series uses the brand's primary color. With several, series take the chart palette in order: the first series is always blue, the second orange, and so on. The order keeps neighbours distinguishable for color-blind readers, in light and dark mode.
+
+<Canvas of={Stories.Palette} />
+
+Keep a series' color tied to what it is: if a filter hides one series, don't reorder the others so their colors change. Past eight series, fold the smallest into "Other" (pie charts do this for you) or split the chart.
+
+Status colors (green, amber, red) are for meaning, such as a change being good or bad, never for "series 4".
+
+To change the palette, pass your own list to `createFabricTheme`. Check the new colors for color-blind separation before you ship them.
+
+```ts
+const theme = createFabricTheme({
+  colorSchemes: {
+    light: { palette: { chart: { categorical: ["#1D5FBF", "#C2410C", "#0F766E", /* … */] } } },
+    dark: { palette: { chart: { categorical: ["#8AB4F8", "#F0915E", "#5EEAD4", /* … */] } } },
+  },
+});
+```
+
+## Accessibility
+
+- Every chart is a `<figure>` named by its `title`, or by the card it sits in.
+- Every chart also renders its data as a table that screen readers can browse. In a `FabricChartCard`, the Table switch shows the same table to everyone.
+- Values never depend on hover: the table and the axes carry them.
+- The chart can be focused, and arrow keys move between data points; the tooltip follows.
+- Three palette colors (aqua, yellow, pink) are below 3:1 contrast on white. That's why multi-series charts always have a legend and a table.
+- Animations are skipped when the user prefers reduced motion.
+
+## Relation to MUI X
+
+Each chart takes the same `series`, `xAxis`, `yAxis` and `dataset` props as its MUI X counterpart, and passes every other prop through. Everything MUI X Charts exports is re-exported from `@fabric-kit/charts`, so you can compose your own charts with `ChartsContainer` when you need something the wrappers don't cover. Only the free, MIT-licensed charts are used; Pro features such as zoom and funnels are not.

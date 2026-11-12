@@ -1,0 +1,82 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricDashboardPage.stories';
+
+<Meta of={Stories} name="Docs" />
+
+# Dashboard page
+
+`FabricDashboardPage` is a page of key numbers and charts: a page header, one filter row that scopes everything below it, and a responsive grid of widgets. Fill it with [stat cards and chart cards](?path=/docs/charts-introduction--overview) from `@fabric-kit/charts`.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricDashboardPage
+  title="Sales overview"
+  dateRange={range}
+  onDateRangeChange={setRange}
+  filters={<FabricSelect label="Region" options={regions} value={region} onChange={…} />}
+  lastUpdated={data.fetchedAt}
+  onRefresh={refetch}
+  refreshing={isFetching}
+>
+  <FabricDashboardGrid>
+    <FabricDashboardItem size="third">
+      <FabricStatCard label="Revenue" value={data.revenue} previousValue={data.previousRevenue} />
+    </FabricDashboardItem>
+    <FabricDashboardItem size="twoThirds">
+      <FabricChartCard title="Revenue">
+        <FabricAreaChart loading={isFetching} xAxis={[{ data: days }]} series={[{ label: "Revenue", data: revenue }]} />
+      </FabricChartCard>
+    </FabricDashboardItem>
+  </FabricDashboardGrid>
+</FabricDashboardPage>
+```
+
+The page never fetches. It gives you the date range and filters; you load the data and pass it to the widgets.
+
+## Filters
+
+There is one filter row, above all the widgets, and every widget shows the same slice of data. Don't put filters inside individual cards: readers assume every number on the page covers the same period.
+
+- `dateRange` adds `FabricDateRangePicker` with quick ranges (Last 7 days, This quarter, …). Turn the presets off with `datePresets={false}`, or pass your own list.
+- `filters` adds your own controls to the same row.
+- `lastUpdated` shows "Updated 4 minutes ago"; `onRefresh` adds a refresh button, disabled while `refreshing`.
+
+<Canvas of={Stories.ChangingTheRange} />
+
+## Layout
+
+`FabricDashboardGrid` is a 12-column grid. Give each `FabricDashboardItem` a `size`:
+
+| `size` | Phones | Tablets | Desktops |
+| --- | --- | --- | --- |
+| `quarter` | full | half | quarter |
+| `third` | full | half | third |
+| `half` | full | half | half |
+| `twoThirds` | full | full | two thirds |
+| `full` | full | full | full |
+
+For anything else pass `span`, columns out of 12 per breakpoint, e.g. `span={{ xs: 12, md: 4 }}`. `rowSpan` makes a widget as tall as two rows beside it. Widgets in a row stretch to the same height.
+
+Lead with a row of stat cards; put the chart that matters most next, at two thirds or full width.
+
+<Canvas of={Stories.Mobile} />
+
+## Loading
+
+Pass `loading` to each widget. On the first load, stat cards show placeholders and charts say "Loading data…". On refresh, charts keep the last data on screen, dimmed, so the page doesn't jump.
+
+<Canvas of={Stories.Loading} />
+
+<Canvas of={Stories.Refresh} />
+
+## Accessibility
+
+- The filter row is a `role="search"` region named "Dashboard filters".
+- "Updated …" is announced politely when it changes.
+- The page title is the `h1`. Give chart cards `headingLevel="h2"` so headings don't skip a level.
+- Each widget brings its own semantics: stat cards are named groups, charts are named figures with a data table.
+
+## Built from
+
+`FabricPageHeader` (layout), `FabricDateRangePicker` (date-picker), `FabricIconButton` and `FabricRelativeTime` (components). Widgets come from `@fabric-kit/charts` and `FabricMeter`.

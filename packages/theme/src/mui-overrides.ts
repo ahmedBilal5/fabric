@@ -69,7 +69,14 @@ declare module "@mui/material/styles" {
     disabled: string;
   }
 
+  /** Chart colors. Charts take series colors from `categorical`, in order. */
+  interface ChartPalette {
+    /** Series colors in a fixed order. Keep eight or fewer and validate a new set for color-blind readers. */
+    categorical: string[];
+  }
+
   interface Palette {
+    chart: ChartPalette;
     semantic: SemanticPalette;
     control: ControlPalette;
     appShell: AppShellPalette;
@@ -77,6 +84,8 @@ declare module "@mui/material/styles" {
   }
 
   interface PaletteOptions {
+    /** Chart colors. A `categorical` list you pass replaces Fabric's whole list. */
+    chart?: Partial<ChartPalette>;
     semantic?: SemanticPalette;
     /** Merged onto Fabric's control colors by `createFabricTheme`, so set only what you change. */
     control?: Partial<ControlPalette>;

@@ -1,0 +1,59 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricMeter.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricMeter
+
+A thin bar with a label and the value in words, for how much of something is used ("8 of 10 seats") or done ("3 of 5 steps").
+
+<Canvas of={Stories.Default} />
+
+<Controls of={Stories.Default} />
+
+```tsx
+<FabricMeter label="Seats" value={8} max={10} unit="seats" />
+<FabricMeter kind="progress" label="Account setup" value={3} max={5} unit="steps" />
+```
+
+## When to use it
+
+- **Quotas and limits** (the default `kind="quota"`): seats, storage, API calls, budget.
+- **Progress** (`kind="progress"`): steps of a setup checklist, an import.
+- For a key number with its change over time, use a stat card from `@fabric-kit/charts`. For a spinner or an unknown wait, use `FabricCircularProgress`.
+
+## Quota levels
+
+A quota turns amber at 80% and red at the limit, and says "Nearly full", "Limit reached" or "Over limit" beside an icon, so color is never the only cue. The value may go over `max`: the bar stays full, the text reads "12 of 10 seats" and the status says "Over limit". Change the points with `thresholds` (fractions of `max`) and the words with `statusText`.
+
+<Canvas of={Stories.QuotaLevels} />
+
+## Formats
+
+`format` reads the value as `"fraction"` ("8 of 10 seats"), `"percent"` ("80%") or `"value"` ("8 seats"). For units such as gigabytes or money, pass the exact words in `valueText`.
+
+<Canvas of={Stories.Formats} />
+
+## Progress
+
+Progress is always the brand color and has no levels.
+
+<Canvas of={Stories.Progress} />
+
+## In tables
+
+`size="small"` draws a 4px bar; `hideLabel` keeps the label for screen readers only.
+
+<Canvas of={Stories.InATable} />
+
+## Accessibility
+
+- A quota has `role="meter"`; progress has `role="progressbar"`. Both are named by the label and carry `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and an `aria-valuetext` that reads like the visible text, plus the status ("9 of 10 seats, Nearly full").
+- `helperText` is linked as the description.
+- The fill animates only when the user hasn't asked for reduced motion.
+
+<Canvas of={Stories.ScreenReader} />
+
+## Relation to MUI
+
+MUI's `LinearProgress` is for loading. `FabricMeter` adds the label, the value in words, quota levels and the `meter` role, so it's its own component rather than a wrapper.
