@@ -157,6 +157,17 @@ const preview: Preview = {
           "Advanced Components",
           "Forms",
           ["Introduction", "Layout", "Bindings", "Wizard", "Recipes", "*"],
+          "Charts",
+          [
+            "Introduction",
+            "Chart card",
+            "Bar chart",
+            "Line and area charts",
+            "Pie chart",
+            "Sparkline",
+            "Stat card",
+            "*",
+          ],
           "*",
           "Kits",
           [

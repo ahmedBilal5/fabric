@@ -7,9 +7,8 @@ Whole pages for Fabric apps, assembled from Fabric components and kits:
 - `FabricFilterBar` and `useFilterParams`: search and filters, kept in the URL.
 - `FabricFormPage`: create and edit pages with view and edit modes, a sticky Save bar and an unsaved-changes warning.
 - `FabricSettingsPage`, `FabricSettingsGroup` and `FabricSettingsRow`: a section list with grouped setting rows.
+- `FabricDashboardPage`, `FabricDashboardGrid` and `FabricDashboardItem`: a header, one date-range filter row and a responsive widget grid for stat cards and charts from `@fabric-kit/charts`.
 - `FabricSystemPage`: 404, 403, no-access, server-error and maintenance pages.
-
-A dashboard pattern is on the [roadmap](https://github.com/ahmedBilal5/fabric/issues/42).
 
 Part of [Fabric](https://ahmedbilal5.github.io/fabric/), a free, open-source design system on top of MUI.
 

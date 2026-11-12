@@ -179,6 +179,12 @@ export type { FabricMenuItem, FabricMenuProps } from "./FabricMenu";
 export { FabricMenu } from "./FabricMenu";
 export type { FabricMenuButtonProps } from "./FabricMenuButton";
 export { FabricMenuButton } from "./FabricMenuButton";
+export type {
+  FabricMeterLevel,
+  FabricMeterProps,
+  FabricMeterThresholds,
+} from "./FabricMeter";
+export { FabricMeter, meterState, meterValueText } from "./FabricMeter";
 export type { FabricNumberFieldProps, FabricNumberFormat } from "./FabricNumberField";
 export {
   clampNumber,

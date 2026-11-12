@@ -55,7 +55,7 @@ Form library bindings come first, because every new input and the form page depe
 
 Suggested order: #18 first, then #19 and #20 (they need it). #21–#25 don't depend on forms and can go in any order. #26 needs #18.
 
-## Phase 3: Dashboards (next)
+## Phase 3: Dashboards (done)
 
 A charts package unlocks dashboards. It builds on the free, MIT-licensed tier of MUI X Charts, which keeps the no-paid-dependencies rule.
 
@@ -66,7 +66,7 @@ A charts package unlocks dashboards. It builds on the free, MIT-licensed tier of
 | #29   | Meters               | Progress and quota meters ("8 of 10 seats")                                          | components  | S    |
 | #30   | Dashboard pattern    | Chart cards in a responsive widget grid, with a page header and date-range filter    | patterns    | M    |
 
-## Phase 4: Example admin app
+## Phase 4: Example admin app (next)
 
 One complete app built only from Phases 0 to 3. It shows the tagline better than any single component, and it tests that the patterns fit together.
 

@@ -1,0 +1,55 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './StatCard.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Stat card
+
+`FabricStatCard` shows one key number with its change versus the previous period and, optionally, a sparkline of the trend. Lead a dashboard with a row of them.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricStatCard
+  label="Monthly recurring revenue"
+  value={62_200}
+  previousValue={58_900}
+  comparisonLabel="vs last month"
+  valueFormat={{ style: "currency", currency: "USD", maximumFractionDigits: 0 }}
+  trend={mrrHistory}
+/>
+```
+
+## Good news and bad news
+
+The change is green when it's good news and red when it's bad. Most numbers should go up; for churn, wait times or errors set `goodDirection="down"`. Use `"neutral"` when neither way is better: the change shows in gray.
+
+<Canvas of={Stories.Row4} />
+
+## The change
+
+Pass `previousValue` and the card works out the change, or pass `change` as a ratio (0.12 is +12%) when your API gives it. It's shown as a percentage, or with `changeFormat="absolute"` as an amount in the value's format (useful for rates, where "down 0.1%" means percentage points).
+
+<Canvas of={Stories.Simple} />
+
+## Loading
+
+<Canvas of={Stories.Loading} />
+
+## Clickable
+
+`href` (with `LinkComponent` for your router) or `onClick` makes the whole card a link or button, for drilling into a report.
+
+<Canvas of={Stories.Clickable} />
+
+## Props
+
+<ArgTypes of={Stories} />
+
+## Accessibility
+
+- The change is never color alone: an arrow and the words "Up", "Down" or "No change" go with it. Screen readers hear "Down 5.3%" rather than the arrow.
+- The card is a group named by its label. A clickable card is a link or button named by its label, value and change, in the order they appear, then the direction: "New customers 92 19.5% vs last month, up". Voice-control users can say what they see.
+- The value uses proportional figures, since it stands alone; the sparkline has its own spoken summary.
+
+<Canvas of={Stories.ScreenReaderText} />

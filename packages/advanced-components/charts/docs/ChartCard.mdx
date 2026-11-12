@@ -1,0 +1,46 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './ChartCard.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Chart card
+
+`FabricChartCard` frames one chart: a title, an optional description and action, and a Chart/Table switch so anyone can read the exact values. Use it for every chart on a dashboard.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricChartCard title="Monthly recurring revenue" description="USD, 2026">
+  <FabricLineChart xAxis={[{ data: months }]} series={[{ label: "MRR", data: mrr }]} area />
+</FabricChartCard>
+```
+
+A Fabric chart inside the card takes the card's title as its accessible name and follows its switch, so don't repeat the title on the chart.
+
+## Action and footer
+
+`action` sits at the top right: a link to the full report, or a menu. `footer` holds a note on how the numbers are counted.
+
+<Canvas of={Stories.WithActionAndFooter} />
+
+## Table view
+
+The switch shows the chart's data as a table, with the same number formats as the tooltips. Turn it off with `tableToggle={false}` only where the numbers are shown elsewhere. Control it with `view` and `onViewChange`.
+
+<Canvas of={Stories.TableView} />
+
+## Loading
+
+Pass `loading` to the chart. On the first load it shows "Loading data…"; when data is already on screen it stays there, dimmed, until the new data arrives, so the layout never jumps.
+
+<Canvas of={Stories.Refreshing} />
+
+## Props
+
+<ArgTypes of={Stories} />
+
+## Accessibility
+
+- The card is a `<section>` labelled by its title (an `h3` by default; change it with `headingLevel`).
+- The switch is a pair of toggle buttons named "Chart" and "Table", with `aria-pressed`.
+- The table view is a scrollable region that can take keyboard focus.

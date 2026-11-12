@@ -4,6 +4,7 @@ import {
   border,
   brand,
   breakpoints,
+  chart,
   chip,
   dark,
   drawerWidth,
@@ -159,6 +160,7 @@ const lightPalette = {
   success: { main: status.success },
   info: { main: status.info, light: surface.info },
   semantic: buildSemantic(status, surface, statusText),
+  chart: { categorical: [...chart.categorical] },
   appShell: {
     text: appShell.text,
     hover: appShell.hover,
@@ -211,6 +213,7 @@ const darkPalette = {
   // The design has no dark semantic text colors; the (already light) dark status colors are legible on
   // the translucent dark surface tints, so they double as the dark text colors.
   semantic: buildSemantic(dark.status, dark.surface, dark.status),
+  chart: { categorical: [...dark.chart.categorical] },
   appShell: {
     text: dark.appShell.text,
     hover: dark.appShell.hover,

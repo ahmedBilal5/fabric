@@ -1,0 +1,68 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './BarChart.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Bar chart
+
+`FabricBarChart` compares amounts across categories: months, plans, channels, accounts. It wraps MUI X `BarChart` with Fabric's colors and defaults.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+<FabricBarChart
+  title="New customers per month"
+  xAxis={[{ data: ["Jan", "Feb", "Mar"] }]}
+  series={[{ label: "New customers", data: [42, 51, 57] }]}
+/>
+```
+
+## What Fabric adds
+
+- **Colors:** one series takes the brand color; several take the chart palette in order.
+- **Legend:** shown for two or more series, at the top left. One series doesn't need one; the title names it.
+- **Bars:** thin, with rounded ends and space between categories.
+- **Axes:** solid hairline grid; value ticks in full under 10,000 and compact above ("20K").
+- **Numbers:** `valueFormat` (any `Intl.NumberFormat` options) formats tooltips, the table and the axis.
+- **Table:** the data as a table for screen readers, and for the card's Table view.
+
+## Grouped and stacked
+
+Several series sit side by side. Give them the same `stack` to stack them into a total.
+
+<Canvas of={Stories.Grouped} />
+
+<Canvas of={Stories.Stacked} />
+
+## Horizontal
+
+`layout="horizontal"` puts categories on the y axis, for long names. Set the axis `width` so names fit.
+
+<Canvas of={Stories.Horizontal} />
+
+## Without a card
+
+Pass `title` so screen readers know what the chart shows.
+
+<Canvas of={Stories.WithoutCard} />
+
+## Loading and empty
+
+<Canvas of={Stories.LoadingAndEmpty} />
+
+## Props
+
+Every [MUI X `BarChart` prop](https://mui.com/x/api/charts/bar-chart/) works, plus:
+
+| Prop | Default | |
+| --- | --- | --- |
+| `title` | the card's title | What the chart shows. Names the figure and captions the table. |
+| `view` | `"chart"` | `"table"` shows the data as a table. |
+| `valueFormat` | | `Intl.NumberFormat` options for values. |
+| `locale` | the browser's | Locale for numbers. |
+| `categoryLabel` | the axis label, or "Category" | Heading of the table's first column. |
+| `height` | `300` | Plot height in px, not counting the legend. |
+
+## Accessibility
+
+The chart is a `<figure>` with a table of its data that screen readers can browse. The chart can be focused, and arrow keys move between bars; the tooltip follows.
