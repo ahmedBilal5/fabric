@@ -5,8 +5,14 @@ export { FabricDatePicker } from "./FabricDatePicker";
 export type {
   FabricDateRange,
   FabricDateRangePickerProps,
+  FabricDateRangePreset,
 } from "./FabricDateRangePicker";
-export { FabricDateRangePicker } from "./FabricDateRangePicker";
+export {
+  dateRangePresets,
+  defaultDateRangePresets,
+  FabricDateRangePicker,
+  matchPreset,
+} from "./FabricDateRangePicker";
 export type {
   FabricDateTimePickerProps,
   FabricDateTimePickerValue,

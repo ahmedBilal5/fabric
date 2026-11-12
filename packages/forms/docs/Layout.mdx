@@ -1,0 +1,72 @@
+import { Meta, Canvas, ArgTypes } from '@storybook/addon-docs/blocks';
+import * as Stories from './Layout.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Form layout
+
+Four pieces give every form the same rhythm: `FabricForm` around everything, `FabricFormSection` for each group of fields, `FabricFormRow` for short fields side by side, and `FabricFormActions` at the end.
+
+<Canvas of={Stories.Section} />
+
+```tsx
+<FabricForm form={form} onSubmit={save}>
+  <FabricFormSection title="Billing address" description="Shown on invoices.">
+    <FabricFormTextField<Address> name="line1" label="Street address" />
+    <FabricFormRow columns={[2, 1]}>
+      <FabricFormTextField<Address> name="city" label="Town or city" />
+      <FabricFormTextField<Address> name="postcode" label="Postcode" />
+    </FabricFormRow>
+  </FabricFormSection>
+  <FabricFormActions onCancel={close} submitLabel="Save address" />
+</FabricForm>
+```
+
+## When to use what
+
+- **One column by default.** People scan a single column fastest. Put fields side by side only when they're filled in together: first and last name, city and postcode.
+- **Sections of three to six fields** with a short heading. Add a description when the section needs context, not to repeat the heading.
+- **One primary button**, labelled with what it does ("Add customer", not "Submit"), last in the bar.
+- **Optional, not required.** Mark the few optional fields ("Optional" as the hint) instead of starring every required one.
+
+## Sections
+
+`variant="card"` (the default) puts each section on a surface. Use `variant="plain"` inside dialogs, drawers and cards that already have a surface.
+
+<Canvas of={Stories.PlainSection} />
+
+`layout="split"` puts the heading and description in a left column from the `md` breakpoint. It suits settings and long edit forms on wide screens.
+
+<Canvas of={Stories.SplitSection} />
+
+## Rows
+
+`columns` is 2, 3 or 4 equal columns, or a list of fractions such as `[2, 1]`. On phones every row stacks.
+
+<Canvas of={Stories.Rows} />
+
+## Actions
+
+`FabricFormActions` reads the form: Save shows a spinner while `onSubmit` runs and is disabled when the form is. `sticky` pins the bar to the bottom of the scrolling area and shows "Unsaved changes" once something's edited. `start` puts content on the other side, such as a destructive action.
+
+<Canvas of={Stories.StickyActions} />
+<Canvas of={Stories.ActionsWithStart} />
+
+## Error summary and save errors
+
+After a failed submit, `FabricForm` lists every problem at the top. Each item focuses its field. If `onSubmit` throws, its message shows in the same place.
+
+<Canvas of={Stories.ErrorSummary} />
+<Canvas of={Stories.SaveError} />
+
+Turn the summary off with `errorSummary={false}` on short forms (one to three fields), or place `FabricFormErrorSummary` yourself.
+
+## Accessibility
+
+- Sections are `<section>` elements named by their heading; pass `headingLevel` to keep the page outline right.
+- The summary is `role="alert"`, so it's announced when it appears. `focusOnShow` moves focus to it on long forms.
+- Rows are visual only; reading order follows the code order.
+
+## Relation to MUI
+
+MUI has no form layout components. These are built with `Box` and Fabric tokens, and only add layout: the inputs inside are your usual Fabric (MUI) inputs.

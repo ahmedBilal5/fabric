@@ -1,0 +1,55 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricTagInput.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricTagInput
+
+A text box that turns what people type into removable tags: labels, keywords, a list of email addresses.
+
+**Use it for** short free-form values. **Use `FabricAutocomplete` with `multiple`** instead when people must choose from a fixed list.
+
+```tsx
+<FabricTagInput label="Labels" value={labels} onChange={setLabels} suggestions={["Priority", "EMEA"]} />
+```
+
+<Canvas of={Stories.Default} />
+
+## Adding and removing
+
+- **Enter** or a **separator** (comma by default) adds the tag. `separators` changes them, e.g. `[",", ";", " "]` for email lists.
+- **Pasting** "a, b, c" adds three tags.
+- Leaving the box adds whatever was typed.
+- **Backspace** in the empty box removes the last tag; each tag's × removes it.
+- Duplicates are ignored, ignoring case.
+
+<Canvas of={Stories.Keyboard} />
+
+## Suggestions
+
+`suggestions` offers known tags in a list as people type. Anything else can still be typed.
+
+<Canvas of={Stories.WithSuggestions} />
+
+## Validation and limits
+
+`validate(tag)` returns a message to refuse a tag; the message replaces the hint until the next keystroke. `maxTags` refuses further tags with a message.
+
+<Canvas of={Stories.EmailList} />
+
+## States and long content
+
+<Canvas of={Stories.States} />
+<Canvas of={Stories.LongContent} />
+
+## Accessibility
+
+- It's a combobox: suggestions are a listbox, chosen with the arrow keys and Enter.
+- Each tag is a chip with a remove action; Backspace and Delete remove the focused chip.
+- Refusal messages appear in the helper text, linked to the input.
+
+## Relation to MUI
+
+Built on `FabricAutocomplete` (MUI `Autocomplete` with `multiple` and `freeSolo`), adding separators, paste splitting, validation and limits.
+
+<Controls of={Stories.Default} />

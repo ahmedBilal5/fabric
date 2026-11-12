@@ -1,0 +1,100 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Overview.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Forms
+
+`@fabric-kit/forms` connects every Fabric input to [React Hook Form](https://react-hook-form.com) and [Zod](https://zod.dev), and lays forms out with consistent spacing, sections and a Save bar.
+
+```sh
+pnpm add @fabric-kit/forms react-hook-form zod
+```
+
+<Canvas of={Stories.NewCustomer} />
+
+## The pieces
+
+| Piece | What it does |
+| --- | --- |
+| `FabricForm` | The `<form>`. Provides the form to every field, lists problems after a failed submit, and shows save errors. |
+| `FabricFormSection` | A titled card of related fields. `layout="split"` puts the heading on the left. |
+| `FabricFormRow` | Short fields side by side; they stack on phones. |
+| `FabricFormActions` | Save and Cancel. `sticky` keeps them on screen and says when there are unsaved changes. |
+| `FabricFormErrorSummary` | The list of problems, each linked to its field. Built into `FabricForm`. |
+| Bindings | `FabricFormTextField`, `FabricFormSelect`, `FabricFormNumberField` and 17 more. See [Bindings](?path=/docs/forms-bindings--overview). |
+| `FabricWizard` | A form split into steps. See [Wizard](?path=/docs/forms-wizard--overview). |
+| `useUnsavedChanges` | Warns before unsaved changes are lost. |
+
+Whole pages built from these live in Patterns: [Form page](?path=/docs/patterns-form-page--docs) and [Settings page](?path=/docs/patterns-settings-page--docs).
+
+## Basic usage
+
+```tsx
+import { FabricForm, FabricFormActions, FabricFormRow, FabricFormSection, FabricFormTextField, zodResolver } from "@fabric-kit/forms";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+const schema = z.object({
+  firstName: z.string().min(1, "Enter a first name."),
+  lastName: z.string().min(1, "Enter a last name."),
+  email: z.email("Enter an email address like name@example.com."),
+});
+type Values = z.infer<typeof schema>;
+
+export function ContactForm() {
+  const form = useForm<Values>({
+    resolver: zodResolver(schema),
+    defaultValues: { firstName: "", lastName: "", email: "" },
+    mode: "onTouched",
+  });
+  return (
+    <FabricForm form={form} onSubmit={(values) => api.saveContact(values)}>
+      <FabricFormSection title="Contact">
+        <FabricFormRow>
+          <FabricFormTextField<Values> name="firstName" label="First name" />
+          <FabricFormTextField<Values> name="lastName" label="Last name" />
+        </FabricFormRow>
+        <FabricFormTextField<Values> name="email" label="Email" type="email" />
+      </FabricFormSection>
+      <FabricFormActions submitLabel="Save contact" />
+    </FabricForm>
+  );
+}
+```
+
+- Inside `FabricForm`, fields don't need `control`. Give them the form's type (`<Values>`) so `name` is checked.
+- Supply a default for every field: `""`, `false`, `[]` or `null`. It keeps inputs controlled and `reset()` predictable.
+- `mode: "onTouched"` checks a field when the person leaves it, then as they fix it. It's the least noisy choice.
+- Text fields, selects and pickers fill their section or row. Use `FabricFormRow` for short fields.
+
+## Validation and errors
+
+Submitting with problems lists every one at the top, each linked to its field, and moves focus to the first. Messages appear under each field and clear as they're fixed.
+
+<Canvas of={Stories.SubmitWithErrors} />
+
+Write messages as instructions: "Enter a last name", not "Last name is required". They read well both under the field and in the summary.
+
+## Save errors
+
+If `onSubmit` throws, its message shows at the top and everything the person typed stays put. Server-side field errors use `form.setError("email", { message })` and appear under that field.
+
+<Canvas of={Stories.SaveFails} />
+
+## Split layout
+
+For settings and long forms on wide screens, `layout="split"` puts each section's heading and description on the left.
+
+<Canvas of={Stories.SplitLayout} />
+
+## Accessibility
+
+- Every field has a visible label, linked to its input; hints and messages are linked with `aria-describedby`.
+- After a failed submit, focus moves to the first problem and the summary is announced.
+- Sections are `<section>`s named by their heading, so screen-reader users can jump between them.
+- Bindings keep each input's own keyboard behavior.
+
+## Relation to MUI and React Hook Form
+
+The bindings render the same Fabric inputs you use elsewhere, so they look identical outside forms. Validation, touched state, resets and field arrays are React Hook Form's: see [Recipes](?path=/docs/forms-recipes--docs) for transforms, field arrays and composite fields.

@@ -1,0 +1,56 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './Wizard.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Wizard
+
+`FabricWizard` splits one form into steps, with a stepper, Back and Continue, and an optional review step. Use it for setup flows people do once (create a workspace, import data, onboard a customer), where seeing everything at once would overwhelm. For forms people return to and edit, use a single page with sections instead.
+
+<Canvas of={Stories.Default} />
+
+```tsx
+const form = useForm<Values>({ resolver: zodResolver(schema), defaultValues, mode: "onTouched" });
+
+<FabricWizard
+  form={form}
+  steps={[
+    { id: "workspace", label: "Workspace", fields: ["workspace", "url"], content: <WorkspaceFields /> },
+    { id: "plan", label: "Plan", fields: ["plan", "seats"], content: <PlanFields /> },
+  ]}
+  review={(values) => <Summary values={values} />}
+  onSubmit={(values) => api.createWorkspace(values)}
+  submitLabel="Create workspace"
+/>
+```
+
+## How it behaves
+
+- **One form, one schema.** All steps share the `useForm`; `fields` says which paths each step checks before Continue.
+- **Continue** validates only the current step and focuses the first problem.
+- **Back** never validates. Finished steps in the stepper can be clicked to jump back.
+- **Enter** in a field moves to the next step; it only submits on the last step.
+- **Review** (optional) shows everything before submitting. Put final confirmations, such as accepting terms, here.
+- **Submit errors**: throw from `onSubmit` and the message shows above the last step.
+- On phones the stepper becomes a progress bar, and "Step 2 of 4" stays above the heading.
+
+<Canvas of={Stories.StepValidation} />
+
+## Controlled steps
+
+Pass `step` and `onStepChange` to keep the step in the URL, so Back in the browser works:
+
+```tsx
+const [step, setStep] = useStepParam(); // your router
+<FabricWizard step={step} onStepChange={setStep} … />
+```
+
+## Accessibility
+
+- Each step is a `<section>` named by its heading, which reads "Step 2 of 4: Plan".
+- Focus moves to the new step's heading, so keyboard and screen-reader users start at the top.
+- The stepper's buttons are only enabled for steps already reached.
+
+## Relation to MUI
+
+The header is `FabricStepper` (MUI `Stepper`). The wizard adds validation, navigation and focus handling on top.

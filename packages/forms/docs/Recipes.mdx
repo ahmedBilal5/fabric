@@ -1,0 +1,52 @@
+import { Meta, Canvas } from "@storybook/addon-docs/blocks";
+import * as Stories from "./Recipes.stories";
+
+<Meta of={Stories} />
+
+# Recipes
+
+Common React Hook Form situations, worked through with Fabric bindings: validation timing, server errors, disabled fields, schema transforms, multiple selection, composite values and repeated rows. For the basics, start with the [Forms overview](?path=/docs/forms-introduction--overview).
+
+## Validation, touched fields and reset
+
+This form uses nested field paths and `mode="onBlur"`. Submit it empty to see linked error text and focus on the first invalid field. Complete it to submit asynchronously; Reset restores the initial values and hints. FormProvider supplies control to the inputs.
+
+<Canvas of={Stories.ValidationAndReset} />
+
+## Server errors and disabled controls
+
+Server errors use the same `setError` feedback and can request focus. Form-level or field-level `disabled` propagates to controls. Disabled fields are omitted from submission; read-only fields retain their values.
+
+<Canvas of={Stories.ServerError} />
+<Canvas of={Stories.DisabledForm} />
+<Canvas of={Stories.DisabledFieldSubmission} />
+
+## Schema input and output
+
+Text fields edit text, including numeric text. Validate empty values before converting them. Use `useForm<z.input<typeof schema>, unknown, z.output<typeof schema>>` when a schema transforms the submitted data; the binding infers both types from `control`.
+
+<Canvas of={Stories.SchemaTransform} />
+
+## Multiple selection and free solo
+
+Autocomplete preserves typed object options, multiple selections and free-solo text. Toggle groups use an array when `exclusive={false}`. [Bindings](?path=/docs/forms-bindings--overview) lists every binding's value shape.
+
+<Canvas of={Stories.MultipleAndFreeSolo} />
+
+## Composite validation
+
+A range binding surfaces the first nested endpoint error as its helper text. A range-wide message takes precedence when the schema provides one.
+
+<Canvas of={Stories.NestedRangeErrors} />
+
+## Repeated fields
+
+Use typed field-array paths and stable row IDs with React Hook Form's `useFieldArray`. Values survive appending, reordering and removing rows. Keep the default registration behavior when rows can move.
+
+<Canvas of={Stories.FieldArrays} />
+
+## Accessibility and scope
+
+Controls use existing Fabric labels and keyboard behavior. Boolean and toggle bindings add linked helper/error text; other controls keep their own helper-text linkage. Use a visible label or explicit accessible name. Automatic invalid-field focus supports groups and MUI X segmented fields. Custom controls can use FabricFormField and wire `field`, `error`, `helperText` and `describedBy` themselves.
+
+For sections, save bars and wizards see [Layout](?path=/docs/forms-layout--overview) and [Wizard](?path=/docs/forms-wizard--overview). Nothing here assumes a backend.

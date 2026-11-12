@@ -23,6 +23,9 @@
     },
     {
       "path": "../kits/layout"
+    },
+    {
+      "path": "../forms"
     }
   ],
   "include": ["src"],

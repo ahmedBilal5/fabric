@@ -1,0 +1,76 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricNumberField.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricNumberField
+
+A field for numbers: seats, prices, percentages, weights. It has − and + buttons, arrow-key stepping, `min` and `max`, and formats the number for the locale when it loses focus.
+
+**Use it for** quantities and amounts people type or nudge. **Don't use it for** numbers that aren't amounts, such as phone numbers, card numbers or IDs: use a text field.
+
+```tsx
+<FabricNumberField
+  label="Monthly budget"
+  value={budget}
+  onChange={setBudget}
+  format={{ style: "currency", currency: "USD" }}
+  min={0}
+  step={100}
+/>
+```
+
+<Canvas of={Stories.Default} />
+
+## Value
+
+The value is a `number`, or `null` when the field is empty. `onChange` fires as people type (so live validation works) and again on blur, when the number is kept within `min` and `max` and rounded to `maximumFractionDigits`. Text that isn't a number goes back to the last good value.
+
+## Formats
+
+`format` uses `Intl.NumberFormat`, so symbols, separators and unit names follow the locale.
+
+| `format` | Shows |
+| --- | --- |
+| `{ style: "currency", currency: "USD" }` | $12,480.00 |
+| `{ style: "percent" }` | 15% (the value is 15, not 0.15) |
+| `{ style: "unit", unit: "kilogram" }` | 2.5 kg |
+| none | 12,480 |
+
+<Canvas of={Stories.Currency} />
+<Canvas of={Stories.Percent} />
+<Canvas of={Stories.Units} />
+
+`prefix` and `suffix` add any text ("seats", "≈") when there's no matching unit. `stepper={false}` hides the buttons, for amounts nobody steps through, like a budget.
+
+## Locales
+
+People type with their own decimal mark: "1.234,5" in German is 1234.5. Pass `locale` or let it follow the browser.
+
+<Canvas of={Stories.OtherLocale} />
+
+## States
+
+<Canvas of={Stories.States} />
+
+## Keyboard
+
+| Key | Does |
+| --- | --- |
+| ↑ / ↓ | Step by `step` |
+| Shift + ↑ / ↓, Page Up / Page Down | Step by 10 × `step` |
+| Home / End | Jump to `min` / `max` |
+
+<Canvas of={Stories.Keyboard} />
+
+## Accessibility
+
+- The input has `role="spinbutton"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax` and the formatted value as `aria-valuetext`.
+- The − and + buttons are named "Decrease" and "Increase". They're skipped by Tab because the arrow keys do the same.
+- `inputMode` brings up the number keypad on phones.
+
+## Relation to MUI
+
+Built on `FabricTextField` (MUI `TextField`) with `type="text"`, not `type="number"`: native number inputs can't show formatting, ignore locales and change value on scroll.
+
+<Controls of={Stories.Default} />

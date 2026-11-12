@@ -1,0 +1,50 @@
+import { Meta, Canvas, Controls } from '@storybook/addon-docs/blocks';
+import * as Stories from './FabricPhoneField.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# FabricPhoneField
+
+A phone number box with a country picker in front. People pick their country and dialling code, then type the number the way they know it.
+
+```tsx
+<FabricPhoneField label="Mobile number" value={phone} onChange={setPhone} defaultCountry="GB" />
+```
+
+<Canvas of={Stories.Default} />
+
+## Value
+
+The value is one string in [E.164](https://en.wikipedia.org/wiki/E.164) form, such as `"+442071234567"`, or `""` when empty. That's what SMS providers and most APIs expect.
+
+- A leading trunk `0` is dropped ("020…" in the UK becomes "+4420…"), except in Italy, where it's kept.
+- Pasting "+49 30 1234567" switches the country to Germany.
+- Spaces, dashes and brackets can be typed; only digits are kept.
+
+<Canvas of={Stories.TypingAndPaste} />
+
+## Countries
+
+Country names come from the browser (`Intl.DisplayNames`), in `locale`. `preferredCountries` lists some first; `countries` limits the list.
+
+<Canvas of={Stories.PreferredCountries} />
+<Canvas of={Stories.LimitedCountries} />
+<Canvas of={Stories.WithValue} />
+
+## Validation
+
+`isE164(value)` checks the shape (a "+", a country code and 8–15 digits in all). It can't tell whether a number exists or is a mobile: check that on your server, for example with libphonenumber. Fabric doesn't bundle it, to keep the package small.
+
+<Canvas of={Stories.States} />
+
+## Accessibility
+
+- The country picker is a select named "Country code: United Kingdom +44"; type a country's first letter to jump to it.
+- The number field has `inputMode="tel"` and `autoComplete="tel-national"`.
+- The label always floats above, since the picker fills the start of the box.
+
+## Relation to MUI
+
+Built on `FabricTextField` (MUI `TextField`) with an MUI `Select` in the start adornment.
+
+<Controls of={Stories.Default} />

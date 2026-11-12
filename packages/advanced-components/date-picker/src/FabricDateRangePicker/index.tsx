@@ -22,13 +22,17 @@
  */
 
 import { spacing } from "@fabric-kit/design-tokens";
-import { Box, Typography } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { type Dayjs } from "dayjs";
 import { forwardRef, memo, type ReactNode, useCallback, useMemo } from "react";
 import { FabricDatePicker, type FabricDatePickerValue } from "../FabricDatePicker";
+import { defaultDateRangePresets, type FabricDateRangePreset, matchPreset } from "./presets";
+
+export type { FabricDateRangePreset } from "./presets";
+export { dateRangePresets, defaultDateRangePresets, matchPreset } from "./presets";
 
 export interface FabricDateRange {
   start: Date | null;
@@ -65,6 +69,14 @@ export interface FabricDateRangePickerProps {
   sx?: SxProps<Theme>;
   /** Custom separator between the two pickers. Defaults to a dash `—`. */
   separator?: ReactNode;
+  /**
+   * Quick ranges shown as buttons above the pickers. `true` shows Last 7 days, Last 30
+   * days, This month, Last month, This quarter and This year; or pass your own list,
+   * e.g. `[dateRangePresets.today, dateRangePresets.last7Days]`.
+   */
+  presets?: boolean | FabricDateRangePreset[];
+  /** "Today" for the presets. Defaults to now; set it for stable stories and tests. */
+  today?: Date;
 }
 
 function toDayjs(value: FabricDatePickerValue): Dayjs | null {
@@ -92,6 +104,8 @@ const FabricDateRangePickerImpl = forwardRef<HTMLDivElement, FabricDateRangePick
       pickerWidth,
       sx,
       separator = "—",
+      presets,
+      today,
     },
     ref,
   ) {
@@ -124,6 +138,10 @@ const FabricDateRangePickerImpl = forwardRef<HTMLDivElement, FabricDateRangePick
       [currentRange.start, onChange, onEndChange],
     );
 
+    const presetList = presets === true ? defaultDateRangePresets : presets || [];
+    const now = today ?? new Date();
+    const activePreset = presetList.length ? matchPreset(currentRange, presetList, now) : undefined;
+
     // Prevent inverted ranges by binding each side's constraint to the other.
     const startMax =
       endAsDayjs && maxDate
@@ -141,10 +159,48 @@ const FabricDateRangePickerImpl = forwardRef<HTMLDivElement, FabricDateRangePick
     return (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box ref={ref} sx={sx}>
+          {presetList.length > 0 && (
+            <Box
+              role="group"
+              aria-label="Quick ranges"
+              sx={{
+                display: "flex",
+                flexWrap: "wrap",
+                gap: `${spacing.sm}px`,
+                mb: `${spacing.md}px`,
+              }}
+            >
+              {presetList.map((p) => {
+                const on = activePreset?.id === p.id;
+                const r = p.getRange(now);
+                const outside =
+                  (minDate && dayjs(r.start).isBefore(minDate, "day")) ||
+                  (maxDate && dayjs(r.end).isAfter(maxDate, "day"));
+                return (
+                  <Chip
+                    key={p.id}
+                    label={p.label}
+                    size="small"
+                    clickable
+                    disabled={disabled || Boolean(outside)}
+                    aria-pressed={on}
+                    color={on ? "primary" : "default"}
+                    variant={on ? "filled" : "outlined"}
+                    onClick={() => {
+                      onChange?.({ start: r.start, end: r.end });
+                      onStartChange?.(r.start);
+                      onEndChange?.(r.end);
+                    }}
+                  />
+                );
+              })}
+            </Box>
+          )}
           <Box
             sx={{
               display: "flex",
-              alignItems: "flex-end",
+              alignItems: { xs: "stretch", sm: "flex-end" },
+              flexDirection: { xs: "column", sm: "row" },
               gap: `${spacing.md}px`,
             }}
           >
@@ -158,10 +214,12 @@ const FabricDateRangePickerImpl = forwardRef<HTMLDivElement, FabricDateRangePick
               minDate={minDate}
               maxDate={startMax}
               width={pickerWidth}
+              containerSx={{ minWidth: 0, flex: pickerWidth === undefined ? 1 : undefined }}
             />
             <Typography
               component="span"
               sx={{
+                display: { xs: "none", sm: "block" },
                 alignSelf: "center",
                 pb: `${spacing.xs}px`,
                 color: "text.secondary",
@@ -179,6 +237,7 @@ const FabricDateRangePickerImpl = forwardRef<HTMLDivElement, FabricDateRangePick
               minDate={endMin}
               maxDate={maxDate}
               width={pickerWidth}
+              containerSx={{ minWidth: 0, flex: pickerWidth === undefined ? 1 : undefined }}
             />
           </Box>
           {helperText !== undefined && (
