@@ -24,7 +24,7 @@
  * ```
  */
 
-import { chip, dark, iconSize, opacity, radii, spacing } from "@fabric-kit/design-tokens";
+import { iconSize, opacity, radii, spacing } from "@fabric-kit/design-tokens";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
 import ToggleButton from "@mui/material/ToggleButton";
@@ -35,11 +35,11 @@ import { forwardRef, memo } from "react";
 // One rounded, filled box; borderless 32×28 segments (2px 4px padding
 // around a 24px icon); the selected segment is solid primary. `size` and `color` are accepted for
 // MUI compatibility, but Fabric defines a single look, so they render alike.
-const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(() => ({
   borderRadius: `${radii.lg}px`,
   overflow: "hidden",
-  backgroundColor: chip.disabled.border,
-  ...theme.applyStyles("dark", { backgroundColor: dark.chip.disabled.border }),
+  // The divider color, so the track follows the brand and the mode.
+  backgroundColor: "var(--mui-palette-divider)",
   "& .MuiToggleButtonGroup-grouped": {
     margin: 0,
     border: 0,

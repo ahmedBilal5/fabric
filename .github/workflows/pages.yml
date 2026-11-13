@@ -27,7 +27,7 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Build the landing site and Storybook
+      - name: Build the landing site, example app and Storybook
         run: pnpm pages:build
       - uses: actions/upload-pages-artifact@v3
         with:

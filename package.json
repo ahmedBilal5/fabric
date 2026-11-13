@@ -19,7 +19,9 @@
     "release": "pnpm build && changeset publish",
     "site:dev": "pnpm --filter @fabric-kit/site dev",
     "site:build": "turbo build --filter=@fabric-kit/site",
-    "pages:build": "pnpm site:build && pnpm storybook:build && node scripts/assemble-pages.mjs",
+    "admin:dev": "pnpm --filter @fabric-kit/admin-example dev",
+    "admin:build": "turbo build --filter=@fabric-kit/admin-example",
+    "pages:build": "pnpm site:build && pnpm admin:build && pnpm storybook:build && node scripts/assemble-pages.mjs",
     "check:icons": "node scripts/check-icon-imports.mjs",
     "audit:themes": "node scripts/theme-audit.mjs"
   },

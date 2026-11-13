@@ -1,0 +1,72 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './AdminApp.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Admin app
+
+A complete example app built only from Fabric: an app shell, a dashboard, a customer list, a customer page, create and edit forms, settings and a not-found page. It runs on mock data in the browser, with no backend.
+
+Use it to see how the page patterns fit together, and as a reference when you build your own screens. To start a new app with the same structure, use [`@fabric-kit/create-app`](?path=/docs/examples-starter-app--overview).
+
+<Canvas of={Stories.Dashboard} />
+
+## Try it
+
+- **Live:** [ahmedbilal5.github.io/fabric/admin](https://ahmedbilal5.github.io/fabric/admin/). Switch the brand under **Settings → Appearance**.
+- **Locally:** `pnpm admin:dev` from the repository root.
+- **Source:** [`apps/admin`](https://github.com/ahmedBilal5/fabric/tree/main/apps/admin).
+
+## What each page uses
+
+| Page | Path | Built from |
+| --- | --- | --- |
+| Dashboard | `/` | `FabricDashboardPage`, `FabricStatCard`, `FabricChartCard`, area, bar and pie charts |
+| Customers | `/customers` | `FabricListPage`, `useFilterParams`, `FabricStatus`, bulk delete with `useConfirm` |
+| Customer | `/customers/:id` | `FabricDetailPage`, `FabricDatagrid`, `FabricMeter`, `FabricActivityFeed` |
+| New and edit customer | `/customers/new`, `/customers/:id/edit` | `FabricFormPage` with `@fabric-kit/forms` fields and a Zod schema |
+| Settings | `/settings/:section` | `FabricSettingsPage`, `FabricForm`, `FabricSwitch` |
+| Not found | anything else | `FabricSystemPage` |
+
+Around every page: `FabricAppShell` (sidebar, top bar, user menu), `FabricNotificationDrawer`, `FabricToastProvider` and `FabricConfirmProvider`.
+
+<Canvas of={Stories.Customer} />
+
+## How it's put together
+
+```
+apps/admin/src
+├── main.tsx          DesignSystemProvider, brand, data and router providers
+├── AdminApp.tsx      the app shell, navigation and one page per route
+├── routes.ts         paths ⇄ pages (pure functions, unit-tested)
+├── router.tsx        a tiny hash router
+├── brand.tsx         brand themes from createFabricTheme
+├── data/             mock customers, filtering, dashboard maths, the form schema
+└── pages/            one file per page
+```
+
+**Data.** `data/store.tsx` is a pretend backend: async functions with a short delay, so the pages show their real loading and saving states. The pages only call `useData()`, so swapping it for your API client leaves them unchanged. Fabric's patterns never fetch; they take rows, values and callbacks.
+
+**Routing.** A 100-line hash router keeps the example free of extra dependencies and lets the build run from any folder. In your app, use the router you already have. Fabric only needs `href`s for links (or a `linkComponent` for the sidebar) and a way to read and write search params, which `useFilterParams` takes as an adapter:
+
+```tsx
+// React Router
+const [params, setParams] = useSearchParams();
+const filters = useFilterParams(FILTERS, {
+  adapter: { params, setParams: (p) => setParams(p, { replace: true }) },
+});
+```
+
+**Brands.** Each brand is a theme from `createFabricTheme`, passed to `DesignSystemProvider`. Every page follows the brand and light or dark mode, with no colors of its own.
+
+<Canvas of={Stories.Settings} />
+
+## Accessibility
+
+- After each navigation, focus moves to the new page's `h1`, so screen readers announce the page, and the browser tab is renamed after it.
+- Filters, search and the selected detail tab live in the URL, so back, forward and shared links restore them.
+- Destructive actions ask first with `useConfirm`, with focus on Cancel.
+- The dashboard's charts each have a table view, and stat cards say their change in words ("Up 12%").
+- On phones the sidebar starts closed and closes after each navigation.
+
+<Canvas of={Stories.Mobile} />

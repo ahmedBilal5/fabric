@@ -241,7 +241,11 @@ export const FabricStatCard = forwardRef<HTMLDivElement, FabricStatCardProps>(
                   </>
                 )}
                 {caption && (
-                  <Box component="span" sx={{ flexBasis: delta ? "100%" : "auto" }}>
+                  <Box
+                    component="span"
+                    id={`${labelId}-caption`}
+                    sx={{ flexBasis: delta ? "100%" : "auto" }}
+                  >
                     {caption}
                   </Box>
                 )}
@@ -295,9 +299,9 @@ export const FabricStatCard = forwardRef<HTMLDivElement, FabricStatCardProps>(
         <ButtonBase
           ref={ref as never}
           {...((href ? { component: LinkComponent ?? "a", href, onClick } : { onClick }) as object)}
-          // The name starts with the visible label and includes the visible value and change,
-          // so voice-control users can say what they see.
-          aria-labelledby={`${labelId} ${labelId}-value`}
+          // The name starts with the visible label and includes the visible value, change and
+          // caption, so voice-control users can say what they see.
+          aria-labelledby={`${labelId} ${labelId}-value${caption ? ` ${labelId}-caption` : ""}`}
           sx={rootSx}
         >
           {body}
@@ -326,8 +330,8 @@ export const FabricStatCard = forwardRef<HTMLDivElement, FabricStatCardProps>(
 
 const srOnly = {
   position: "absolute",
-  width: 1,
-  height: 1,
+  width: "1px",
+  height: "1px",
   overflow: "hidden",
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",

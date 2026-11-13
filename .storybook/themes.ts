@@ -3,31 +3,12 @@ import type { Theme } from "@mui/material/styles";
 import {
   BRAND_PALETTES,
   type BrandName,
-  type BrandScheme,
   DEFAULT_BRAND,
   isBrand,
+  schemePalette,
 } from "./brand-palettes";
 
 export { DEFAULT_BRAND };
-
-/** The MUI palette for one brand and mode: accents plus the neutrals around them. */
-function schemePalette(c: BrandScheme, mode: "light" | "dark") {
-  return {
-    primary: { main: c.primary, contrastText: c.primaryContrast },
-    secondary: { main: c.secondary, contrastText: c.secondaryContrast },
-    text: { primary: c.text, secondary: c.textSecondary, disabled: c.textDisabled },
-    background: { default: c.bg, paper: c.paper },
-    divider: c.divider,
-    // Dark mode tints hover and selection with the primary color (createFabricTheme does
-    // that); light mode uses the brand's own neutral, as Fabric does.
-    action: {
-      disabledBackground: c.subtle,
-      ...(mode === "light" && { hover: c.subtle, selected: c.subtle }),
-    },
-    appShell: { text: c.textSecondary, toggleBg: c.subtle, toggleBgPress: c.dividerLight },
-    datagrid: { rowLine: c.dividerLight, footerLine: c.divider, emptyText: c.textDisabled },
-  };
-}
 
 function brandOf(name: BrandName): Theme {
   const p = BRAND_PALETTES[name];

@@ -472,6 +472,11 @@
   margin-bottom: var(--space-xl);
   max-width: 12ch;
 }
+.board__lead {
+  color: var(--color-board-type);
+  margin: calc(-1 * var(--space-md)) 0 var(--space-lg);
+  max-width: 40ch;
+}
 .board__inner {
   display: grid;
   grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);

@@ -1,0 +1,145 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Foundations/Bundle Size" />
+
+# Bundle size
+
+A Fabric app is a React and MUI app, so most of its size is React, MUI and the MUI X libraries you choose. Fabric's own packages add little on top. This page shows where the size comes from and how to keep the first download small.
+
+The starter (`npm create @fabric-kit/app@latest`) already follows every recipe here, so you can copy it.
+
+## Where the size comes from
+
+Measured on the starter app with Vite 7, minified and gzipped:
+
+| Part | Gzipped | Loads |
+| --- | --- | --- |
+| React and React DOM | ~46 KB | On every page |
+| MUI core, Emotion and Fabric's theme | ~125 KB | On every page |
+| App shell and your code | ~30 KB | On every page |
+| Charts (`@mui/x-charts`, `@fabric-kit/charts`) | ~100 KB | With the first page that has a chart |
+| Data grid (`@mui/x-data-grid`, `@fabric-kit/datagrid`) | ~120 KB | With the first page that has a table |
+| Forms (`react-hook-form`, `zod`, date pickers) | ~95 KB | With the first page that has a form |
+
+So a first visit costs about 200 KB, and each heavy library loads only when someone opens a page that uses it. Without page splitting, the same app downloads all of it up front: about 545 KB.
+
+## 1. Import what you use
+
+Every Fabric package is ES modules and marked `"sideEffects": false`, so bundlers drop anything you don't import. Importing from a package's root is fine:
+
+```tsx
+import { FabricButton, FabricCard } from '@fabric-kit/components';
+```
+
+**Icons are the exception.** Import each icon from its own path. The package root re-exports thousands of icons, which slows the dev server even though production builds drop the unused ones.
+
+```tsx
+import DeleteOutlined from '@fabric-kit/icons/DeleteOutlined'; // do
+import { DeleteOutlined } from '@fabric-kit/icons';            // avoid
+```
+
+`pnpm check:icons` (in this repo) fails when an icon path doesn't exist.
+
+## 2. Split by page
+
+Load each page only when it's opened. With Vite and any router, use `React.lazy` and `Suspense`:
+
+```tsx
+import { lazy, Suspense } from 'react';
+
+const DashboardPage = lazy(() =>
+  import('./pages/DashboardPage').then((m) => ({ default: m.DashboardPage })),
+);
+const CustomersPage = lazy(() =>
+  import('./pages/CustomersPage').then((m) => ({ default: m.CustomersPage })),
+);
+
+<Suspense fallback={<FabricCircularProgress aria-label="Loading page" />}>
+  {route === 'customers' ? <CustomersPage /> : <DashboardPage />}
+</Suspense>
+```
+
+Most routers can do this for you: React Router's `lazy` route option, TanStack Router's `lazyRouteComponent`, and the Next.js App Router splits every route automatically.
+
+**Keep page changes accessible.** After a navigation, apps usually move focus to the new page's heading. With lazy pages that heading doesn't exist until the code has loaded, so run the focus step from inside the `Suspense` boundary. The starter's `src/PageSuspense.tsx` shows one way to do it.
+
+## 3. Load heavy widgets when they're needed
+
+Within a page, a chart in a closed tab or a grid in a dialog can wait too:
+
+```tsx
+const UsageChart = lazy(() => import('./UsageChart'));
+
+{tab === 'usage' && (
+  <Suspense fallback={<FabricSkeleton variant="card" />}>
+    <UsageChart data={usage} />
+  </Suspense>
+)}
+```
+
+In Next.js, use `next/dynamic` for the same thing.
+
+## 4. Give libraries their own chunks
+
+React and MUI change less often than your code. In their own chunks, they stay cached across your deploys, and returning visitors download only what changed. With Vite 7 (Rollup):
+
+```ts
+// vite.config.ts
+const CHUNKS: [name: string, test: RegExp][] = [
+  ['react', /node_modules\/(react|react-dom|scheduler)\//],
+  ['mui', /node_modules\/(@mui\/(material|system|utils|styled-engine)|@emotion|@popperjs)\//],
+  ['mui-x', /node_modules\/(@mui\/x-internals|@base-ui\/utils|reselect|use-sync-external-store|@babel\/runtime)\//],
+  ['charts', /node_modules\/(@mui\/x-charts|@mui\/x-charts-vendor|d3-[a-z-]+)\//],
+  ['data-grid', /node_modules\/@mui\/x-data-grid\//],
+];
+
+function vendorChunk(id: string) {
+  return CHUNKS.find(([, test]) => test.test(id))?.[0];
+}
+
+export default defineConfig({
+  plugins: [react()],
+  build: { rollupOptions: { output: { manualChunks: vendorChunk } } },
+});
+```
+
+Only group libraries that the first page needs anyway (React, MUI), or that only lazy pages use (charts, grid). If the first page imports anything from a group, the whole group loads with it.
+
+Give shared helpers their own group too. Rollup puts a module's dependencies into its chunk, so without the `mui-x` group the grid's chunk would import the charts' chunk, and a page with only a table would download both.
+
+Other bundlers have the same feature under another name, such as webpack's `splitChunks`.
+
+## 5. Fonts and locales
+
+- **Fonts:** import only the weights your theme uses. Browsers download only the character sets a page needs, but if your app is English-only you can also import just the Latin files, which keeps the CSS smaller:
+
+  ```ts
+  import '@fontsource/geist/latin-400.css';
+  import '@fontsource/geist/latin-500.css';
+  import '@fontsource/geist/latin-600.css';
+  ```
+
+- **Date locales:** import only the `dayjs` locales you use, e.g. `import 'dayjs/locale/de'`. Never import a whole locale folder.
+
+## 6. Measure
+
+`vite build` prints every chunk with its gzipped size, which is enough for most checks. To see what's inside a chunk, add [`rollup-plugin-visualizer`](https://github.com/btd/rollup-plugin-visualizer):
+
+```ts
+import { visualizer } from 'rollup-plugin-visualizer';
+
+export default defineConfig({
+  plugins: [react(), visualizer({ filename: 'stats.html', gzipSize: true })],
+});
+```
+
+When Vite warns that a chunk is over 500 KB, find out what's in it before raising `build.chunkSizeWarningLimit`. It's usually a heavy library that a lazy page or its own chunk should hold.
+
+## Checklist
+
+- Icons imported by path, one per import.
+- Pages loaded with `React.lazy` (or your router's equivalent).
+- Charts, data grids and date pickers kept off the first page, or loaded with it on purpose.
+- React and MUI in their own chunks.
+- Only the font weights and date locales you use.
+- No chunk-size warning hidden by raising the limit.
