@@ -25,6 +25,8 @@ const config: StorybookConfig = {
     "../packages/kits/chatbot/{src,docs}/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/kits/canvas-builder/{src,docs}/**/*.@(stories.ts|stories.tsx|mdx)",
     "../packages/patterns/{src,docs}/**/*.@(stories.ts|stories.tsx|mdx)",
+    "../apps/admin/docs/**/*.@(stories.tsx|mdx)",
+    "../packages/create-app/docs/**/*.@(stories.tsx|mdx)",
     "../packages/components/src/**/*.@(stories.ts|stories.tsx|mdx)",
     // Discover the Overview mdx before the CSF stories so it sits first in each
     // component's sidebar tree. `Fabric+([A-Za-z]).mdx` matches Fabric<Name>.mdx.

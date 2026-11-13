@@ -1,0 +1,60 @@
+{
+  "name": "@fabric-kit/create-app",
+  "version": "0.0.0",
+  "description": "Start a React app with Fabric: the app shell, a theme, and a dashboard, list, detail, form and settings page. Run `npm create @fabric-kit/app@latest`.",
+  "license": "MIT",
+  "author": "Ahmed Bilal",
+  "homepage": "https://ahmedbilal5.github.io/fabric/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ahmedBilal5/fabric.git",
+    "directory": "packages/create-app"
+  },
+  "bugs": {
+    "url": "https://github.com/ahmedBilal5/fabric/issues"
+  },
+  "keywords": [
+    "fabric",
+    "mui",
+    "react",
+    "starter",
+    "template",
+    "create-app",
+    "design-system"
+  ],
+  "type": "module",
+  "bin": {
+    "create-fabric-app": "./bin/create-fabric-app.js"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "template/_gitignore",
+    "template/index.html",
+    "template/package.json",
+    "template/public",
+    "template/README.md",
+    "template/src",
+    "template/tsconfig.json",
+    "template/vite.config.ts",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node scripts/write-versions.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "typescript": "^5.5.0",
+    "vitest": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  }
+}

@@ -1,15 +1,19 @@
-// Combines the landing site and Storybook into one GitHub Pages artifact:
+// Combines the landing site, the example admin app and Storybook into one GitHub Pages artifact:
 //   _site/        <- apps/site/dist (served at /fabric/)
+//   _site/admin/  <- apps/admin/dist (served at /fabric/admin/)
 //   _site/docs/   <- storybook-static (served at /fabric/docs/)
 import { cpSync, existsSync, rmSync, writeFileSync } from "node:fs";
 
 const out = "_site";
-for (const dir of ["apps/site/dist", "storybook-static"]) {
+for (const dir of ["apps/site/dist", "apps/admin/dist", "storybook-static"]) {
   if (!existsSync(dir))
-    throw new Error(`Missing ${dir}. Run pnpm site:build and pnpm storybook:build first.`);
+    throw new Error(
+      `Missing ${dir}. Run pnpm site:build, pnpm admin:build and pnpm storybook:build first.`,
+    );
 }
 rmSync(out, { recursive: true, force: true });
 cpSync("apps/site/dist", out, { recursive: true });
+cpSync("apps/admin/dist", `${out}/admin`, { recursive: true });
 cpSync("storybook-static", `${out}/docs`, { recursive: true });
 // GitHub Pages runs Jekyll by default, which drops files starting with "_" (Storybook ships some).
 writeFileSync(`${out}/.nojekyll`, "");

@@ -32,6 +32,14 @@ Everything is MIT licensed. Fabric uses only free MUI packages, so you never nee
 
 ## Quick start
 
+Start a new app with the theme, the app shell and a dashboard, list, detail, form and settings page:
+
+```bash
+npm create @fabric-kit/app@latest my-app
+```
+
+Or add Fabric to an existing app:
+
 ```bash
 pnpm add @fabric-kit/theme @fabric-kit/components @fabric-kit/icons \
   @mui/material @mui/lab @mui/x-date-pickers @mui/icons-material \
@@ -76,6 +84,11 @@ The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/f
 | [`@fabric-kit/versioning`](packages/kits/versioning)                  | A version history drawer.                                        |
 | [`@fabric-kit/canvas-builder`](packages/kits/canvas-builder)          | A node-based workflow canvas on React Flow.                      |
 | [`@fabric-kit/patterns`](packages/patterns)                           | Whole pages: list, detail, form, settings, dashboard and system. |
+| [`@fabric-kit/create-app`](packages/create-app)                       | A starter: `npm create @fabric-kit/app@latest`.                  |
+
+## Example app
+
+[`apps/admin`](apps/admin) is a complete admin app built only from Fabric: a dashboard, a customer list, detail and edit pages, and settings, over mock data. [Try it live](https://ahmedbilal5.github.io/fabric/admin/).
 
 ## Development
 
@@ -86,6 +99,7 @@ pnpm install
 pnpm build        # build every package
 pnpm storybook    # docs at http://localhost:6007
 pnpm site:dev     # the landing page
+pnpm admin:dev    # the example admin app
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow and [CLAUDE.md](CLAUDE.md) for the architecture rules.

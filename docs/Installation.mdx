@@ -6,6 +6,16 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 Fabric is a set of npm packages on top of [MUI](https://mui.com). You install the Fabric packages you need plus their peer dependencies (React, MUI and Emotion), wrap your app in one provider, and start using components.
 
+## Starting a new app?
+
+`@fabric-kit/create-app` sets everything below up for you, with the app shell and a page of each kind:
+
+```bash
+npm create @fabric-kit/app@latest my-app
+```
+
+See [Starter app](?path=/docs/examples-starter-app--overview) for what it includes. The rest of this page adds Fabric to an app you already have.
+
 ## Requirements
 
 | | Version |
@@ -114,6 +124,8 @@ Install only what you use. Each package lists the extra peer dependency it needs
 ```bash
 pnpm add @fabric-kit/layout @fabric-kit/datagrid @mui/x-data-grid
 ```
+
+The data grid, charts and date pickers are the heaviest parts of an app. See [Bundle size](?path=/docs/foundations-bundle-size--docs) for how to load them only on the pages that use them.
 
 ## Icons
 

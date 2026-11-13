@@ -151,3 +151,26 @@ export const DEFAULT_BRAND: BrandName = "fabric";
 export function isBrand(value: unknown): value is BrandName {
   return typeof value === "string" && value in BRAND_PALETTES;
 }
+
+/**
+ * The MUI palette for one brand and mode: accents plus the neutrals around them.
+ * Plain values, so the example admin app can build the same brands with its own
+ * `createFabricTheme`.
+ */
+export function schemePalette(c: BrandScheme, mode: "light" | "dark") {
+  return {
+    primary: { main: c.primary, contrastText: c.primaryContrast },
+    secondary: { main: c.secondary, contrastText: c.secondaryContrast },
+    text: { primary: c.text, secondary: c.textSecondary, disabled: c.textDisabled },
+    background: { default: c.bg, paper: c.paper },
+    divider: c.divider,
+    // Dark mode tints hover and selection with the primary color (createFabricTheme does
+    // that); light mode uses the brand's own neutral, as Fabric does.
+    action: {
+      disabledBackground: c.subtle,
+      ...(mode === "light" && { hover: c.subtle, selected: c.subtle }),
+    },
+    appShell: { text: c.textSecondary, toggleBg: c.subtle, toggleBgPress: c.dividerLight },
+    datagrid: { rowLine: c.dividerLight, footerLine: c.divider, emptyText: c.textDisabled },
+  };
+}

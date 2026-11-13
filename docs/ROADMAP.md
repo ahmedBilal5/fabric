@@ -66,15 +66,15 @@ A charts package unlocks dashboards. It builds on the free, MIT-licensed tier of
 | #29   | Meters               | Progress and quota meters ("8 of 10 seats")                                          | components  | S    |
 | #30   | Dashboard pattern    | Chart cards in a responsive widget grid, with a page header and date-range filter    | patterns    | M    |
 
-## Phase 4: Example admin app (next)
+## Phase 4: Example admin app (done)
 
 One complete app built only from Phases 0 to 3. It shows the tagline better than any single component, and it tests that the patterns fit together.
 
-| Issue | Item                | What ships                                                                       | Package     | Size |
-| ----- | ------------------- | -------------------------------------------------------------------------------- | ----------- | ---- |
-| #31   | Example admin app   | List, detail, form, settings and dashboard pages over mock data, in `apps/`      | new app     | L    |
-| #32   | Landing-page demo   | The example app embedded or linked from the landing site                         | site        | S    |
-| #33   | `create-fabric-app` | A starter template that scaffolds the app shell, theme and one page of each kind | new package | M    |
+| Issue | Item                     | What ships                                                                       | Package     | Size |
+| ----- | ------------------------ | -------------------------------------------------------------------------------- | ----------- | ---- |
+| #31   | Example admin app        | List, detail, form, settings and dashboard pages over mock data, in `apps/`      | new app     | L    |
+| #32   | Landing-page demo        | The example app embedded or linked from the landing site                         | site        | S    |
+| #33   | `@fabric-kit/create-app` | A starter template that scaffolds the app shell, theme and one page of each kind | new package | M    |
 
 ## Later
 
