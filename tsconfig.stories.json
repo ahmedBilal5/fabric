@@ -65,6 +65,11 @@
     "packages/**/*.stories.tsx",
     "packages/**/docs/**/*.ts",
     "packages/**/docs/**/*.tsx",
+    "apps/admin/docs/**/*.tsx",
+    "apps/admin/src/**/*.ts",
+    "apps/admin/src/**/*.tsx",
+    "packages/create-app/template/src/**/*.ts",
+    "packages/create-app/template/src/**/*.tsx",
     ".storybook/**/*.ts",
     ".storybook/**/*.tsx"
   ],

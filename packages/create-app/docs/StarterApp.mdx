@@ -1,0 +1,56 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as Stories from './StarterApp.stories';
+
+<Meta of={Stories} name="Overview" />
+
+# Starter app
+
+`@fabric-kit/create-app` starts a new React app with Fabric already set up: the theme and fonts, the app shell, and one page of each kind, ready to rename and fill with your data.
+
+```bash
+npm create @fabric-kit/app@latest my-app
+# or
+pnpm create @fabric-kit/app my-app
+yarn create @fabric-kit/app my-app
+```
+
+Then `cd my-app`, install, and run `npm run dev`. The folder must be new or empty; its name becomes the package name. Leave out the folder and it asks for one.
+
+<Canvas of={Stories.Home} />
+
+## What you get
+
+A [Vite](https://vite.dev) and TypeScript app with:
+
+| File | What it is |
+| --- | --- |
+| `src/main.tsx` | Fonts and `DesignSystemProvider` with your theme |
+| `src/theme.ts` | `createFabricTheme()`. Set your brand's colors here |
+| `src/App.tsx` | `FabricAppShell` with a sidebar and top bar, and one page per route |
+| `src/routes.ts`, `src/router.tsx` | The pages' paths, and a small hash router with no dependencies |
+| `src/data.tsx` | Sample projects held in memory, behind a `useProjects()` hook |
+| `src/pages/HomePage.tsx` | A dashboard: `FabricDashboardPage`, stat cards, a bar chart and meters |
+| `src/pages/ProjectsPage.tsx` | A list: `FabricListPage` with search, filters in the URL, export and bulk delete |
+| `src/pages/ProjectPage.tsx` | A detail page: `FabricDetailPage` with a summary and tabs |
+| `src/pages/ProjectFormPage.tsx` | Create and edit: `FabricFormPage` with a Zod schema |
+| `src/pages/SettingsPage.tsx` | `FabricSettingsPage` with a profile form and the light or dark mode |
+| `src/pages/NotFoundPage.tsx` | `FabricSystemPage` for unknown paths |
+
+It uses only free packages: Fabric, MUI, the free MUI X tiers, React Hook Form and Zod.
+
+<Canvas of={Stories.Projects} />
+
+## Make it yours
+
+- **Brand.** Pass your colors to `createFabricTheme` in `src/theme.ts`, for light and dark mode. See [Theming](?path=/docs/foundations-theming--docs).
+- **Data.** Replace `ProjectsProvider` with calls to your API. The pages only use `useProjects()`, and Fabric's patterns never fetch on their own.
+- **Pages.** Add a route in `src/routes.ts`, render it in `App.tsx`, and add a sidebar entry. Copy the page closest to what you need.
+- **Router.** The hash router keeps the starter dependency-free and works on any static host. When you need nested layouts or data loading, swap in React Router or TanStack Router: pages only call `navigate` and read the route and search params.
+
+For a bigger example built the same way, see the [admin app](?path=/docs/examples-admin-app--overview).
+
+## Accessibility
+
+The starter keeps the patterns' keyboard and screen-reader support, and adds what an app needs around them: after each navigation, focus moves to the new page's heading and the browser tab is renamed after it. On phones the sidebar starts closed and closes after each navigation.
+
+<Canvas of={Stories.CreateAProject} />

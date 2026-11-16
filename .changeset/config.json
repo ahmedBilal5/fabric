@@ -7,5 +7,5 @@
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
-  "ignore": ["@fabric-kit/site"]
+  "ignore": ["@fabric-kit/site", "@fabric-kit/admin-example", "fabric-app-template"]
 }

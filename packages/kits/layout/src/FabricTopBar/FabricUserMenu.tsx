@@ -1,15 +1,23 @@
-import {
-  FabricAvatar,
-  FabricIconButton,
-  FabricMenu,
-  type FabricMenuItem,
-} from "@fabric-kit/components";
+import { FabricAvatar, FabricMenu, type FabricMenuItem } from "@fabric-kit/components";
 import { iconSize, radii, spacing } from "@fabric-kit/design-tokens";
 import LogoutIcon from "@fabric-kit/icons/Logout";
 import PersonIcon from "@fabric-kit/icons/Person";
-import { FabricFlex, FabricText, Hide } from "@fabric-kit/primitives";
+import { FabricFlex, FabricText } from "@fabric-kit/primitives";
+import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
 import { useState } from "react";
 import type { UserInfo } from "../types";
+
+/** Hidden on screen, still read by screen readers. */
+const srOnly = {
+  position: "absolute",
+  width: "1px",
+  height: "1px",
+  overflow: "hidden",
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  whiteSpace: "nowrap",
+} as const;
 
 export interface FabricUserMenuProps {
   user?: UserInfo;
@@ -67,25 +75,46 @@ export function FabricUserMenu({ user, onAction }: FabricUserMenuProps) {
   return (
     <>
       {/* Header: 24px yellow initials avatar followed by the user's name. */}
-      <FabricIconButton
-        aria-label={fullName ? `Account menu for ${fullName}` : "Account menu"}
+      {/* Not an icon button: with a user it shows their name, which also names the button
+          (the avatar is hidden), so voice-control users can say what they see. */}
+      <ButtonBase
+        aria-label={fullName ? undefined : "Account menu"}
         aria-haspopup="menu"
+        aria-expanded={anchorEl ? true : undefined}
         onClick={(e) => setAnchorEl(e.currentTarget)}
-        // The icon button is a fixed square by default; this one also holds the name.
         sx={{
           gap: `${spacing.sm}px`,
-          p: 0,
+          minHeight: 40,
+          minWidth: 40,
           px: `${spacing.xs}px`,
-          width: "auto",
-          minWidth: 0,
           borderRadius: `${radii.md}px`,
+          justifyContent: "center",
+          "&:hover": { backgroundColor: "var(--mui-palette-action-hover)" },
+          "&.Mui-focusVisible": {
+            outline: "2px solid var(--mui-palette-primary-main)",
+            outlineOffset: 2,
+          },
         }}
       >
-        <FabricAvatar name={fullName} src={user?.profilePic} size="sm" appearance="default">
+        {/* Decorative: the initials repeat the name beside them. */}
+        <FabricAvatar
+          name={fullName}
+          src={user?.profilePic}
+          size="sm"
+          appearance="default"
+          aria-hidden="true"
+        >
           {!user ? <PersonIcon sx={{ fontSize: iconSize.sm }} /> : undefined}
         </FabricAvatar>
         {fullName && (
-          <Hide below="md">
+          // On phones the name is only visually hidden, so it still names the button.
+          <Box
+            component="span"
+            sx={(theme) => ({
+              display: "inline-flex",
+              [theme.breakpoints.down("md")]: srOnly,
+            })}
+          >
             <FabricText
               textVariant="pageTitleLg"
               sx={{
@@ -96,9 +125,9 @@ export function FabricUserMenu({ user, onAction }: FabricUserMenuProps) {
             >
               {fullName}
             </FabricText>
-          </Hide>
+          </Box>
         )}
-      </FabricIconButton>
+      </ButtonBase>
 
       <FabricMenu
         anchorEl={anchorEl}

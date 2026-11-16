@@ -3,7 +3,14 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useState } from "react";
 import { ClientOnly } from "./ClientOnly";
 import { Finder } from "./Finder";
-import { docsUrl, GITHUB_URL, INSTALL_COMMAND, NPM_URL } from "./links";
+import {
+  CREATE_COMMAND,
+  docsUrl,
+  EXAMPLE_APP_URL,
+  GITHUB_URL,
+  INSTALL_COMMAND,
+  NPM_URL,
+} from "./links";
 import { AdminConsole } from "./screens/AdminConsole";
 import { AnalyticsDashboard } from "./screens/AnalyticsDashboard";
 import { AssistantScreen } from "./screens/AssistantScreen";
@@ -40,17 +47,23 @@ function Wordmark() {
   );
 }
 
-function InstallCommand({ tone = "card" }: { tone?: "card" | "board" }) {
+function InstallCommand({
+  tone = "card",
+  command = INSTALL_COMMAND,
+}: {
+  tone?: "card" | "board";
+  command?: string;
+}) {
   const [copied, setCopied] = useState(false);
   return (
     <div className={`cmd cmd--${tone}`}>
-      <code className="cmd__text">{INSTALL_COMMAND}</code>
+      <code className="cmd__text">{command}</code>
       <button
         type="button"
         className="cmd__copy"
         onClick={async () => {
           try {
-            await navigator.clipboard.writeText(INSTALL_COMMAND);
+            await navigator.clipboard.writeText(command);
             setCopied(true);
             setTimeout(() => setCopied(false), 1600);
           } catch {
@@ -61,7 +74,7 @@ function InstallCommand({ tone = "card" }: { tone?: "card" | "board" }) {
         {copied ? "Copied" : "Copy"}
       </button>
       <span className="visually-hidden" aria-live="polite">
-        {copied ? "Install command copied" : ""}
+        {copied ? "Command copied" : ""}
       </span>
     </div>
   );
@@ -157,6 +170,7 @@ export function App() {
           <Wordmark />
           <Finder />
           <nav aria-label="Primary" className="nav__links">
+            <a href={EXAMPLE_APP_URL}>Example app</a>
             <a href={docsUrl()}>Docs</a>
             <a href={GITHUB_URL}>GitHub</a>
           </nav>
@@ -187,6 +201,9 @@ export function App() {
                 A live analytics screen: FabricAppShell, FabricCard and FabricDatagrid with sample
                 data. Click the sidebar.
               </p>
+              <a className="btn btn--quiet" href={EXAMPLE_APP_URL}>
+                Open the full example app
+              </a>
             </div>
           </section>
         </div>
@@ -315,9 +332,13 @@ export function App() {
               <h2 id="close-title" className="board__title">
                 Start with one command
               </h2>
-              <InstallCommand tone="board" />
-              <a className="btn btn--card" href={docsUrl()}>
-                Browse the components
+              <p className="board__lead">
+                A new app with the theme, the app shell and a dashboard, list, detail, form and
+                settings page.
+              </p>
+              <InstallCommand tone="board" command={CREATE_COMMAND} />
+              <a className="btn btn--card" href={docsUrl("examples-starter-app--overview")}>
+                What the starter includes
               </a>
             </div>
             <Sheet
@@ -339,6 +360,9 @@ export function App() {
           <ul className="footer__links">
             <li>
               <a href={docsUrl()}>Documentation</a>
+            </li>
+            <li>
+              <a href={EXAMPLE_APP_URL}>Example app</a>
             </li>
             <li>
               <a href={GITHUB_URL}>Source on GitHub</a>

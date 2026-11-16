@@ -37,6 +37,7 @@
     "LICENSE",
     "README.md"
   ],
+  "sideEffects": false,
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit"
