@@ -90,6 +90,8 @@ Worth building but not ordered yet. Pick them up when the phases above are done,
 | #39   | i18n and accessibility | Translations for built-in strings; right-to-left layout; skip link, live-region announcer, visually hidden text, focus helpers                                                                                                    |
 | #40   | Design handoff         | Tokens exported as CSS variables and JSON; a Figma kit                                                                                                                                                                            |
 | #41   | Quality                | Visual regression tests; a bundle-size budget; a guide to adopting Fabric in an existing MUI app                                                                                                                                  |
+| #49   | Landing page refresh   | Lazy-loaded screens and split chunks; demos rebuilt from the page patterns, charts and wizard; every package in the table; a docs finder generated from the docs pages; the starter command in the hero                           |
+| #50   | Site-wide              | Links between the site, docs and example app; social preview and Open Graph tags; a 404 page; a what's-new strip                                                                                                                  |
 
 ## Definition of done
 

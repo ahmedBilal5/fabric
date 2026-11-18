@@ -137,12 +137,36 @@
     radial-gradient(90% 120% at 0% 30%, var(--color-cotton), transparent 62%), var(--tex-desk);
   padding-bottom: var(--section-gap-s);
 }
+/* What's new: one line above the hero, linking to the roadmap. */
+.news {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs) var(--space-sm);
+  margin: 0;
+  padding-top: var(--space-xl);
+  color: var(--color-ink-2);
+  font-size: var(--text-sm);
+}
+.news__label {
+  font-weight: 600;
+  color: var(--color-ink);
+}
+.news a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent-2);
+  text-underline-offset: 0.2em;
+}
+.news a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
 .hero__inner {
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: var(--space-2xl);
   align-items: end;
-  padding-block: var(--space-3xl) var(--space-2xl);
+  padding-block: var(--space-2xl);
 }
 .hero h1 {
   max-width: 13ch;
@@ -247,6 +271,11 @@
 }
 .hero__side .btn {
   justify-self: start;
+}
+.hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-lg);
 }
 .btn--quiet {
   padding-inline: 0;
@@ -431,6 +460,12 @@
   font: 400 var(--text-sm) var(--font-outlier);
   color: var(--color-ink);
 }
+.table .table__group th {
+  padding-top: var(--space-xl);
+  font: 500 var(--text-sm) / 1.4 var(--font-body);
+  color: var(--color-muted);
+  white-space: normal;
+}
 .table__peers {
   color: var(--color-muted);
   font-size: var(--text-sm);
@@ -559,4 +594,36 @@
   .cmd__copy:active {
     transform: none;
   }
+}
+
+/* ---------- 404 page (404.html) ---------- */
+.lost {
+  min-height: calc(100vh - 72px);
+  padding-block: var(--space-3xl);
+}
+.lost__code {
+  margin: 0 0 var(--space-sm);
+  color: var(--color-accent-2);
+  font-weight: 600;
+}
+.lost .lead {
+  max-width: 40ch;
+  margin-top: var(--space-md);
+}
+.lost__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md) var(--space-xl);
+  margin: var(--space-xl) 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lost__links a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent-2);
+  text-underline-offset: 0.2em;
+}
+.lost__links a:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }

@@ -1,7 +1,7 @@
 {
   "name": "@fabric-kit/patterns",
   "version": "0.0.0",
-  "description": "Whole-page patterns for Fabric apps, built from Fabric components and kits: system pages (404, 403, 500, maintenance), and soon list, detail, form, settings and dashboard pages.",
+  "description": "Whole-page patterns for Fabric apps: list, detail, form, settings, dashboard and system pages (404, 403, 500, maintenance), built from Fabric components and kits.",
   "license": "MIT",
   "author": "Ahmed Bilal",
   "homepage": "https://ahmedbilal5.github.io/fabric/",

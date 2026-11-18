@@ -36,7 +36,7 @@ design-tokens → theme → primitives → components → advanced-components �
 
 `@fabric-kit/icons` sits beside the stack and can be used by any layer from 3 up. `@fabric-kit/hooks` (React hooks and `Intl` formatting helpers, no MUI) also sits beside it and can be used by any layer from 3 up.
 
-`apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`.
+`apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`. Its nav finder is generated at build time from every MDX page and `autodocs` story (`apps/site/docs-index.ts`), so new docs pages show up there without editing the site. When a roadmap phase ships, update `WHATS_NEW` in `apps/site/src/links.ts`. The link preview image `apps/site/public/og-image.png` is a screenshot of `apps/site/social/og-image.html`, and `apps/site/404.html` is the page GitHub Pages shows for missing paths.
 
 `apps/admin` is the example admin app (Vite + React, hash routing, mock data): a dashboard, customer list, detail and form pages, and settings, built only from Fabric. It deploys to `/fabric/admin/` beside the site, and its stories are `Examples/Admin app`. Use it to check that new patterns fit a real app.
 
