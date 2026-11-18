@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/create-app",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Start a React app with Fabric: the app shell, a theme, and a dashboard, list, detail, form and settings page. Run `npm create @fabric-kit/app@latest`.",
   "license": "MIT",
   "author": "Ahmed Bilal",

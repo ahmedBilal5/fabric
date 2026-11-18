@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/datagrid",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fabric data grid, a styled wrapper around the MIT-licensed MUI X Data Grid.",
   "license": "MIT",
   "author": "Ahmed Bilal",

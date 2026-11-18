@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/theme",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MUI theme built from Fabric design tokens, with light and dark color schemes.",
   "license": "MIT",
   "author": "Ahmed Bilal",

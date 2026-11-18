@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/primitives",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Layout and text primitives for Fabric: Flex, Stack, Inline, Grid, Text, Surface.",
   "license": "MIT",
   "author": "Ahmed Bilal",

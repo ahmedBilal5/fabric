@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/components",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fabric components: polished, accessible wrappers around MUI with consistent defaults.",
   "license": "MIT",
   "author": "Ahmed Bilal",

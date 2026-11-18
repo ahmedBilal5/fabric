@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/tree-view",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Fabric tree view, a styled wrapper around the free MUI X Tree View.",
   "license": "MIT",
   "author": "Ahmed Bilal",

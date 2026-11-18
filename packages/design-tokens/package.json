@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/design-tokens",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Design tokens for Fabric: color, type, spacing, radii, shadows, motion and more. Framework-free.",
   "license": "MIT",
   "author": "Ahmed Bilal",
