@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { ClientOnly } from "../ClientOnly";
 
 interface SheetProps {
@@ -16,6 +16,7 @@ interface SheetProps {
  * whole app renders inside the sheet instead of the page.
  */
 export function Sheet({ label, height, children, className }: SheetProps) {
+  const fallback = <p className="sheet__fallback">{label}. It runs in your browser.</p>;
   return (
     <figure
       className={`sheet ${className ?? ""}`}
@@ -23,8 +24,9 @@ export function Sheet({ label, height, children, className }: SheetProps) {
       style={{ "--sheet-h": `${height}px` } as React.CSSProperties}
     >
       <div className="sheet__screen">
-        <ClientOnly fallback={<p className="sheet__fallback">{label}. It runs in your browser.</p>}>
-          {children}
+        <ClientOnly fallback={fallback}>
+          {/* Screens are lazy: the same note shows while one loads. */}
+          <Suspense fallback={fallback}>{children}</Suspense>
         </ClientOnly>
       </div>
     </figure>

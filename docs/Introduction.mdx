@@ -40,10 +40,12 @@ import { DocLink } from '../.storybook/blocks/DocLink';
   #storybook-docs .fw .fw-hero p { font-size: 19px; line-height: 1.5; color: var(--fw-muted); margin: 0 0 28px; max-width: 34ch; }
   #storybook-docs .fw .fw-cmd { display: flex; align-items: center; gap: 12px; background: var(--fw-board); border: 1px solid var(--fw-board-rule); color: var(--fw-board-type); border-radius: 10px; padding: 16px 20px; font: 14.5px/1.4 var(--fw-mono); overflow-x: auto; white-space: nowrap; }
   #storybook-docs .fw .fw-cmd span { color: var(--fw-cmd-accent); }
+  #storybook-docs .fw .fw-hero p.fw-note { font-size: 15px; margin: 12px 0 0; max-width: 52ch; }
+  #storybook-docs .fw .fw-note a { color: var(--fw-ink); text-decoration: underline; text-decoration-color: var(--fw-accent); text-underline-offset: 3px; }
   #storybook-docs .fw .fw-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
   #storybook-docs .fw .fw-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 8px; font: 500 15px var(--fw-font); text-decoration: none; transition: transform 120ms ease-out; }
   #storybook-docs .fw .fw-btn:hover { transform: translateY(-1px); }
-  #storybook-docs .fw :is(.fw-btn, .fw-row a, .fw-card a):focus-visible { outline: 2px solid var(--fw-accent); outline-offset: 2px; }
+  #storybook-docs .fw :is(.fw-btn, .fw-note a, .fw-row a, .fw-card a):focus-visible { outline: 2px solid var(--fw-accent); outline-offset: 2px; }
   #storybook-docs .fw .fw-btn--ink { background: var(--fw-cta-bg); color: var(--fw-cta-ink); }
   #storybook-docs .fw .fw-btn--line { border: 1px solid var(--fw-rule); color: var(--fw-ink); background: var(--fw-paper); }
   #storybook-docs .fw .fw-mark { aspect-ratio: 1; width: 100%; max-width: 300px; justify-self: end; }
@@ -80,9 +82,11 @@ import { DocLink } from '../.storybook/blocks/DocLink';
   <div>
     <h1>MUI, with the app already built.</h1>
     <p>Fabric is a free, open-source design system on top of MUI: a warm theme, polished components and ready-made kits for the screens every product needs.</p>
-    <div className="fw-cmd" aria-label="Install command"><span>pnpm add</span> @fabric-kit/components @fabric-kit/theme</div>
+    <div className="fw-cmd" aria-label="Command to start a new app"><span>npm create</span> @fabric-kit/app@latest</div>
+    <p className="fw-note">Starts a new app with the shell, theme and one page of each kind. Already have an MUI app? Follow the <DocLink to="/docs/foundations-installation--docs">installation guide</DocLink>.</p>
     <div className="fw-actions">
-      <DocLink className="fw-btn fw-btn--ink" to="/docs/foundations-installation--docs">Installation guide</DocLink>
+      <a className="fw-btn fw-btn--ink" href="https://ahmedbilal5.github.io/fabric/admin/" target="_top">Open the example app</a>
+      <DocLink className="fw-btn fw-btn--line" to="/docs/examples-starter-app--overview">What the starter includes</DocLink>
       <DocLink className="fw-btn fw-btn--line" to="/docs/kits-overview--docs">See the kits</DocLink>
     </div>
   </div>

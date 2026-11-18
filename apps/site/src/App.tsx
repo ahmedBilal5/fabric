@@ -1,6 +1,6 @@
 import { FormControlLabel, MenuItem, Button as MuiButton, Switch, TextField } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { ClientOnly } from "./ClientOnly";
 import { Finder } from "./Finder";
 import {
@@ -10,15 +10,33 @@ import {
   GITHUB_URL,
   INSTALL_COMMAND,
   NPM_URL,
+  ROADMAP_URL,
+  WHATS_NEW,
 } from "./links";
-import { AdminConsole } from "./screens/AdminConsole";
-import { AnalyticsDashboard } from "./screens/AnalyticsDashboard";
-import { AssistantScreen } from "./screens/AssistantScreen";
 import { Sheet } from "./screens/Sheet";
-import { VersionScreen } from "./screens/VersionScreen";
-import { WorkflowBuilder } from "./screens/WorkflowBuilder";
 
 const plainMui = createTheme();
+
+// Each live screen is its own chunk and loads in the browser when its sheet shows. The
+// prerendered page carries the text, so none of this blocks reading it.
+const AnalyticsDashboard = lazy(() =>
+  import("./screens/AnalyticsDashboard").then((m) => ({ default: m.AnalyticsDashboard })),
+);
+const AdminConsole = lazy(() =>
+  import("./screens/AdminConsole").then((m) => ({ default: m.AdminConsole })),
+);
+const WorkflowBuilder = lazy(() =>
+  import("./screens/WorkflowBuilder").then((m) => ({ default: m.WorkflowBuilder })),
+);
+const WorkspaceWizard = lazy(() =>
+  import("./screens/WorkspaceWizard").then((m) => ({ default: m.WorkspaceWizard })),
+);
+const AssistantScreen = lazy(() =>
+  import("./screens/AssistantScreen").then((m) => ({ default: m.AssistantScreen })),
+);
+const VersionScreen = lazy(() =>
+  import("./screens/VersionScreen").then((m) => ({ default: m.VersionScreen })),
+);
 
 function Wordmark() {
   return (
@@ -116,8 +134,15 @@ const SCREENS = [
   {
     id: "admin",
     label: "Admin console",
-    caption: "FabricActionBar, FabricTabs, FabricDatagrid, FabricAvatar and FabricSwitch.",
+    caption:
+      "FabricListPage with search, filters and bulk actions; open a member for FabricDetailPage.",
     Screen: AdminConsole,
+  },
+  {
+    id: "signup",
+    label: "Sign-up form",
+    caption: "FabricWizard with Zod validation, an error summary and a review step.",
+    Screen: WorkspaceWizard,
   },
   {
     id: "workflow",
@@ -133,26 +158,85 @@ const SCREENS = [
   },
 ] as const;
 
-const PACKAGES = [
+/** Every public package, grouped by job. Peers beyond React, MUI and Emotion. */
+const PACKAGE_GROUPS = [
   {
-    name: "@fabric-kit/theme",
-    what: "Light and dark themes, plus your brand",
-    peers: "@mui/material",
+    group: "Start",
+    packages: [
+      {
+        name: "@fabric-kit/create-app",
+        what: "A new app: theme, shell and six pages",
+        peers: "none",
+      },
+    ],
   },
   {
-    name: "@fabric-kit/components",
-    what: "MUI components, better defaults",
-    peers: "@mui/lab, @mui/x-date-pickers",
+    group: "Foundations",
+    packages: [
+      { name: "@fabric-kit/theme", what: "Light and dark themes, plus your brand", peers: "none" },
+      {
+        name: "@fabric-kit/design-tokens",
+        what: "Colour, type, spacing and motion",
+        peers: "none",
+      },
+      { name: "@fabric-kit/primitives", what: "Flex, Stack, Grid, Text, Surface", peers: "none" },
+      { name: "@fabric-kit/icons", what: "Material Symbols, one import each", peers: "none" },
+      { name: "@fabric-kit/hooks", what: "Hotkeys, debounce, dates and numbers", peers: "none" },
+    ],
   },
-  { name: "@fabric-kit/layout", what: "App shell, sidebar, top bar", peers: "none" },
-  { name: "@fabric-kit/datagrid", what: "The free data grid, styled", peers: "@mui/x-data-grid" },
-  { name: "@fabric-kit/global-search", what: "A search palette", peers: "@mui/x-data-grid" },
-  { name: "@fabric-kit/chatbot", what: "A streaming assistant", peers: "none" },
-  { name: "@fabric-kit/versioning", what: "Version history", peers: "none" },
   {
-    name: "@fabric-kit/canvas-builder",
-    what: "A workflow canvas",
-    peers: "@xyflow/react, react-dnd",
+    group: "Components",
+    packages: [
+      {
+        name: "@fabric-kit/components",
+        what: "MUI components, better defaults",
+        peers: "@mui/lab, @mui/x-date-pickers",
+      },
+      {
+        name: "@fabric-kit/forms",
+        what: "Form fields bound to React Hook Form",
+        peers: "react-hook-form, zod",
+      },
+      {
+        name: "@fabric-kit/charts",
+        what: "Charts, stat cards, sparklines",
+        peers: "@mui/x-charts",
+      },
+      {
+        name: "@fabric-kit/datagrid",
+        what: "The free data grid, styled",
+        peers: "@mui/x-data-grid",
+      },
+      {
+        name: "@fabric-kit/date-picker",
+        what: "Date, time and range pickers",
+        peers: "@mui/x-date-pickers",
+      },
+      {
+        name: "@fabric-kit/tree-view",
+        what: "The free tree view, styled",
+        peers: "@mui/x-tree-view",
+      },
+    ],
+  },
+  {
+    group: "Pages and app kits",
+    packages: [
+      {
+        name: "@fabric-kit/patterns",
+        what: "List, detail, form, settings and dashboard pages",
+        peers: "@mui/x-data-grid, react-hook-form",
+      },
+      { name: "@fabric-kit/layout", what: "App shell, sidebar, top bar", peers: "none" },
+      { name: "@fabric-kit/global-search", what: "A search palette", peers: "@mui/x-data-grid" },
+      { name: "@fabric-kit/chatbot", what: "A streaming assistant", peers: "none" },
+      { name: "@fabric-kit/versioning", what: "Version history", peers: "@mui/lab" },
+      {
+        name: "@fabric-kit/canvas-builder",
+        what: "A workflow canvas",
+        peers: "@xyflow/react, react-dnd",
+      },
+    ],
   },
 ];
 
@@ -180,14 +264,29 @@ export function App() {
       <main id="main">
         <div className="desk">
           <section className="hero" aria-labelledby="hero-title">
+            <div className="container">
+              <p className="news">
+                <strong className="news__label">{WHATS_NEW.label}</strong>
+                <span>{WHATS_NEW.text}</span>
+                <a href={ROADMAP_URL}>See the roadmap</a>
+              </p>
+            </div>
             <div className="container hero__inner">
               <h1 id="hero-title">MUI, with the app already built.</h1>
               <div className="hero__side">
-                <p className="lead">A free, open-source design system and app kits for MUI.</p>
-                <InstallCommand />
-                <a className="btn btn--quiet" href={docsUrl("foundations-installation--docs")}>
-                  Installation guide
-                </a>
+                <p className="lead">
+                  A free, open-source design system and app kits for MUI. Start a new app with one
+                  command.
+                </p>
+                <InstallCommand command={CREATE_COMMAND} />
+                <div className="hero__links">
+                  <a className="btn btn--quiet" href={EXAMPLE_APP_URL}>
+                    Open the example app
+                  </a>
+                  <a className="btn btn--quiet" href={docsUrl("examples-starter-app--overview")}>
+                    What the starter includes
+                  </a>
+                </div>
               </div>
             </div>
           </section>
@@ -198,8 +297,8 @@ export function App() {
                 <AnalyticsDashboard />
               </Sheet>
               <p className="caption">
-                A live analytics screen: FabricAppShell, FabricCard and FabricDatagrid with sample
-                data. Click the sidebar.
+                A live analytics screen: FabricDashboardPage with stat cards, an area and a pie
+                chart, and FabricDatagrid, on sample data. Click the sidebar or refresh.
               </p>
               <a className="btn btn--quiet" href={EXAMPLE_APP_URL}>
                 Open the full example app
@@ -211,7 +310,7 @@ export function App() {
         <section className="switcher" aria-labelledby="switcher-title">
           <div className="container">
             <div className="head">
-              <h2 id="switcher-title">Three more screens, same parts</h2>
+              <h2 id="switcher-title">Four more screens, same parts</h2>
               <div className="groove" role="tablist" aria-label="Concept screens">
                 {SCREENS.map((s) => (
                   <button
@@ -289,17 +388,24 @@ export function App() {
                   <th scope="col">Extra peers</th>
                 </tr>
               </thead>
-              <tbody>
-                {PACKAGES.map((p) => (
-                  <tr key={p.name}>
-                    <th scope="row">
-                      <code>{p.name}</code>
+              {PACKAGE_GROUPS.map(({ group, packages }) => (
+                <tbody key={group}>
+                  <tr className="table__group">
+                    <th scope="colgroup" colSpan={3}>
+                      {group}
                     </th>
-                    <td>{p.what}</td>
-                    <td className="table__peers">{p.peers}</td>
                   </tr>
-                ))}
-              </tbody>
+                  {packages.map((p) => (
+                    <tr key={p.name}>
+                      <th scope="row">
+                        <code>{p.name}</code>
+                      </th>
+                      <td>{p.what}</td>
+                      <td className="table__peers">{p.peers}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
             </table>
           </div>
         </section>
@@ -330,15 +436,15 @@ export function App() {
           <div className="container board__inner">
             <div>
               <h2 id="close-title" className="board__title">
-                Start with one command
+                Already have an MUI app?
               </h2>
               <p className="board__lead">
-                A new app with the theme, the app shell and a dashboard, list, detail, form and
-                settings page.
+                Add the theme and the components, then only the packages you need. Your existing MUI
+                code picks up the new look.
               </p>
-              <InstallCommand tone="board" command={CREATE_COMMAND} />
-              <a className="btn btn--card" href={docsUrl("examples-starter-app--overview")}>
-                What the starter includes
+              <InstallCommand tone="board" />
+              <a className="btn btn--card" href={docsUrl("foundations-installation--docs")}>
+                Installation guide
               </a>
             </div>
             <Sheet

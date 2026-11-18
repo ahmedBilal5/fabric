@@ -10,6 +10,7 @@ import PeopleOutlined from "@fabric-kit/icons/PeopleOutlined";
 import SettingsOutlined from "@fabric-kit/icons/SettingsOutlined";
 import SpaceDashboardOutlined from "@fabric-kit/icons/SpaceDashboardOutlined";
 import {
+  type AppSwitcherItem,
   FabricAppShell,
   FabricNotificationDrawer,
   type NavigationItem,
@@ -17,7 +18,7 @@ import {
 } from "@fabric-kit/layout";
 import { useBreakpoint } from "@fabric-kit/theme";
 import Box from "@mui/material/Box";
-import { lazy, useEffect, useMemo, useRef, useState } from "react";
+import { lazy, type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useData } from "./data/store";
 import { PageSuspense } from "./PageSuspense";
 import { useRouter } from "./router";
@@ -63,6 +64,10 @@ export interface AdminAppProps {
   showThemeToggle?: boolean;
   /** Name the browser tab after the current page. @default true */
   syncDocumentTitle?: boolean;
+  /** Shown above the app, e.g. a `FabricBanner` that says this is an example. */
+  banner?: ReactNode;
+  /** Links in the top bar's app menu, e.g. back to Fabric's site and docs. */
+  appSwitcherItems?: AppSwitcherItem[];
 }
 
 /** The whole example app. Needs `DataProvider` and `RouterProvider` above it. */
@@ -76,7 +81,12 @@ export function AdminApp(props: AdminAppProps) {
   );
 }
 
-function Shell({ showThemeToggle = true, syncDocumentTitle = true }: AdminAppProps) {
+function Shell({
+  showThemeToggle = true,
+  syncDocumentTitle = true,
+  banner,
+  appSwitcherItems,
+}: AdminAppProps) {
   const { route, path, navigate, onLinkClick } = useRouter();
   const toast = useToast();
   const notifications = useNotifications();
@@ -113,6 +123,7 @@ function Shell({ showThemeToggle = true, syncDocumentTitle = true }: AdminAppPro
       <FabricAppShell
         sidebarOpen={isMobile ? mobileOpen : desktopOpen}
         onSidebarOpenChange={isMobile ? setMobileOpen : setDesktopOpen}
+        bannerSlot={banner}
         sidebarProps={{ open: true, onToggle: () => {}, items: NAV, selectedKey: navKeyFor(route) }}
         topBarProps={{
           appTitle: APP_NAME,
@@ -124,6 +135,7 @@ function Shell({ showThemeToggle = true, syncDocumentTitle = true }: AdminAppPro
             else toast({ title: "This example has no sign-in", severity: "info" });
           },
           showThemeToggle,
+          appSwitcherItems,
         }}
       >
         <Box

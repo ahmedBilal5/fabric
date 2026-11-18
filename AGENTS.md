@@ -10,7 +10,7 @@ Think like a design-system maintainer: the goal is stable, well-documented packa
 
 - **Scope:** [`docs/ROADMAP.md`](docs/ROADMAP.md) lists every phase and item, with its issue number.
 - **Progress:** the pinned [Roadmap issue #42](https://github.com/ahmedBilal5/fabric/issues/42) and the issues it links. An item is done when its issue is closed.
-- **Done:** Phase 0 (#1–#8), Phase 1 (#9–#17), Phase 2 (#18–#26), Phase 3 (#27–#30) and Phase 4 (#31–#33). **Next:** the unordered "Later" items (#34–#41). Ask the maintainer which to start with.
+- **Done:** Phase 0 (#1–#8), Phase 1 (#9–#17), Phase 2 (#18–#26), Phase 3 (#27–#30) and Phase 4 (#31–#33). **Next:** Phase 5, the docs site (#52–#55), then Phase 6 (#56–#58). The unordered "Later" items (#34–#41) can be picked up any time; ask the maintainer first.
 - One branch per phase (or per item), cut from `main`, e.g. `phase-2-forms`. Open the PR against `main` with `Closes #n` for each item, so the issues close on merge. Don't stack a PR on another unmerged branch: Phase 1 was once merged into its base branch instead of `main` by mistake.
 - When issues close, tick their boxes in #42.
 
@@ -36,7 +36,7 @@ design-tokens → theme → primitives → components → advanced-components �
 
 `@fabric-kit/icons` sits beside the stack and can be used by any layer from 3 up. `@fabric-kit/hooks` (React hooks and `Intl` formatting helpers, no MUI) also sits beside it and can be used by any layer from 3 up.
 
-`apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`.
+`apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`. Its nav finder is generated at build time from every MDX page and `autodocs` story (`apps/site/docs-index.ts`), so new docs pages show up there without editing the site. When a roadmap phase ships, update `WHATS_NEW` in `apps/site/src/links.ts`. The link preview image `apps/site/public/og-image.png` is a screenshot of `apps/site/social/og-image.html`, and `apps/site/404.html` is the page GitHub Pages shows for missing paths.
 
 `apps/admin` is the example admin app (Vite + React, hash routing, mock data): a dashboard, customer list, detail and form pages, and settings, built only from Fabric. It deploys to `/fabric/admin/` beside the site, and its stories are `Examples/Admin app`. Use it to check that new patterns fit a real app.
 

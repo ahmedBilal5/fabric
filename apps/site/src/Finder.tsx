@@ -1,65 +1,29 @@
+import docsIndex, { type DocsEntry } from "virtual:docs-index";
 import { useId, useMemo, useRef, useState } from "react";
 import { docsUrl } from "./links";
 
-const COMPONENTS = [
-  "Accordion",
-  "ActionBar",
-  "Alert",
-  "Autocomplete",
-  "Avatar",
-  "AvatarGroup",
-  "Badge",
-  "Breadcrumbs",
-  "Button",
-  "Card",
-  "Checkbox",
-  "CheckboxGroup",
-  "Chip",
-  "CircularProgress",
-  "Dialog",
-  "Divider",
-  "Drawer",
-  "IconButton",
-  "Menu",
-  "MenuButton",
-  "Pagination",
-  "ProgressChip",
-  "Radio",
-  "RadioGroup",
-  "Select",
-  "Skeleton",
-  "Snackbar",
-  "Stepper",
-  "Switch",
-  "Tabs",
-  "Tag",
-  "TextField",
-  "ToggleButtonGroup",
-  "Tooltip",
-];
+/** Shows names that start with the query first, then other matches. */
+function search(query: string): DocsEntry[] {
+  const q = query.trim().toLowerCase();
+  if (!q) return [];
+  const rank = (e: DocsEntry) => {
+    const name = e.name.toLowerCase();
+    if (name.startsWith(q) || `fabric${name}`.startsWith(q)) return 0;
+    if (name.includes(q)) return 1;
+    return e.title.toLowerCase().includes(q) ? 2 : -1;
+  };
+  return docsIndex
+    .map((entry) => ({ entry, rank: rank(entry) }))
+    .filter((r) => r.rank >= 0)
+    .sort((a, b) => a.rank - b.rank)
+    .slice(0, 8)
+    .map((r) => r.entry);
+}
 
-const ENTRIES = [
-  { name: "Installation", group: "Guide", path: "foundations-installation--docs" },
-  { name: "Theming", group: "Guide", path: "foundations-theming--docs" },
-  { name: "Icons", group: "Guide", path: "foundations-icons-overview--docs" },
-  { name: "App shell and layout", group: "Kit", path: "kits-layout-overview--docs" },
-  { name: "Global search", group: "Kit", path: "kits-global-search-fabricglobalsearch--docs" },
-  { name: "Chat assistant", group: "Kit", path: "kits-chatbot-overview--docs" },
-  { name: "Version history", group: "Kit", path: "kits-versioning-overview--docs" },
-  {
-    name: "Workflow canvas",
-    group: "Kit",
-    path: "kits-canvas-builder-fabriccanvasbuilder-overview--docs",
-  },
-  { name: "Data grid", group: "Data", path: "components-fabricdatagrid--docs" },
-  ...COMPONENTS.map((name) => ({
-    name,
-    group: "Component",
-    path: `components-fabric${name.toLowerCase()}--overview`,
-  })),
-];
-
-/** The nav's search pill: filters Fabric's components and guides and opens their docs. */
+/**
+ * The nav's search pill: finds any docs page (components, patterns, guides, kits) and
+ * opens it. The list comes from the repo's docs pages at build time (`docs-index.ts`).
+ */
 export function Finder() {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
@@ -67,11 +31,7 @@ export function Finder() {
   const listId = useId();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const results = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    if (!q) return [];
-    return ENTRIES.filter((e) => e.name.toLowerCase().includes(q)).slice(0, 7);
-  }, [query]);
+  const results = useMemo(() => search(query), [query]);
 
   const go = (path: string) => {
     window.location.href = docsUrl(path);
@@ -80,14 +40,14 @@ export function Finder() {
   return (
     <div className="finder">
       <label htmlFor={`${listId}-input`} className="visually-hidden">
-        Find a component
+        Search the docs
       </label>
       <input
         ref={inputRef}
         id={`${listId}-input`}
         className="finder__input"
         type="search"
-        placeholder="Find a component"
+        placeholder="Search the docs"
         autoComplete="off"
         role="combobox"
         aria-expanded={open && results.length > 0}

@@ -70,7 +70,12 @@ export function FabricAppShell({
       {bannerSlot && (
         <FabricFlex
           ref={bannerRef}
-          sx={{ flexShrink: 0, zIndex: (theme) => theme.zIndex.drawer + 2 }}
+          sx={{
+            flexShrink: 0,
+            zIndex: (theme) => theme.zIndex.drawer + 2,
+            // The banner fills the row, so a long message truncates instead of overflowing.
+            "& > *": { flex: "1 1 auto", minWidth: 0 },
+          }}
         >
           {bannerSlot}
         </FabricFlex>
