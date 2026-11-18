@@ -10,7 +10,7 @@ Think like a design-system maintainer: the goal is stable, well-documented packa
 
 - **Scope:** [`docs/ROADMAP.md`](docs/ROADMAP.md) lists every phase and item, with its issue number.
 - **Progress:** the pinned [Roadmap issue #42](https://github.com/ahmedBilal5/fabric/issues/42) and the issues it links. An item is done when its issue is closed.
-- **Done:** Phase 0 (#1–#8), Phase 1 (#9–#17), Phase 2 (#18–#26), Phase 3 (#27–#30) and Phase 4 (#31–#33). **Next:** the unordered "Later" items (#34–#41). Ask the maintainer which to start with.
+- **Done:** Phase 0 (#1–#8), Phase 1 (#9–#17), Phase 2 (#18–#26), Phase 3 (#27–#30) and Phase 4 (#31–#33). **Next:** Phase 5, the docs site (#52–#55), then Phase 6 (#56–#58). The unordered "Later" items (#34–#41) can be picked up any time; ask the maintainer first.
 - One branch per phase (or per item), cut from `main`, e.g. `phase-2-forms`. Open the PR against `main` with `Closes #n` for each item, so the issues close on merge. Don't stack a PR on another unmerged branch: Phase 1 was once merged into its base branch instead of `main` by mistake.
 - When issues close, tick their boxes in #42.
 

@@ -76,6 +76,25 @@ One complete app built only from Phases 0 to 3. It shows the tagline better than
 | #32   | Landing-page demo        | The example app embedded or linked from the landing site                         | site        | S    |
 | #33   | `@fabric-kit/create-app` | A starter template that scaffolds the app shell, theme and one page of each kind | new package | M    |
 
+## Phase 5: Docs site
+
+The docs move into the website, as MUI, Zod and Jest do. Today the site sends readers to Storybook, which looks like a developer tool. #52 lands first; the other items can be built against a stub page in parallel.
+
+| Issue | Item                       | What ships                                                                                                      | Package | Size |
+| ----- | -------------------------- | --------------------------------------------------------------------------------------------------------------- | ------- | ---- |
+| #52   | Docs pages in the site     | MDX pages at `/fabric/docs/` with the site's design, prerendered; Storybook moves to `/fabric/storybook/`       | site    | L    |
+| #53   | Live examples from stories | Examples rendered from the stories (`composeStories`), with code, a scoped theme switch and "Open in Storybook" | site    | M    |
+| #54   | Generated props tables     | Props tables built from the TypeScript types and JSDoc                                                          | site    | M    |
+| #55   | Full-text docs search      | Local full-text search over every page (Pagefind)                                                               | site    | S    |
+
+## Phase 6: Move the docs
+
+| Issue | Item                                              | What ships                                                                           | Package    | Size |
+| ----- | ------------------------------------------------- | ------------------------------------------------------------------------------------ | ---------- | ---- |
+| #56   | Move the Foundations, Patterns and Examples pages | The guide, pattern and example pages on the docs site, with redirects                | docs, site | M    |
+| #57   | Move the component pages                          | Components, Advanced Components, Forms, Charts and kits, one section per PR          | docs, site | L    |
+| #58   | Storybook becomes the workshop                    | Storybook keeps stories, controls and tests; links across the repo point to the site | Storybook  | S    |
+
 ## Later
 
 Worth building but not ordered yet. Pick them up when the phases above are done, or sooner if someone wants one.
@@ -108,4 +127,5 @@ An item is done when it ships with all of these:
 - **Tracking:** every item is a GitHub issue, labelled by phase and size. The pinned [Roadmap issue](https://github.com/ahmedBilal5/fabric/issues/42) links them all.
 - **Page patterns** go in `@fabric-kit/patterns`, not `@fabric-kit/layout`.
 - **Hooks and formatting helpers** ship as one package, `@fabric-kit/hooks`.
+- **Docs site:** the docs are built into `apps/site` (MDX, prerendered) rather than a docs framework, so they share the site's design and full control of MUI theming. Storybook stays as the workshop, and its stories are the docs examples.
 - **Rich text editor:** still open. Quill was removed when the version-history kit was made generic: it was hard-wired to preview Quill content, so it now takes a preview function and works with any content format. Fabric no longer depends on any editor, so the choice (Tiptap, Lexical or another) is free. Ask the maintainer before picking one.
