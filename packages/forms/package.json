@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/forms",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Typed React Hook Form bindings for Fabric inputs, with Zod validation.",
   "license": "MIT",
   "author": "Ahmed Bilal",

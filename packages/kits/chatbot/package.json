@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/chatbot",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Floating AI assistant launcher and chat panel for Fabric apps. Backend-agnostic.",
   "license": "MIT",
   "author": "Ahmed Bilal",

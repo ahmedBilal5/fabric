@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/date-picker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fabric date, time and date-range pickers built on the free MUI X Date Pickers.",
   "license": "MIT",
   "author": "Ahmed Bilal",

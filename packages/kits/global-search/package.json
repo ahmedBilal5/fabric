@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/global-search",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Command-palette style global search and results view for Fabric apps. Backend-agnostic.",
   "license": "MIT",
   "author": "Ahmed Bilal",

@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/charts",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Fabric charts, stat cards and sparklines built on the free MUI X Charts.",
   "license": "MIT",
   "author": "Ahmed Bilal",

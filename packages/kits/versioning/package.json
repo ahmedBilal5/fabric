@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/versioning",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Version history drawer for Fabric apps: a timeline of published versions and autosaves with restore, rename, duplicate, delete and preview.",
   "license": "MIT",
   "author": "Ahmed Bilal",

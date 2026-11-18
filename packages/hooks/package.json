@@ -1,6 +1,6 @@
 {
   "name": "@fabric-kit/hooks",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React hooks and formatting helpers for Fabric apps: disclosure, debounce, hotkeys, clipboard, local storage, and locale-aware dates, numbers and file sizes.",
   "license": "MIT",
   "author": "Ahmed Bilal",
