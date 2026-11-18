@@ -10,6 +10,7 @@
       "!**/*.svg",
       "!**/*.mdx",
       "!.changeset",
+      "!**/CHANGELOG.md",
       "!**/*.stories.*",
       "!**/*.story.*",
       "!_site",
