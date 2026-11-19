@@ -1,10 +1,10 @@
-import { Meta } from '@storybook/addon-docs/blocks';
+---
+title: Installation
+description: Add Fabric to a React app, or start a new one with a single command.
+nav: Foundations/Installation
+---
 
-<Meta title="Foundations/Installation" />
-
-# Installation
-
-Fabric is a set of npm packages on top of [MUI](https://mui.com). You install the Fabric packages you need plus their peer dependencies (React, MUI and Emotion), wrap your app in one provider, and start using components.
+You install the Fabric packages you need plus their peer dependencies (React, MUI and Emotion), wrap your app in one provider, and start using components.
 
 ## Starting a new app?
 
@@ -18,7 +18,7 @@ See [Starter app](?path=/docs/examples-starter-app--overview) for what it includ
 
 ## Requirements
 
-| | Version |
+| Dependency | Version |
 | --- | --- |
 | React | 18.2 or 19 |
 | MUI (`@mui/material`) | 9 |
@@ -48,7 +48,7 @@ yarn add @fabric-kit/theme @fabric-kit/components @fabric-kit/icons \
   @emotion/react @emotion/styled
 ```
 
-`@fabric-kit/components` includes the date and time pickers and the timeline, which is why it needs `@mui/x-date-pickers` and `@mui/lab`. `@fabric-kit/primitives` and `@fabric-kit/design-tokens` come with it.
+`@fabric-kit/components` includes the date and time pickers and the timeline, which is why it needs `@mui/x-date-pickers` and `@mui/lab`. The primitives, design tokens and hooks packages come with it.
 
 ## 2. Load the fonts
 
@@ -112,14 +112,18 @@ Install only what you use. Each package lists the extra peer dependency it needs
 
 | Package | What it adds | Extra peers |
 | --- | --- | --- |
-| `@fabric-kit/datagrid` | Styled MUI X Data Grid (free tier) | `@mui/x-data-grid` |
-| `@fabric-kit/date-picker` | Date, time, date-time and date-range pickers (also re-exported by components) | `@mui/x-date-pickers` |
-| `@fabric-kit/tree-view` | Styled MUI X Tree View | `@mui/x-tree-view` |
 | `@fabric-kit/layout` | App shell, top bar, sidebar, banner, footer, notifications | none |
+| `@fabric-kit/datagrid` | Styled MUI X Data Grid (free tier) | `@mui/x-data-grid` |
+| `@fabric-kit/date-picker` | Date, time, date-time and date-range pickers (also re-exported by components) | none beyond the core |
+| `@fabric-kit/tree-view` | Styled MUI X Tree View | `@mui/x-tree-view` |
+| `@fabric-kit/charts` | Bar, line, area, pie and sparkline charts, chart cards and stat cards | `@mui/x-charts` |
+| `@fabric-kit/forms` | React Hook Form and Zod bindings for every input, form layout, a wizard | `react-hook-form`, `zod` |
+| `@fabric-kit/patterns` | Whole pages: list, detail, form, settings, dashboard and system pages | `@mui/x-data-grid`, plus the peers of `forms` |
+| `@fabric-kit/hooks` | Disclosure, debounce, hotkeys and clipboard hooks; date and number formatting | none |
 | `@fabric-kit/global-search` | Grouped search palette and a results page | `@mui/x-data-grid` |
 | `@fabric-kit/chatbot` | Floating AI assistant panel | none |
-| `@fabric-kit/versioning` | Version history drawer | none |
-| `@fabric-kit/canvas-builder` | Node-based workflow canvas | `@xyflow/react`, `react-dnd`, `react-dnd-html5-backend` |
+| `@fabric-kit/versioning` | Version history drawer | none beyond the core |
+| `@fabric-kit/canvas-builder` | Node-based workflow canvas | `@xyflow/react` |
 
 ```bash
 pnpm add @fabric-kit/layout @fabric-kit/datagrid @mui/x-data-grid

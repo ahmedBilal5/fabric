@@ -1,0 +1,109 @@
+---
+title: Contribution guidelines
+description: How to add components, patterns and kits to Fabric, and how to open a pull request.
+nav: Foundations/Contribution Guidelines
+---
+
+Fabric is open source, and contributions are welcome. Comment on an issue before you start, so work isn't done twice. The [roadmap issue](https://github.com/ahmedBilal5/fabric/issues/42) lists everything planned.
+
+## Start with the right layer
+
+Fabric is built in layers. Each layer may use the ones below it, never above. Put new work in the lowest layer that can own it, and keep app-specific behavior out of the foundations.
+
+| Layer | Packages | Use it for |
+| --- | --- | --- |
+| Tokens | `design-tokens` | Shared values: color, type, spacing, radius, elevation, motion, sizes and breakpoints. |
+| Theme | `theme` | The MUI theme, CSS variables, providers and theme-aware hooks. |
+| Primitives | `primitives` | Layout and text: `FabricFlex`, `FabricStack`, `FabricInline`, `FabricGrid`, `FabricText`, `FabricSurface`. |
+| Components | `components` | Reusable controls and Fabric wrappers around MUI: buttons, dialogs, menus, drawers, fields and surfaces. |
+| Data controls and forms | `datagrid`, `date-picker`, `tree-view`, `charts`, `forms` | The free MUI X controls, styled, and form bindings and layout. |
+| Kits | `layout`, `global-search`, `chatbot`, `versioning`, `canvas-builder` | Whole app features. Kits take async functions instead of calling an API, and never depend on each other. |
+| Patterns | `patterns` | Whole pages: list, detail, form, settings, dashboard and system pages. |
+
+`icons` and `hooks` sit beside the stack, and any layer from primitives up can use them.
+
+## Design the API
+
+- Prefix exported React components with `Fabric`.
+- Keep props small, typed and specific to real use cases.
+- Prefer composition, slots and clear callbacks over broad configuration objects.
+- Name states and variants by intent, not by implementation detail.
+- Plan keyboard and focus behavior, labels, and the loading, empty, error, disabled and selected states before coding.
+- Decide what changes below `md` and below `sm` before coding.
+
+## Build with Fabric first
+
+Use existing Fabric layers before reaching for raw MUI or custom CSS.
+
+- Use the primitives for layout, and `FabricBox` (from `components`) for a plain box with `sx`.
+- Use component-layer building blocks where they fit: `FabricButton`, `FabricIconButton`, `FabricMenu`, `FabricDrawer`, `FabricDialog`, `FabricAvatar`, `FabricBadge` and the form controls.
+- Import raw MUI only when Fabric doesn't already provide what you need.
+- Use MUI CSS variables for colors, for example `var(--mui-palette-text-primary)`, so dark mode works.
+- Use Fabric tokens or theme values for spacing, radii, font sizes, font weights and font families.
+- Use `FabricText` with `textVariant` and `truncate` instead of hand-made typography and ellipsis styles.
+- Avoid fixed widths. Prefer flex sizing, max-widths, min-width floors, wrapping and intentional overflow.
+- Put layout props that primitives own (`gap`, `align`, `justify`, `direction`, `wrap`) on the primitive, and everything else in `sx`.
+
+### Responsive defaults
+
+- Use `md` as the main layout breakpoint and `sm` as the main density breakpoint.
+- Prefer responsive primitive props and `sx` breakpoint objects over media queries in JavaScript.
+- Use `useBreakpoint` only when the rendered structure must change.
+- For dense data, decide whether narrow screens hide columns, use compact density, switch to cards or scroll sideways, and document it.
+
+### Code quality
+
+- Keep TypeScript strict and avoid `any`.
+- Add JSDoc for exported components, sub-components, prop types and helper types.
+- Test rendering, state changes, callbacks, keyboard paths and important responsive branches.
+- Never depend on paid packages (`@mui/x-*-pro`, `@mui/x-*-premium`, `@mui/x-license`). Lint blocks these imports.
+
+## Document it
+
+Every public component needs enough documentation for someone to use it without reading the source.
+
+- Write a docs page covering what it is and when to use it, usage, key props, variants and states, accessibility, and how it relates to the MUI component it wraps.
+- Add stories for the default, common variants, and the disabled, loading, empty, error, selected and overflow states that apply.
+- Show controlled and uncontrolled use when both are supported.
+- Include long labels, missing optional data and large item counts when they're realistic.
+- Tag stories with `test` so they run as browser tests, and use `play` functions for interactions.
+
+Guides like this one live in `apps/site/content/docs/`. Component pages still live next to their stories in Storybook while the docs move to this site.
+
+## Before you open a pull request
+
+### Checks
+
+Run these locally:
+
+- `pnpm lint` (fix most issues with `pnpm lint:fix`)
+- `pnpm typecheck` and `pnpm typecheck:stories`
+- `pnpm test` and `pnpm test-storybook`
+
+### Light and dark mode
+
+- Stories look right in light and dark mode.
+- Text, borders, fills, hover, selected, disabled and focus styles all use theme variables.
+- Loading, empty, error and success states have enough contrast in both modes.
+
+### Screen sizes
+
+Check Storybook's `fabricMobile` (375 × 812), `fabricTablet` (900 × 1024), `fabricDesktop` (1440 × 900) and `fabricWide` (1920 × 1080) viewports:
+
+- Nothing overlaps, clips unexpectedly or depends on a desktop-only width.
+- Long text wraps or truncates on purpose.
+- Drawers, dialogs, menus, grids and panels scroll on purpose.
+
+### Accessibility
+
+- The accessibility panel in Storybook shows no unresolved violations.
+- Everything works with the keyboard alone, and focus order is predictable and visible.
+- Controls have accessible names, labels and state announcements where needed.
+- Enter, Space, Escape, the arrow keys and Tab behave as the component's pattern expects.
+- Touch targets are big enough on small screens.
+
+## Versions and releases
+
+Don't change package versions yourself. If your change touches a package, run `pnpm changeset` and commit the file it creates: `minor` for a new feature, `patch` for a fix.
+
+When your pull request merges, the release workflow opens or updates a "Version packages" pull request with the new versions and changelogs. Merging that one publishes the packages to npm.

@@ -1,0 +1,406 @@
+/* Docs pages: the sidebar, the page, "On this page", and prose. Uses the landing
+ * page's tokens (tokens.css) and chrome (page.css), so the docs read as the same site. */
+
+/* Code colours, read by Shiki's CSS-variables theme (see vite.config.ts). Each passes
+ * 4.5:1 on --color-paper-2. */
+:root {
+  --code-foreground: var(--color-ink);
+  --code-background: var(--color-paper-2);
+  --code-token-comment: var(--color-muted);
+  --code-token-punctuation: var(--color-muted);
+  --code-token-keyword: oklch(47% 0.16 29);
+  --code-token-string: oklch(44% 0.1 150);
+  --code-token-string-expression: oklch(44% 0.1 150);
+  --code-token-constant: oklch(45% 0.12 255);
+  --code-token-function: oklch(42% 0.13 300);
+  --code-token-parameter: var(--color-ink-2);
+  --code-token-link: var(--color-ink);
+  --docs-nav-top: 72px;
+}
+
+.nav__links a[aria-current] {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-2);
+  text-underline-offset: 0.3em;
+}
+
+/* ---------- Layout ---------- */
+.docs {
+  display: grid;
+  grid-template-columns: 15rem minmax(0, 1fr) 13rem;
+  gap: var(--space-xl);
+  align-items: start;
+  padding-block: var(--space-xl) var(--space-3xl);
+}
+.docs__main {
+  min-width: 0;
+}
+.docs__menu {
+  display: none;
+}
+
+/* ---------- Sidebar ---------- */
+.docnav {
+  position: sticky;
+  top: calc(var(--docs-nav-top) + var(--space-lg));
+  max-height: calc(100vh - var(--docs-nav-top) - var(--space-xl));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: var(--space-xs);
+  scrollbar-width: thin;
+}
+.docnav__section + .docnav__section {
+  margin-top: var(--space-lg);
+}
+.docnav__title {
+  max-width: none;
+  margin-bottom: var(--space-xs);
+  font: 600 var(--text-sm) / 1.4 var(--font-body);
+  letter-spacing: 0;
+  color: var(--color-ink);
+}
+.docnav__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.docnav__link {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  padding: var(--space-3xs) var(--space-xs);
+  margin-left: calc(var(--space-xs) * -1);
+  border-radius: var(--radius-input);
+  color: var(--color-ink-2);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  text-decoration: none;
+}
+.docnav__link:hover {
+  background: var(--color-paper-2);
+  color: var(--color-ink);
+}
+.docnav__link[aria-current="page"] {
+  background: var(--color-paper-3);
+  color: var(--color-ink);
+  font-weight: 600;
+}
+.docnav__ext {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+}
+
+/* ---------- On this page ---------- */
+.docs__toc {
+  position: sticky;
+  top: calc(var(--docs-nav-top) + var(--space-lg));
+}
+.toc__title {
+  max-width: none;
+  margin-bottom: var(--space-xs);
+  font: 600 var(--text-sm) / 1.4 var(--font-body);
+  letter-spacing: 0;
+}
+.toc__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: var(--rule-hair) solid var(--color-rule);
+}
+.toc__sub {
+  padding-left: var(--space-sm);
+}
+.toc__link {
+  display: block;
+  margin-left: calc(var(--rule-hair) * -1);
+  padding: var(--space-3xs) var(--space-sm);
+  border-left: 2px solid transparent;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  text-decoration: none;
+}
+.toc__link:hover {
+  color: var(--color-ink);
+}
+.toc__link[aria-current] {
+  border-left-color: var(--color-accent-2);
+  color: var(--color-ink);
+}
+
+/* ---------- The page ---------- */
+.prose {
+  max-width: 46rem;
+}
+.prose h1 {
+  max-width: 24ch;
+  font-size: var(--text-3xl);
+  line-height: 1.1;
+}
+.docs__eyebrow {
+  margin-bottom: var(--space-xs);
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.docs__lead {
+  margin-top: var(--space-md);
+  color: var(--color-ink-2);
+}
+.prose h2 {
+  max-width: none;
+  margin: var(--space-2xl) 0 var(--space-md);
+  font-size: var(--text-2xl);
+  line-height: 1.15;
+}
+.prose h3 {
+  max-width: none;
+  margin: var(--space-xl) 0 var(--space-sm);
+  font-size: var(--text-lg);
+}
+.prose h2,
+.prose h3 {
+  scroll-margin-top: calc(var(--docs-nav-top) + var(--space-md));
+}
+.prose__anchor {
+  margin-left: var(--space-xs);
+  color: var(--color-muted);
+  text-decoration: none;
+  opacity: 0;
+}
+.prose :is(h2, h3):hover .prose__anchor,
+.prose__anchor:focus-visible {
+  opacity: 1;
+}
+.prose p,
+.prose ul,
+.prose ol {
+  margin: 0 0 var(--space-md);
+}
+.prose li + li {
+  margin-top: var(--space-2xs);
+}
+.prose ul,
+.prose ol {
+  padding-left: var(--space-lg);
+}
+.prose a:not([class]) {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent-2);
+}
+.prose hr {
+  margin: var(--space-xl) 0;
+  border: 0;
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+.prose strong {
+  font-weight: 600;
+}
+
+/* Inline code. */
+.prose :not(pre) > code {
+  padding: 0.05em 0.3em;
+  border-radius: var(--radius-input);
+  background: var(--color-paper-2);
+  font: 400 0.875em / 1.4 var(--font-outlier);
+  overflow-wrap: anywhere;
+}
+
+/* Code blocks. */
+.code {
+  position: relative;
+  margin: 0 0 var(--space-lg);
+}
+.code pre {
+  margin: 0;
+  padding: var(--space-md) var(--space-lg);
+  overflow-x: auto;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  font: 400 var(--text-sm) / 1.6 var(--font-outlier);
+  tab-size: 2;
+}
+.code__copy {
+  position: absolute;
+  top: var(--space-xs);
+  right: var(--space-xs);
+  min-height: 32px;
+  padding: 0 var(--space-sm);
+  border: var(--rule-hair) solid var(--color-rule-2);
+  border-radius: var(--radius-input);
+  background: var(--color-paper);
+  color: var(--color-ink-2);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  opacity: 0;
+}
+.code:hover .code__copy,
+.code__copy:focus-visible,
+.code:focus-within .code__copy {
+  opacity: 1;
+}
+@media (hover: none) {
+  .code__copy {
+    opacity: 1;
+  }
+}
+
+/* Tables. */
+.prose__table {
+  margin: 0 0 var(--space-lg);
+  overflow-x: auto;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+.prose th,
+.prose td {
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: var(--rule-hair) solid var(--color-rule);
+  text-align: left;
+  vertical-align: top;
+}
+.prose th {
+  font-weight: 600;
+  white-space: nowrap;
+}
+.prose th:first-child,
+.prose td:first-child {
+  padding-left: 0;
+}
+
+/* Task lists from GitHub-flavoured Markdown. */
+.prose .contains-task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* ---------- Page footer ---------- */
+.docs__foot {
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-lg);
+  border-top: var(--rule-hair) solid var(--color-rule);
+}
+.docs__edit {
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+}
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+.pager__link {
+  display: grid;
+  gap: var(--space-3xs);
+  padding: var(--space-sm) var(--space-md);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-card);
+  text-decoration: none;
+}
+.pager__link:hover {
+  border-color: var(--color-rule-2);
+  background: var(--color-paper-2);
+}
+.pager__link--next {
+  text-align: right;
+}
+.pager__dir {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+}
+.pager__label {
+  font-weight: 500;
+}
+
+/* ---------- Docs home ---------- */
+.docs__note {
+  margin-top: var(--space-lg);
+  padding: var(--space-sm) var(--space-md);
+  border-left: 2px solid var(--color-accent-2);
+  background: var(--color-paper-2);
+  font-size: var(--text-sm);
+}
+.prose .docs__note a {
+  text-decoration-color: var(--color-accent-2);
+}
+.docs__sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: var(--space-xl) var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+.prose .docs__card h2 {
+  margin: 0 0 var(--space-sm);
+  font-size: var(--text-lg);
+}
+.docs__card ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-sm);
+}
+.prose .docs__card li + li {
+  margin-top: var(--space-3xs);
+}
+.prose .docs__card a {
+  color: var(--color-ink-2);
+  text-decoration: none;
+}
+.prose .docs__card a:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent-2);
+}
+.docs:has(.docs__sections) {
+  grid-template-columns: minmax(0, 1fr);
+}
+.docs:has(.docs__sections) .prose {
+  max-width: none;
+}
+
+/* ---------- Narrower screens ---------- */
+@media (max-width: 75rem) {
+  .docs {
+    grid-template-columns: 14rem minmax(0, 1fr);
+  }
+  .docs__toc {
+    display: none;
+  }
+}
+@media (max-width: 60rem) {
+  .docs,
+  .docs:has(.docs__sections) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-md);
+    padding-top: var(--space-md);
+  }
+  .docs__menu {
+    display: inline-flex;
+    align-items: center;
+    justify-self: start;
+    min-height: 44px;
+    padding: 0 var(--space-md);
+    border: var(--rule-hair) solid var(--color-rule-2);
+    border-radius: var(--radius-input);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    cursor: pointer;
+  }
+  .docnav {
+    display: none;
+    position: static;
+    max-height: none;
+    padding: var(--space-md) 0;
+    border-block: var(--rule-hair) solid var(--color-rule);
+  }
+  .docnav[data-open] {
+    display: block;
+  }
+  .pager {
+    grid-template-columns: 1fr;
+  }
+}

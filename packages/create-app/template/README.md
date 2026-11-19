@@ -41,5 +41,5 @@ src
 ## Learn more
 
 - [Components and patterns](https://ahmedbilal5.github.io/fabric/docs/)
-- [Keeping the bundle small](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/foundations-bundle-size--docs)
+- [Keeping the bundle small](https://ahmedbilal5.github.io/fabric/docs/foundations/bundle-size/)
 - [The example admin app](https://ahmedbilal5.github.io/fabric/admin/) and [its source](https://github.com/ahmedBilal5/fabric/tree/main/apps/admin)

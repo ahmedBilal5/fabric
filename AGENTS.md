@@ -36,7 +36,7 @@ design-tokens → theme → primitives → components → advanced-components �
 
 `@fabric-kit/icons` sits beside the stack and can be used by any layer from 3 up. `@fabric-kit/hooks` (React hooks and `Intl` formatting helpers, no MUI) also sits beside it and can be used by any layer from 3 up.
 
-`apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`. Its nav finder is generated at build time from every MDX page and `autodocs` story (`apps/site/docs-index.ts`), so new docs pages show up there without editing the site. When a roadmap phase ships, update `WHATS_NEW` in `apps/site/src/links.ts`. The link preview image `apps/site/public/og-image.png` is a screenshot of `apps/site/social/og-image.html`, and `apps/site/404.html` is the page GitHub Pages shows for missing paths.
+`apps/site` is the landing page (Vite + React). It dogfoods the packages: every screen on it is built from Fabric. Its own chrome follows the Hallmark stamp at the top of `apps/site/src/styles/page.css`. It also hosts the docs at `/fabric/docs/` (see "Docs and stories" below). Its sidebar and nav finder are generated at build time from the site's docs pages plus every Storybook MDX page and `autodocs` story (`apps/site/docs-index.ts`), so new pages show up without editing the site. When a roadmap phase ships, update `WHATS_NEW` in `apps/site/src/links.ts`. The link preview image `apps/site/public/og-image.png` is a screenshot of `apps/site/social/og-image.html`, and `apps/site/404.html` is the page GitHub Pages shows for missing paths.
 
 `apps/admin` is the example admin app (Vite + React, hash routing, mock data): a dashboard, customer list, detail and form pages, and settings, built only from Fabric. It deploys to `/fabric/admin/` beside the site, and its stories are `Examples/Admin app`. Use it to check that new patterns fit a real app.
 
@@ -71,6 +71,12 @@ Reuse lower layers instead of rebuilding them. A kit that needs a table uses `@f
 - Prefer Fabric primitives (`FabricFlex`, `FabricStack`, `FabricText`, …) over raw layout code.
 
 ## Docs and stories
+
+The docs are moving from Storybook to the site (Phases 5 and 6). Storybook stays as the workshop at `/fabric/storybook/`.
+
+- **Site docs pages** are MDX in `apps/site/content/docs/<section>/<page>.mdx`, with frontmatter `title`, `description` (one sentence) and `nav` (the Storybook-style place, e.g. `Foundations/Installation`). The page's `#` heading comes from `title`, so start the body with prose and use `##` and `###`. Every page is prerendered to `/fabric/docs/<section>/<page>/`.
+- **Moving a page:** create the site page, delete the Storybook MDX, and set `replaces: [<storybook-docs-id>]` if its id isn't the default `<nav>--docs`. Old links redirect automatically, and the sidebar order follows `ORDER` in `apps/site/docs-nav.ts` (keep it in step with `storySort` in `.storybook/preview.tsx`).
+- **Links between pages:** write `[Theming](?path=/docs/foundations-theming--docs)`. The site sends it to the moved page or to Storybook, and the build fails on an id that doesn't exist.
 
 Every public component has an MDX page and stories in Storybook. Docs cover:
 

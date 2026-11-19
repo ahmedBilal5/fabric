@@ -129,7 +129,7 @@ The single source of truth for every visual decision in Fabric: colors, typograp
 
 <div className="dt-section">
 
-## What Are Design Tokens?
+## What are design tokens?
 
 Design tokens are the **atomic visual values** that define how a product looks and feels.
 Rather than scattering raw hex codes, pixel values, and font stacks throughout a codebase,
@@ -175,7 +175,7 @@ sections is 24px, that decision becomes `spacing.xl`.
 
 <div className="dt-section">
 
-## How Tokens Fit in the Fabric Architecture
+## How tokens fit into Fabric
 
 Design tokens are the **foundation layer** — everything above depends on them, but they depend on nothing.
 
@@ -212,7 +212,7 @@ Design tokens are the **foundation layer** — everything above depends on them,
 
 <div className="dt-section">
 
-## Token Categories in This Package
+## Token categories in this package
 
 `@fabric-kit/design-tokens` ships the following token groups:
 
@@ -344,7 +344,7 @@ Design tokens are the **foundation layer** — everything above depends on them,
 
 <div className="dt-section">
 
-## Naming Convention
+## Naming
 
 Tokens follow a **category → role** pattern that reads like natural language:
 
@@ -436,7 +436,7 @@ function getSpacing(key: keyof Spacing): number {
 
 <div className="dt-section">
 
-## Design Decisions
+## Design decisions
 
 ### One direction of flow
 
@@ -468,7 +468,7 @@ one-off values (13px, 17px, 22px) that slowly erode visual rhythm.
 
 <div className="dt-section">
 
-## Adding or Modifying Tokens
+## Adding or changing tokens
 
 1. **Edit the corresponding file** in `packages/design-tokens/src/` (e.g., `colors.ts`, `spacing.ts`).
 2. **Export from `index.ts`** if adding a new category.

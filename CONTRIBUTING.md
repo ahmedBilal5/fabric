@@ -11,8 +11,9 @@ git clone https://github.com/ahmedBilal5/fabric.git
 cd fabric
 pnpm install
 pnpm build          # builds every package (Storybook and the site use the built icons)
-pnpm storybook      # docs and component playground at http://localhost:6007
-pnpm site:dev       # the landing page
+pnpm storybook      # stories and component playground at http://localhost:6007
+pnpm site:dev       # the landing page and docs site
+pnpm admin:dev      # the example admin app
 ```
 
 ## Where things live
@@ -21,15 +22,21 @@ pnpm site:dev       # the landing page
 packages/design-tokens        colors, type, spacing, radii, shadows, motion
 packages/theme                the MUI theme and DesignSystemProvider
 packages/primitives           layout and text primitives
-packages/icons                Material Symbols as React components (generated)
 packages/components           MUI components with Fabric defaults
-packages/advanced-components  datagrid, date-picker, tree-view
+packages/advanced-components  datagrid, date-picker, tree-view, charts
+packages/forms                React Hook Form and Zod bindings, form layout, wizard
 packages/kits/*               layout, global-search, chatbot, versioning, canvas-builder
-apps/site                     the landing page (dogfoods the packages)
-docs/                         Storybook guides (welcome, installation, theming, ...)
+packages/patterns             whole pages: list, detail, form, settings, dashboard
+packages/icons                Material Symbols as React components (generated)
+packages/hooks                React hooks and Intl formatting helpers
+packages/create-app           the starter CLI and its template
+apps/site                     the landing page and docs site (dogfoods the packages)
+apps/site/content/docs        docs pages, as MDX
+apps/admin                    the example admin app
+docs/                         Storybook guides not yet moved to the docs site
 ```
 
-Each layer may use the layers above it in that list, never below. Kits never depend on each other. [CLAUDE.md](CLAUDE.md) has the full rules and the quality bar for components; the **Contribution Guidelines** page in Storybook covers API design, docs and the review checklist.
+Each layer may use the layers above it in that list, never below; `icons` and `hooks` can be used by any layer from primitives up. Kits never depend on each other. [CLAUDE.md](CLAUDE.md) has the full rules and the quality bar for components, and the [contribution guidelines](https://ahmedbilal5.github.io/fabric/docs/foundations/contributing/) cover API design, docs and the review checklist.
 
 ## Making a change
 

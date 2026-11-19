@@ -10,7 +10,8 @@
 <p align="center">
   <a href="https://ahmedbilal5.github.io/fabric/">Website</a> ·
   <a href="https://ahmedbilal5.github.io/fabric/docs/">Documentation</a> ·
-  <a href="https://ahmedbilal5.github.io/fabric/docs/?path=/docs/foundations-installation--docs">Installation</a> ·
+  <a href="https://ahmedbilal5.github.io/fabric/docs/foundations/installation/">Installation</a> ·
+  <a href="https://ahmedbilal5.github.io/fabric/storybook/">Storybook</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
@@ -61,7 +62,7 @@ export function App() {
 }
 ```
 
-The [installation guide](https://ahmedbilal5.github.io/fabric/docs/?path=/docs/foundations-installation--docs) covers Next.js, dark mode, fonts and troubleshooting.
+The [installation guide](https://ahmedbilal5.github.io/fabric/docs/foundations/installation/) covers Next.js, dark mode, fonts and troubleshooting.
 
 ## Packages
 

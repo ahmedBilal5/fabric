@@ -27,7 +27,7 @@ How Fabric makes responsive UIs the default — breakpoints, responsive props, v
 
 <div className="rd-section">
 
-## Breakpoint Tokens
+## Breakpoint tokens
 
 All breakpoints are defined in `@fabric-kit/design-tokens` and wired into the MUI theme. Use these everywhere — never hardcode pixel values.
 
@@ -45,7 +45,7 @@ All breakpoints are defined in `@fabric-kit/design-tokens` and wired into the MU
   </tbody>
 </table>
 
-### Two Key Shift Points
+### Two key shift points
 
 <div className="rd-shift-grid">
   <div className="rd-shift-card">
@@ -64,7 +64,7 @@ All breakpoints are defined in `@fabric-kit/design-tokens` and wired into the MU
 
 <div className="rd-section">
 
-## Responsive Props on Primitives
+## Responsive props on primitives
 
 Every layout primitive (`FabricFlex`, `FabricStack`, `FabricInline`, `FabricGrid`, `FabricText`) accepts **responsive objects** on its core props. Pass a scalar for all breakpoints, or a `{ breakpoint: value }` object to change at specific breakpoints.
 
@@ -126,7 +126,7 @@ const gap: ResponsiveValue<Space> = { xs: 'sm', md: 'lg' };
 
 <div className="rd-section">
 
-## useBreakpoint Hook
+## The useBreakpoint hook
 
 A typed wrapper around MUI's `useMediaQuery` tied to Fabric's breakpoint tokens. Import from `@fabric-kit/theme` — do not use `useMediaQuery` directly.
 
@@ -167,7 +167,7 @@ function MyComponent() {
 
 <div className="rd-section">
 
-## Show / Hide Components
+## Showing and hiding components
 
 CSS-only responsive visibility — no JavaScript, no layout shift. Renders or hides children at breakpoints using `display: none`.
 
@@ -210,7 +210,7 @@ Both `above` and `below` can be combined to target a specific range.
 
 <div className="rd-section">
 
-## Fluid Typography
+## Fluid typography
 
 Heading variants (`h1`–`h5`, `subtitle1`) use `clamp()`-based font sizes that scale smoothly between the `sm` (600px) and `xl` (1440px) breakpoints. No breakpoint jumps — sizes interpolate with the viewport.
 
@@ -245,7 +245,7 @@ const heroStyle = { fontSize: fluidFontSize['4xl'] };
 
 <div className="rd-section">
 
-## Component-Level Responsive Defaults
+## Component-level responsive defaults
 
 Several components have built-in responsive behavior that activates automatically:
 
@@ -273,7 +273,7 @@ These opt-in props default to `true` — consumers get responsive behavior for f
 
 <div className="rd-section">
 
-## sx Responsive Shorthand
+## Responsive values in sx
 
 Any Fabric component supports MUI's `sx` responsive object syntax as an escape hatch. This works on any CSS property:
 
