@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      // Old Storybook links (/docs/?path=/docs/<id>) go to the moved page, or to Storybook,
+      // which now lives at /storybook/. The prerender fills in the list of moved pages.
+      (() => {
+        var q = location.search;
+        if (!/[?&]path=/.test(q)) return;
+        var moved = /*redirects*/ {};
+        var id = /[?&]path=\/docs\/([^&#]+)/.exec(q);
+        var to = id && moved[decodeURIComponent(id[1])];
+        location.replace(to || `%BASE_URL%storybook/${q}${location.hash}`);
+      })();
+    </script>
+    <!--head-->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Fabric" />
+    <meta property="og:image" content="https://ahmedbilal5.github.io/fabric/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Fabric: MUI, with the app already built." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/docs/main.tsx"></script>
+  </body>
+</html>

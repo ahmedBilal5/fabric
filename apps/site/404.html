@@ -55,11 +55,22 @@
         <ul class="lost__links">
           <li><a href="%BASE_URL%">Fabric home</a></li>
           <li><a href="%BASE_URL%docs/">Documentation</a></li>
+          <li><a href="%BASE_URL%storybook/">Storybook</a></li>
           <li><a href="%BASE_URL%admin/">Example admin app</a></li>
           <li><a href="https://github.com/ahmedBilal5/fabric/issues/42">Roadmap</a></li>
         </ul>
       </div>
     </main>
+    <script>
+      // Storybook moved from docs/ to storybook/. Send its old file URLs (iframe.html,
+      // index.json, …) there; old ?path= links are handled by the docs home.
+      (() => {
+        var docs = "%BASE_URL%docs/";
+        var path = location.pathname;
+        if (path.indexOf(docs) === 0 && /\.\w+$/.test(path))
+          location.replace(`%BASE_URL%storybook/${path.slice(docs.length)}${location.search}${location.hash}`);
+      })();
+    </script>
     <script type="module" src="/src/not-found.ts"></script>
   </body>
 </html>

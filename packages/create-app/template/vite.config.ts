@@ -8,13 +8,13 @@ import { defineConfig } from "vite";
  */
 const CHUNKS: [name: string, test: RegExp][] = [
   ["react", /node_modules\/(react|react-dom|scheduler)\//],
-  ["mui", /node_modules\/(@mui\/(material|system|utils|styled-engine)|@emotion|@popperjs)\//],
+  [
+    "mui",
+    /node_modules\/(@mui\/(material|system|utils|styled-engine)|@emotion|@popperjs|@babel\/runtime)\//,
+  ],
   // Helpers shared by the charts and the grid. Without their own chunk they'd land in one
   // of the two, and a page with only the other would download both.
-  [
-    "mui-x",
-    /node_modules\/(@mui\/x-internals|@base-ui\/utils|reselect|use-sync-external-store|@babel\/runtime)\//,
-  ],
+  ["mui-x", /node_modules\/(@mui\/x-internals|@base-ui\/utils|reselect|use-sync-external-store)\//],
   // Big libraries used by only some pages. They load with the first page that needs them.
   ["charts", /node_modules\/(@mui\/x-charts|@mui\/x-charts-vendor|d3-[a-z-]+)\//],
   ["data-grid", /node_modules\/@mui\/x-data-grid\//],

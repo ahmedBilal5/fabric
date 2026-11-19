@@ -1,8 +1,8 @@
-import { Meta } from '@storybook/addon-docs/blocks';
-
-<Meta title="Foundations/Bundle Size" />
-
-# Bundle size
+---
+title: Bundle size
+description: Where a Fabric app's size comes from, and how to keep the first download small.
+nav: Foundations/Bundle Size
+---
 
 A Fabric app is a React and MUI app, so most of its size is React, MUI and the MUI X libraries you choose. Fabric's own packages add little on top. This page shows where the size comes from and how to keep the first download small.
 
@@ -38,7 +38,7 @@ import DeleteOutlined from '@fabric-kit/icons/DeleteOutlined'; // do
 import { DeleteOutlined } from '@fabric-kit/icons';            // avoid
 ```
 
-`pnpm check:icons` (in this repo) fails when an icon path doesn't exist.
+A misspelt icon path is a type error, so you find it before the build does.
 
 ## 2. Split by page
 
@@ -87,8 +87,8 @@ React and MUI change less often than your code. In their own chunks, they stay c
 // vite.config.ts
 const CHUNKS: [name: string, test: RegExp][] = [
   ['react', /node_modules\/(react|react-dom|scheduler)\//],
-  ['mui', /node_modules\/(@mui\/(material|system|utils|styled-engine)|@emotion|@popperjs)\//],
-  ['mui-x', /node_modules\/(@mui\/x-internals|@base-ui\/utils|reselect|use-sync-external-store|@babel\/runtime)\//],
+  ['mui', /node_modules\/(@mui\/(material|system|utils|styled-engine)|@emotion|@popperjs|@babel\/runtime)\//],
+  ['mui-x', /node_modules\/(@mui\/x-internals|@base-ui\/utils|reselect|use-sync-external-store)\//],
   ['charts', /node_modules\/(@mui\/x-charts|@mui\/x-charts-vendor|d3-[a-z-]+)\//],
   ['data-grid', /node_modules\/@mui\/x-data-grid\//],
 ];
@@ -106,6 +106,8 @@ export default defineConfig({
 Only group libraries that the first page needs anyway (React, MUI), or that only lazy pages use (charts, grid). If the first page imports anything from a group, the whole group loads with it.
 
 Give shared helpers their own group too. Rollup puts a module's dependencies into its chunk, so without the `mui-x` group the grid's chunk would import the charts' chunk, and a page with only a table would download both.
+
+A helper that MUI core uses as well, such as `@babel/runtime`, belongs with `mui`, which loads first. In `mui-x` it would make the two chunks import each other, and Vite warns about a circular chunk.
 
 Other bundlers have the same feature under another name, such as webpack's `splitChunks`.
 

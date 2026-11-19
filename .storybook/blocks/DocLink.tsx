@@ -3,7 +3,7 @@ import { NAVIGATE_URL } from "storybook/internal/core-events";
 import { addons } from "storybook/preview-api";
 
 export interface DocLinkProps extends Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> {
-  /** Storybook path, e.g. `/docs/foundations-installation--docs`. */
+  /** Storybook path, e.g. `/docs/foundations-theming--docs`. */
   to: string;
 }
 

@@ -1,7 +1,7 @@
 // Combines the landing site, the example admin app and Storybook into one GitHub Pages artifact:
-//   _site/        <- apps/site/dist (served at /fabric/)
+//   _site/        <- apps/site/dist (served at /fabric/; its docs pages at /fabric/docs/)
 //   _site/admin/  <- apps/admin/dist (served at /fabric/admin/)
-//   _site/docs/   <- storybook-static (served at /fabric/docs/)
+//   _site/storybook/ <- storybook-static (served at /fabric/storybook/)
 import { cpSync, existsSync, rmSync, writeFileSync } from "node:fs";
 
 const out = "_site";
@@ -14,7 +14,7 @@ for (const dir of ["apps/site/dist", "apps/admin/dist", "storybook-static"]) {
 rmSync(out, { recursive: true, force: true });
 cpSync("apps/site/dist", out, { recursive: true });
 cpSync("apps/admin/dist", `${out}/admin`, { recursive: true });
-cpSync("storybook-static", `${out}/docs`, { recursive: true });
+cpSync("storybook-static", `${out}/storybook`, { recursive: true });
 // GitHub Pages runs Jekyll by default, which drops files starting with "_" (Storybook ships some).
 writeFileSync(`${out}/.nojekyll`, "");
 console.log(`Pages artifact ready in ${out}/`);

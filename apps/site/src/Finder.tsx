@@ -1,19 +1,24 @@
-import docsIndex, { type DocsEntry } from "virtual:docs-index";
+import { sections } from "virtual:docs-index";
 import { useId, useMemo, useRef, useState } from "react";
-import { docsUrl } from "./links";
+import type { NavItem } from "../docs-nav";
+
+type Entry = NavItem & { group: string };
+
+const ENTRIES: Entry[] = sections.flatMap((s) =>
+  s.items.map((item) => ({ ...item, group: s.title })),
+);
 
 /** Shows names that start with the query first, then other matches. */
-function search(query: string): DocsEntry[] {
+function search(query: string): Entry[] {
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  const rank = (e: DocsEntry) => {
-    const name = e.name.toLowerCase();
+  const rank = (e: Entry) => {
+    const name = e.label.toLowerCase();
     if (name.startsWith(q) || `fabric${name}`.startsWith(q)) return 0;
     if (name.includes(q)) return 1;
     return e.title.toLowerCase().includes(q) ? 2 : -1;
   };
-  return docsIndex
-    .map((entry) => ({ entry, rank: rank(entry) }))
+  return ENTRIES.map((entry) => ({ entry, rank: rank(entry) }))
     .filter((r) => r.rank >= 0)
     .sort((a, b) => a.rank - b.rank)
     .slice(0, 8)
@@ -22,7 +27,8 @@ function search(query: string): DocsEntry[] {
 
 /**
  * The nav's search pill: finds any docs page (components, patterns, guides, kits) and
- * opens it. The list comes from the repo's docs pages at build time (`docs-index.ts`).
+ * opens it, on the docs site or, until it moves, in Storybook. The list comes from the
+ * repo's docs pages at build time (`docs-index.ts`).
  */
 export function Finder() {
   const [query, setQuery] = useState("");
@@ -33,8 +39,8 @@ export function Finder() {
 
   const results = useMemo(() => search(query), [query]);
 
-  const go = (path: string) => {
-    window.location.href = docsUrl(path);
+  const go = (href: string) => {
+    window.location.href = href;
   };
 
   return (
@@ -69,7 +75,7 @@ export function Finder() {
             e.preventDefault();
             setActive((i) => Math.max(i - 1, 0));
           } else if (e.key === "Enter" && results[active]) {
-            go(results[active].path);
+            go(results[active].href);
           } else if (e.key === "Escape") {
             setOpen(false);
           }
@@ -79,7 +85,7 @@ export function Finder() {
         <div id={listId} role="listbox" className="finder__list">
           {results.map((entry, index) => (
             <div
-              key={entry.path}
+              key={entry.href}
               id={`${listId}-${index}`}
               role="option"
               tabIndex={-1}
@@ -87,11 +93,11 @@ export function Finder() {
               className="finder__option"
               onMouseDown={(e) => {
                 e.preventDefault();
-                go(entry.path);
+                go(entry.href);
               }}
               onMouseEnter={() => setActive(index)}
             >
-              <span>{entry.name}</span>
+              <span>{entry.label}</span>
               <span className="finder__group">{entry.group}</span>
             </div>
           ))}

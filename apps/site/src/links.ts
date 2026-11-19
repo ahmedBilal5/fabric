@@ -1,3 +1,6 @@
+import { redirects } from "virtual:docs-index";
+import { pageHref, storybookHref } from "../docs-nav";
+
 export const GITHUB_URL = "https://github.com/ahmedBilal5/fabric";
 /** The pinned roadmap issue: every planned item and what has shipped. */
 export const ROADMAP_URL = `${GITHUB_URL}/issues/42`;
@@ -8,10 +11,18 @@ export const CREATE_COMMAND = "npm create @fabric-kit/app@latest";
 /** The example admin app, deployed beside the site at `<base>/admin/`. */
 export const EXAMPLE_APP_URL = `${import.meta.env.BASE_URL}admin/`;
 
-/** Storybook lives under `<base>/docs/`. Pass a story or docs id to deep-link. */
-export function docsUrl(path?: string): string {
-  const root = `${import.meta.env.BASE_URL}docs/`;
-  return path ? `${root}?path=/docs/${path}` : root;
+/** Storybook, the workshop for every story, with controls, viewports and the a11y panel. */
+export const STORYBOOK_URL = `${import.meta.env.BASE_URL}storybook/`;
+
+/**
+ * A docs page by its Storybook docs id, e.g. `foundations-installation--docs`: the
+ * page on the docs site once it has moved there, otherwise in Storybook. No id gives
+ * the docs home.
+ */
+export function docsUrl(id?: string): string {
+  const base = import.meta.env.BASE_URL;
+  if (!id) return pageHref(base, "");
+  return redirects[id] ?? storybookHref(base, id);
 }
 
 /**
